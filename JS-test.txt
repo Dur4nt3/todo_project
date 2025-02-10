@@ -1,0 +1,282 @@
+const basicTask = createBasicTask("testing basic", "basic task");
+
+const originallyAllDay = createDatedTask("testing all day", "all day task", "2025-03-10", true);
+const originallyTimed = createDatedTask("testing dated", "dated task", "2025-03-10T12:25:00", false);
+
+const groupedTask1 = createGroupedTask("testing groups", "grouped task 1", "group1");
+const groupedTask2 = createGroupedTask("more groups", "grouped task 2", "group2", 3);
+
+const datedGroupedTask1 = createDatedGroupedTask("dated & grouped", "all-day grouped", "group1", "2025-02-10", true, 2);
+
+console.log("%cTests for basic task variable", "color: aquamarine; font-size: 18px; font-weight: bold");
+
+console.log("%cValues:", "color: aquamarine; font-size: 14px; font-weight: bold");
+
+console.log(basicTask.title);
+console.log(basicTask.description);
+console.log("Completed: ", basicTask.completionStatus);
+
+console.log("%cTesting changing values:", "color: aquamarine; font-size: 14px; font-weight: bold");
+
+basicTask.complete();
+console.log("Completed: ", basicTask.completionStatus);
+
+try {
+    basicTask.title = ""
+}
+catch (error) {
+    console.log(error);
+}
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for all-day task variable", "color: greenyellow; font-size: 18px; font-weight: bold");
+
+console.log("%cValues:", "color: greenyellow; font-size: 14px; font-weight: bold");
+console.log(originallyAllDay.title);
+console.log(originallyAllDay.description);
+console.log(originallyAllDay.deadline);
+console.log("All Day: ", originallyAllDay.allDay);
+console.log("Completed: ", originallyAllDay.completionStatus);
+
+console.log("%cTesting changing values:", "color: greenyellow; font-size: 14px; font-weight: bold");
+originallyAllDay.complete();
+console.log("Completed: ", originallyAllDay.completionStatus);
+
+try {
+    originallyAllDay.title = ""
+}
+catch (error) {
+    console.log(error);
+}
+
+originallyAllDay.title = "previously all day task";
+console.log("Title:", originallyAllDay.title);
+
+console.log("%cDate tests:", "color: greenyellow; font-size: 14px; font-weight: bold");
+
+originallyAllDay.deadline = '2025-03-12';
+console.log(new Date(originallyAllDay.deadline));
+
+try {
+    originallyAllDay.deadline = '2023-02-08';
+}
+catch (error) {
+    console.log("Deadline is before present day without overriding");
+}
+
+originallyAllDay.overrideDeadline('2023-02-08');
+console.log(new Date(originallyAllDay.deadline));
+
+originallyAllDay.deadline = '2026-02-12';
+console.log(new Date(originallyAllDay.deadline));
+
+console.log("All Day: ", originallyAllDay.allDay);
+console.log("changing to timed task")
+originallyAllDay.deadline = "2025-10-15T15:30:00";
+originallyAllDay.allDay = false;
+console.log(new Date(originallyAllDay.deadline));
+console.log("All Day: ", originallyAllDay.allDay);
+
+console.log("trying to set the deadline past the 5 year past and future limits:")
+console.log(originallyAllDay.deadline);
+
+try {
+    originallyAllDay.deadline = "2030-03-03";
+}
+catch (error) {
+    console.log("Date is too far into the future!!!");
+}
+
+try {
+    originallyAllDay.overrideDeadline("2020-02-09");
+}
+catch(error) {
+    console.log("Date is too far back!!!");
+}
+
+console.log(originallyAllDay.deadline);
+
+console.log("undoing completion");
+originallyAllDay.undoCompletion();
+console.log("Completed: ", originallyAllDay.completionStatus);
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for timed task variable", "color: gold; font-size: 18px; font-weight: bold");
+
+console.log("%cValues:", "color: gold; font-size: 14px; font-weight: bold");
+
+console.log(originallyTimed.title);
+console.log(originallyTimed.description);
+console.log(originallyTimed.deadline);
+console.log("Deadline (Formatted): ", (new Date(originallyTimed.deadline)));
+console.log("All Day: ", originallyTimed.allDay);
+console.log("Completed: ", originallyTimed.completionStatus);
+
+console.log("changing to all day task");
+originallyTimed.allDay = true;
+console.log("All Day: ", originallyTimed.allDay);
+console.log("Deadline: ", originallyTimed.deadline);
+console.log("Deadline (Formatted): ", (new Date(originallyTimed.deadline)));
+
+originallyTimed.title = "currently all day task";
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for grouped task variable #1", "color: rebeccapurple; font-size: 18px; font-weight: bold");
+
+console.log("%cValues:", "color: rebeccapurple; font-size: 14px; font-weight: bold");
+
+console.log(groupedTask1.title);
+console.log(groupedTask1.description);
+console.log(groupedTask1.group);
+console.log("Completed: ", groupedTask1.completionStatus);
+
+console.log("%cGroup Tests:", "color: rebeccapurple; font-size: 14px; font-weight: bold");
+
+groupedTask1.group = "group2";
+console.log("Original group contents (group1):", taskUtil.taskGroups["group1"][0].title,
+    "| New group contents (group2):",
+    taskUtil.taskGroups["group2"][0].title, taskUtil.taskGroups["group2"][1].title);
+
+groupedTask1.group = "newGroup1";
+console.log(groupedTask1.group, taskUtil.taskGroups["newGroup1"][0].title);
+console.log("All groups:", taskUtil.taskGroups);
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for grouped task variable #2", "color: lime; font-size: 18px; font-weight: bold");
+
+console.log("%cValues:", "color: lime; font-size: 14px; font-weight: bold");
+
+console.log(groupedTask2.title);
+console.log(groupedTask2.description);
+console.log(groupedTask2.group);
+console.log("Completed: ", groupedTask2.completionStatus);
+
+console.log("%cGroup Tests:", "color: lime; font-size: 14px; font-weight: bold");
+
+groupedTask2.group = "group1";
+console.log("New group (group1):", taskUtil.taskGroups["group1"], 
+    "Previous group (group2):",taskUtil.taskGroups["group2"], "All groups:", taskUtil.taskGroups);
+
+groupedTask2.group = "newGroup1";
+console.log("New group contents:", taskUtil.taskGroups["newGroup1"][0].title, taskUtil.taskGroups["newGroup1"][1].title, taskUtil.taskGroups);
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for dated & grouped variable", "color: cyan; font-size: 18px; font-weight: bold");
+
+console.log("%cValues:", "color: cyan; font-size: 14px; font-weight: bold");
+
+console.log(datedGroupedTask1.title);
+console.log(datedGroupedTask1.description);
+console.log(datedGroupedTask1.group);
+console.log(datedGroupedTask1.priority);
+console.log("Completed: ", datedGroupedTask1.completionStatus);
+
+console.log("%cTesting changing values:", "color: cyan; font-size: 14px; font-weight: bold");
+
+console.log("Completing Task");
+datedGroupedTask1.complete();
+console.log("Completed: ", datedGroupedTask1.completionStatus);
+console.log("Undoing Completion");
+datedGroupedTask1.undoCompletion();
+console.log("Completed: ", datedGroupedTask1.completionStatus);
+
+datedGroupedTask1.title = "Dated & Grouped Task";
+datedGroupedTask1.description = "New description for dated an grouped task";
+
+console.log('', datedGroupedTask1.title, '\n', datedGroupedTask1.description);
+
+console.log("%cGroup Tests:", "color: cyan; font-size: 14px; font-weight: bold");
+
+console.log("All Groups: ", taskUtil.taskGroups);
+datedGroupedTask1.group = "different group";
+console.log("Changing to group: different group");
+console.log("All Groups: ", taskUtil.taskGroups);
+console.log("Original group (group1):", taskUtil.taskGroups["group1"], 
+    "Title shown if in new group:", taskUtil.taskGroups["different group"][0].title);
+
+console.log("Changing to group: newGroup2");
+datedGroupedTask1.group = "newGroup2";
+console.log("All Groups: ", taskUtil.taskGroups);
+console.log("Original group (group1):", taskUtil.taskGroups["group1"],
+    "newGroup1:", taskUtil.taskGroups["newGroup1"][0].title, taskUtil.taskGroups["newGroup1"][1].title,
+    "newGroup2:", taskUtil.taskGroups["newGroup2"][0].title);
+
+console.log("%cDate Tests:", "color: cyan; font-size: 14px; font-weight: bold");
+
+console.log(datedGroupedTask1.deadline);
+console.log(datedGroupedTask1.allDay);
+
+try {
+    datedGroupedTask1.deadline = '2023-02-02T14:12:10';
+}
+catch(error) {
+    console.log("Deadline is before present day without overriding");
+}
+
+console.log("Setting deadline before present time");
+datedGroupedTask1.overrideDeadline('2023-02-02T14:12:10');
+datedGroupedTask1.allDay = false;
+console.log(datedGroupedTask1.deadline, datedGroupedTask1.allDay);
+
+try {
+    datedGroupedTask1.deadline = '2033-02-02T14:12:10';
+}
+catch(error) {
+    console.log("Deadline is too far into the future!!!");
+}
+
+datedGroupedTask1.deadline = '2025-03-10T13:30:00';
+console.log(datedGroupedTask1.deadline, datedGroupedTask1.allDay);
+
+console.log("Changing to all day task:");
+datedGroupedTask1.allDay = true;
+console.log(datedGroupedTask1.deadline, datedGroupedTask1.allDay);
+
+console.log("Changing to timed task:");
+datedGroupedTask1.allDay = false;
+datedGroupedTask1.deadline = "2025-10-15T15:30:00";
+console.log(datedGroupedTask1.deadline, datedGroupedTask1.allDay);
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for task array", "color: orange; font-size: 18px; font-weight: bold");
+console.log('', taskUtil.taskArray, '\n',
+    taskUtil.taskArray[0].title, "|", taskUtil.taskArray[1].title, "|", taskUtil.taskArray[2].title, '\n',
+    taskUtil.taskArray[3].title, "|", taskUtil.taskArray[4].title, "|", taskUtil.taskArray[5].title
+);
+
+console.log("-------------------------------------------------");
+
+console.log("%cTests for multiple variables", "color: hotpink; font-size: 18px; font-weight: bold");
+console.log("Completed 1: ", originallyAllDay.completionStatus);
+console.log("Completed 2: ", basicTask.completionStatus);
+console.log("Completed 3: ", originallyTimed.completionStatus);
+console.log("Task IDs: ", basicTask.id, originallyAllDay.id, originallyTimed.id);
+
+console.log("Task Priorities: ", basicTask.priority, originallyAllDay.priority, originallyTimed.priority);
+
+try {
+    originallyAllDay.priority = 2.7
+}
+catch (error) {
+    console.log(error);
+}
+
+try {
+    basicTask.priority = "2"
+}
+catch (error) {
+    console.log(error);
+}
+
+basicTask.priority = 3;
+originallyAllDay.priority = 2;
+console.log("Task Priorities: ",
+    basicTask.priority, originallyAllDay.priority,
+    originallyTimed.priority, groupedTask1.priority, 
+    groupedTask2.priority, datedGroupedTask1.priority);
