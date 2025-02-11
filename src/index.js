@@ -2,6 +2,7 @@ import "./styles.css";
 import "./stylesheets/reset.css";
 
 import * as taskUtil from "./modules/utility-functions.js";
+import * as repetitionGenerator from "./modules/repetition-generator.js";
 
 function handleTaskBasics(title, description, priority) {
     let completionStatus = false;
@@ -42,10 +43,10 @@ function handleTaskBasics(title, description, priority) {
     };
 }
 
-function createBasicTask(title, description, priority = 1) {
+export function createBasicTask(title, description, priority = 1) {
     const basicTask = taskUtil.deepClone(handleTaskBasics(title, description, priority));
 
-    taskUtil.updateTaskArray(basicTask);
+    taskUtil.updateTaskCollection(basicTask, "basic");
 
     return basicTask;
 }
@@ -86,13 +87,13 @@ function handleTaskDates(deadline, allDay) {
     } 
 }
 
-function createDatedTask(title, description, deadline, allDay, priority = 1) {
+export function createDatedTask(title, description, deadline, allDay, priority = 1) {
     const datedTask = taskUtil.deepClone(
         handleTaskBasics(title, description, priority), 
         handleTaskDates(deadline, allDay)
     );
 
-    taskUtil.updateTaskArray(datedTask);
+    taskUtil.updateTaskCollection(datedTask, "dated");
 
     return datedTask;
 }
@@ -114,27 +115,76 @@ function handleTaskGroups(group) {
     }
 }
 
-function createGroupedTask(title, description, groupName, priority = 1) {
+export function createGroupedTask(title, description, groupName, priority = 1) {
     const groupedTask = taskUtil.deepClone(
         handleTaskBasics(title, description, priority), 
         handleTaskGroups(groupName)
     );
 
-    taskUtil.updateTaskArray(groupedTask);
+    taskUtil.updateTaskCollection(groupedTask, "grouped");
     taskUtil.updateGroups(groupedTask.group, groupedTask);
 
     return groupedTask;
 }
 
-function createDatedGroupedTask(title, description, groupName, deadline, allDay, priority) {
+export function createDatedGroupedTask(title, description, groupName, deadline, allDay, priority) {
     const datedGroupedTask = taskUtil.deepClone(
         handleTaskBasics(title, description, priority),
         handleTaskDates(deadline, allDay),
         handleTaskGroups(groupName)
     );
 
-    taskUtil.updateTaskArray(datedGroupedTask);
+    taskUtil.updateTaskCollection(datedGroupedTask, "datedGrouped");
     taskUtil.updateGroups(datedGroupedTask.group, datedGroupedTask);
 
     return datedGroupedTask;
+}
+
+function handleTaskRepetition(repetitionPattern, repetitionValue, origin, clusterID) {
+    if (origin === true) {
+        clusterID = taskUtil.generateID();
+    }
+
+    return {
+        get repetitionPattern() { return repetitionPattern },
+        set repetitionPattern(newPattern) {
+            repetitionPattern = newPattern;
+        },
+
+        get repetitionValue() { return repetitionValue },
+        set repetitionValue(newValue) {
+            repetitionValue = newValue;
+        },
+
+        get origin() { return origin },
+
+        get clusterID() { return clusterID }
+    }
+}
+
+export function createRepetitiveTask(title, description, deadline,
+    allDay, repetitionPattern, repetitionValue, origin, priority, clusterID) {
+
+    const repetitiveTask = taskUtil.deepClone(
+        handleTaskBasics(title, description, priority),
+        handleTaskDates(deadline, allDay),
+        handleTaskRepetition(repetitionPattern, repetitionValue, origin, clusterID)
+    )
+
+    taskUtil.updateTaskCollection(repetitiveTask, "repetitive");
+
+    return repetitiveTask;
+}
+
+const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
+    "2025-02-12T12:00:00", false, "time", { "years": 1 }, true, 2, null
+);
+
+repetitionGenerator.generateRepetition(repetitiveTask);
+
+console.log(taskUtil.taskCollection);
+
+for (let index in taskUtil.taskCollection.repetitive) {
+    let task = taskUtil.taskCollection.repetitive[index];
+    console.log(task.title, task.id, task.clusterID, task.origin, task.deadline);
 }

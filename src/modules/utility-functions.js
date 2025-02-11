@@ -1,10 +1,10 @@
 import { add as increaseDate } from "../../node_modules/date-fns/add.js";
 
 // stores information about tasks and tasks groups
-const taskArray = [];
+const taskCollection = {};
 const taskGroups = {};
 
-export { taskArray, taskGroups };
+export { taskCollection, taskGroups };
 
 
 // General Utility Functions:
@@ -21,9 +21,15 @@ export function generateID() {
     return Math.random().toString(16).slice(2);
 }
 
-export function updateTaskArray(taskObj) {
-    taskArray.push(taskObj);
+export function updateTaskCollection(taskObj, taskType) {
+    if (taskCollection[taskType] === undefined) {
+        taskCollection[taskType] = [taskObj];
+    }
+    else {
+        taskCollection[taskType].push(taskObj);
+    }
 }
+
 
 // Task-Specific Utility Functions (Dated Tasks):
 export function validateDeadline(newDeadline) {

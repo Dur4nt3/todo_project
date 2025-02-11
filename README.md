@@ -6,8 +6,8 @@ This is the forth project of the "JavaScript" course within "The Odin Project".
 
 The main goal of this project is to build a "To-do list" application that let's you track various task according to your specification.
 
-This app is used to practice the SOLID design principles, object composition, modules, bundling via Webpack.
-*Of course, this includes subjects introduced in previous project.*
+This app is used to practice the SOLID design principles, object composition, modules, and bundling via Webpack.
+*Of course, this includes subjects introduced in previous projects.*
 
 **Skills demonstrated: Intermediate HTML, Intermediate CSS, Intermediate JavaScript**
 

@@ -245,10 +245,13 @@ console.log(datedGroupedTask1.deadline, datedGroupedTask1.allDay);
 console.log("-------------------------------------------------");
 
 console.log("%cTests for task array", "color: orange; font-size: 18px; font-weight: bold");
-console.log('', taskUtil.taskArray, '\n',
-    taskUtil.taskArray[0].title, "|", taskUtil.taskArray[1].title, "|", taskUtil.taskArray[2].title, '\n',
-    taskUtil.taskArray[3].title, "|", taskUtil.taskArray[4].title, "|", taskUtil.taskArray[5].title
-);
+console.table(taskUtil.taskCollection)
+
+for (let taskType in taskUtil.taskCollection) {
+    for (let task in taskUtil.taskCollection[taskType]) {
+        console.log("Task Type:", taskType, "| Task Title:", taskUtil.taskCollection[taskType][task].title);
+    }
+}
 
 console.log("-------------------------------------------------");
 
