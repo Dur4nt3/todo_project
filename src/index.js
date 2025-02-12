@@ -4,6 +4,8 @@ import "./stylesheets/reset.css";
 import * as taskUtil from "./modules/utility-functions.js";
 import * as repetitionGenerator from "./modules/repetition-generator.js";
 
+import { getDay } from "../node_modules/date-fns"
+
 function handleTaskBasics(title, description, priority) {
     let completionStatus = false;
     let taskID = taskUtil.generateID();
@@ -177,14 +179,20 @@ export function createRepetitiveTask(title, description, deadline,
 }
 
 const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
-    "2025-02-12T12:00:00", false, "time", { "years": 1 }, true, 2, null
+    "2025-02-14", true, "day", [1,3,5], true, 2, null
 );
 
 repetitionGenerator.generateRepetition(repetitiveTask);
 
 console.log(taskUtil.taskCollection);
 
+let count = 0;
+
 for (let index in taskUtil.taskCollection.repetitive) {
+    count++;
     let task = taskUtil.taskCollection.repetitive[index];
     console.log(task.title, task.id, task.clusterID, task.origin, task.deadline);
+    console.log("Task on Day:", getDay(Date.parse(task.deadline)));
 }
+
+console.log(count);

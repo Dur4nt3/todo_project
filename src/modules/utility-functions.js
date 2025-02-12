@@ -91,3 +91,26 @@ export function validateGroup(groupName) {
     }
     return true;
 }
+
+
+// Task-Specific Utility Functions (Repetitive Tasks):
+
+// Used to find the origin task of an ungrouped repetitive task cluster
+export function findOriginUngrouped(clusterID) {
+    for (let index in taskCollection.repetitive) {
+        let task = taskCollection.repetitive[index];
+        if (task.clusterID === clusterID && task.origin === true) {
+            return task;
+        }
+    }
+}
+
+// Used to find the origin task of a grouped repetitive task cluster
+export function findOriginGrouped(clusterID) {
+    for (let index in taskCollection.repetitiveGrouped) {
+        let task = taskCollection.repetitiveGrouped[index];
+        if (task.clusterID === clusterID && task.origin === true) {
+            return task;
+        }
+    }
+}

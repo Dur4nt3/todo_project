@@ -1,10 +1,10 @@
-import { taskCollection } from "./utility-functions.js";
-import { add as increaseDate, differenceInHours, getYear, getMonth, getDate } from "../../node_modules/date-fns";
+import { taskCollection, findOriginUngrouped, findOriginGrouped } from "./utility-functions.js";
+import { add as increaseDate, differenceInHours, getYear, getMonth, getDate, getDay, format as formatDate } from "../../node_modules/date-fns";
 import { createRepetitiveTask } from "../index.js";
 
 // Finds the latest task in the cluster (for ungrouped repetitive tasks)
 function findLatestInRepetitive(clusterID) {
-    let latestDate = new Date();
+    let latestDate = findOriginUngrouped(clusterID).deadline;
 
     for (let taskIndex in taskCollection.repetitive) {
         if (taskCollection.repetitive[taskIndex].clusterID === clusterID) {
@@ -19,7 +19,7 @@ function findLatestInRepetitive(clusterID) {
 
 // Finds the latest task in the cluster (for grouped repetitive tasks)
 function findLatestInRepetitiveGrouped(clusterID) {
-    let latestDate = new Date();
+    let latestDate = findOriginGrouped(clusterID).deadline;
 
     for (taskIndex in taskCollection.repetitiveGrouped) {
         if (taskCollection.repetitiveGrouped[taskIndex].clusterID === clusterID) {
@@ -141,7 +141,7 @@ function determineScheduling(cumulativeHours) {
 }
 
 // Format the deadline to ensure consistency in deadline property format across all task objects
-function formateToDeadlineValue(date, allDay) {
+function formateToDeadlineValue(date, time) {
     let formattedDate;
 
     let year = getYear(date).toString();
@@ -157,8 +157,8 @@ function formateToDeadlineValue(date, allDay) {
 
     formattedDate = year+"-"+month+"-"+day;
 
-    if (!allDay) {
-        formattedDate += "T" + date.toLocaleTimeString('it-IT');
+    if (time) {
+        formattedDate += time;
     }
 
     return formattedDate;
@@ -166,23 +166,82 @@ function formateToDeadlineValue(date, allDay) {
 
 // Generation algorithm for repetitive tasks with the repetition pattern "time"
 function generateTimeRepetition(task, latestAppearance) {
-    let schedulingLimit = determineScheduling(getCumulativeHours(task.repetitionPattern, task.repetitionValue));
+    let schedulingLimit = determineScheduling(getCumulativeHours(
+        task.repetitionPattern, task.repetitionValue));
 
-    let initialLatest = latestAppearance;
+    let currentTime = new Date();
     let newestLatest = latestAppearance;
 
     let formattedDate;
 
-    while (differenceInHours(Date.parse(newestLatest), Date.parse(initialLatest)) < schedulingLimit) {
+    let time = '';
+    let alterTime;
+
+    // Determine how to format a sub tasks' deadline
+    if (!task.allDay && task.repetitionValue["hours"] === undefined) {
+        time = task.deadline.slice(-9);
+        alterTime = false;
+    }
+    else if (!task.allDay && task.repetitionValue["hours"] !== undefined) {
+        alterTime = true;
+    }
+
+    // Run until you hit the scheduling limit depicted in the function "determineScheduling"
+    while (differenceInHours(Date.parse(newestLatest), Date.parse(currentTime)) < schedulingLimit) {
         newestLatest = increaseDate(newestLatest, task.repetitionValue);
 
-        formattedDate = formateToDeadlineValue(newestLatest, task.allDay);
+        if (alterTime) {
+            time = formatDate(newestLatest, "'T'HH:mm:ss");
+        }
+
+        formattedDate = formateToDeadlineValue(newestLatest, time);
 
         createRepetitiveTask(task.title, task.description, formattedDate, task.allDay,
             task.repetitionPattern, task.repetitionValue, false, task.priority, task.clusterID
         );
     }
 }
+
+// Generation algorithm for repetitive tasks with the repetition pattern "day"
+function generateDayRepetition(task, latestAppearance) {
+    let schedulingLimit = determineScheduling(getCumulativeHours(
+        task.repetitionPattern, task.repetitionValue));
+
+    let currentTime = new Date();
+    let newestLatest = latestAppearance;
+
+    let formattedDate;
+
+    let time = '';
+    let alterTime;
+
+    // Determine how to format a sub tasks' deadline
+    if (!task.allDay && task.repetitionValue["hours"] === undefined) {
+        time = task.deadline.slice(-9);
+        alterTime = false;
+    }
+    else if (!task.allDay && task.repetitionValue["hours"] !== undefined) {
+        alterTime = true;
+    }
+
+    while (differenceInHours(Date.parse(newestLatest), Date.parse(currentTime)) < schedulingLimit) {
+        newestLatest = increaseDate(newestLatest, { "days": 1 });
+
+        if(task.repetitionValue.includes(getDay(newestLatest))) {
+            if (alterTime) {
+                time = formatDate(newestLatest, "'T'HH:mm:ss");
+            }
+    
+            formattedDate = formateToDeadlineValue(newestLatest, time);
+    
+            createRepetitiveTask(task.title, task.description, formattedDate, task.allDay,
+                task.repetitionPattern, task.repetitionValue, false, task.priority, task.clusterID
+            );
+        }
+    }
+
+}
+
 
 export function generateRepetition(task) {
     // Not a relevant process for sub tasks

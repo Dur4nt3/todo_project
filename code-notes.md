@@ -8,7 +8,7 @@
 
 ### Additional Notable Logic:
 
-- Title, Description, Deadline: Two options: 1) Update for this task | 2) Update for all tasks
+- Title, Description: Two options: 1) Update for this task | 2) Update for all tasks
 
 - Implementing the above:
 
@@ -17,13 +17,22 @@
 1) Generate an "clusterID" => that id will be given to every sub task of a repetitive tasks
 *sub tasks will have different IDs but similar cluster IDs*
 
-2) When attempting to apply title and/or description and/or deadline changes to all sub tasks simply apply the changes to the origin task first and then to all sub tasks with the same "clusterID".
+2) When attempting to apply title and/or description changes to all sub tasks simply apply the changes to the origin task first and then to all sub tasks with the same "clusterID".
 *sub tasks with the same clusterID are sub tasks that are a part of a singular  general task that repeats itself*
 
 **Changing only 1 sub task:**
 
 1) simply change based on the task's unique task id
 *Don't change the origin task's details*
+
+### Deadline Changes:
+
+- The user either changes a specific sub task's deadline or changes the origin repetition pattern and/or repetition pattern value:
+
+    1) Changes for specific deadline => change based on unique task ID
+    *The same goes for deadline overrides, simply override the deadline to a specific sub task*
+
+    2) Changes for origin repetition pattern and/or repetition pattern value: from the present day => delete all scheduled sub tasks => using the cluster ID change the repetition pattern and/or repetition pattern values to all sub tasks within the cluster (including and most importantly the origin) => generate tasks using the origin
 
 ### Removal Logic:
 
@@ -131,3 +140,24 @@ It is important to note that the time will be fetched from the origin.
     6) 30 days to 90 days: generate 2 years ahead 720-2160 hours
 
     7) 90 days+: generate 5 years ahead 2160+ hours
+
+
+# ------------------- To Do ---------------
+
+- When creating tasks with the "time" pattern ensure to clone the origin task as it isn't listed and therefore the first intended task will be missed
+
+- A similar bug occurs for the "day" pattern, if the deadline of the origin task is on a day specified by the pattern value, the first intended task will be missed as the origin isn't listed
+
+**Possible fixes: On the initial generation (i.e., post creation) simply clone the origin**
+
+*Fix side-effect:*
+
+- For the "day" pattern, if the user chooses an initial deadline that isn't on a day specified by the pattern value, the initial task will be listed on a day not specified by the pattern value.
+
+**This isn't necessarily bad:**
+
+- For example, if the user sets a repeat for monday and wednesday and the initial task is set for tuesday it gives the user the ability to start the repetition cycle from a date the user chose.
+This prevents assuming the user's desires, e.g., maybe the user intends to start the above cycle on a tuesday.
+If the user doesn't intend to do such, they can simply choose an appropriate deadline that is on a day the is in the pattern value.
+
+*This gives the user more freedom when it comes to task configuration*
