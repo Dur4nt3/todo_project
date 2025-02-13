@@ -1,5 +1,6 @@
 import { createRepetitiveTask } from "../index.js";
 import { taskCollection, taskGroups } from "./task-utility-functions.js";
+import { add as increaseDate, sub as decreaseDate, getDay } from "../../node_modules/date-fns";
 
 // Used to find the origin task of an ungrouped repetitive task cluster
 function findOriginUngrouped(clusterID) {
@@ -81,4 +82,36 @@ export function createRepetitiveSubTask(repetitiveTask, newDeadline) {
     repetitiveTask.allDay, repetitiveTask.repetitionPattern, repetitiveTask.repetitionValue, false,
     repetitiveTask.priority, repetitiveTask.clusterID
     );
+}
+
+// Go back from the current date until the day of the week matches the first element in the hybrid-weekly pattern
+export function jumpToFirstOccurrence(firstOccurrence, currentDate) {
+    let targetDate = currentDate;
+
+    while (getDay(targetDate) !== firstOccurrence) {
+        targetDate = decreaseDate(targetDate, { "days": 1 });
+    }
+
+    return targetDate;
+}
+
+// move forward from the current date until the day of the week matches the next element in the hybrid-weekly pattern
+export function jumpToNextOccurrence(nextOccurrence, currentDate) {
+    let targetDate = currentDate;
+
+    while (getDay(targetDate) !== nextOccurrence) {
+        targetDate = increaseDate(targetDate, { "days": 1 });
+    }
+    return targetDate;
+}
+
+// move forward from the current date until the day of the week matches the an element in the hybrid-weekly
+export function findClosestOccurrence(days, currentDate) {
+    let targetDate = currentDate;
+
+    while (!days.includes(getDay(targetDate))) {
+        targetDate = increaseDate(targetDate, { "days": 1 });
+    }
+
+    return targetDate;
 }

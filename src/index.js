@@ -4,7 +4,7 @@ import "./stylesheets/reset.css";
 import * as taskUtil from "./modules/task-utility-functions.js";
 import * as repetitionGenerator from "./modules/repetition-generator.js";
 
-import { getDay } from "../node_modules/date-fns"
+import { getDay, add as increaseDate } from "../node_modules/date-fns"
 
 function handleTaskBasics(title, description, priority) {
     let completionStatus = false;
@@ -179,7 +179,7 @@ export function createRepetitiveTask(title, description, deadline,
 }
 
 const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
-    "2025-02-14T12:30:00", false, "day", [0,2,4], true, 2, null
+    "2025-02-28T12:30:00", false, "hybrid-weekly", [[0,3,4,6], { "weeks": 3 }], true, 2, null
 );
 
 repetitionGenerator.generateRepetition(repetitiveTask, true);

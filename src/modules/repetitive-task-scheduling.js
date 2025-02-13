@@ -34,9 +34,8 @@ function getCumulativeHoursDayPattern(patternValue) {
 }
 
 // Used to determine how long ahead to schedule tasks (for tasks with "hybrid" repetition pattern)
-function getCumulativeHoursHybridPattern(patternValue) {
-    return (getCumulativeHoursTimePattern(patternValue[1]) /
-    getCumulativeHoursDayPattern(patternValue[0]));
+function getCumulativeHoursHybridWeeklyPattern(patternValue) {
+    return (getCumulativeHoursTimePattern(patternValue[1]) / patternValue[0].length);
 }
 
 // Execute the correct "getCumulativeHours" type of function based on the repetition pattern
@@ -52,11 +51,10 @@ export function getCumulativeHours(patternType, patternValue) {
             cumulativeHours = getCumulativeHoursDayPattern(patternValue);
             break;
 
-        case "hybrid":
-            cumulativeHours = getCumulativeHoursHybridPattern(patternValue);
+        case "hybrid-weekly":
+            cumulativeHours = getCumulativeHoursHybridWeeklyPattern(patternValue);
             break;
     }
-
     return cumulativeHours;
 }
 

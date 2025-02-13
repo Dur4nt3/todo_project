@@ -1,4 +1,4 @@
-import { add as increaseDate, getYear, getMonth, getDate } from "../../node_modules/date-fns/index.cjs";
+import { add as increaseDate, getYear, getMonth, getDate } from "../../node_modules/date-fns";
 
 // stores information about tasks and tasks groups
 const taskCollection = {};
