@@ -1,0 +1,84 @@
+import { createRepetitiveTask } from "../index.js";
+import { taskCollection, taskGroups } from "./task-utility-functions.js";
+
+// Used to find the origin task of an ungrouped repetitive task cluster
+function findOriginUngrouped(clusterID) {
+    for (let index in taskCollection.repetitive) {
+        let task = taskCollection.repetitive[index];
+        if (task.clusterID === clusterID && task.origin === true) {
+            return task;
+        }
+    }
+}
+
+// Used to find the origin task of a grouped repetitive task cluster
+function findOriginGrouped(clusterID) {
+    for (let index in taskCollection.repetitiveGrouped) {
+        let task = taskCollection.repetitiveGrouped[index];
+        if (task.clusterID === clusterID && task.origin === true) {
+            return task;
+        }
+    }
+}
+
+// Finds the latest task in the cluster (for ungrouped repetitive tasks)
+function findLatestInRepetitive(clusterID) {
+    let latestDate = findOriginUngrouped(clusterID).deadline;
+
+    for (let taskIndex in taskCollection.repetitive) {
+        if (taskCollection.repetitive[taskIndex].clusterID === clusterID) {
+            if (Date.parse(taskCollection.repetitive[taskIndex].deadline) > Date.parse(latestDate)) {
+                latestDate = taskCollection.repetitive[taskIndex].deadline;
+            }
+        }
+    }
+
+    return latestDate;
+}
+
+// Finds the latest task in the cluster (for grouped repetitive tasks)
+function findLatestInRepetitiveGrouped(clusterID) {
+    let latestDate = findOriginGrouped(clusterID).deadline;
+
+    for (taskIndex in taskCollection.repetitiveGrouped) {
+        if (taskCollection.repetitiveGrouped[taskIndex].clusterID === clusterID) {
+            if (Date.parse(taskCollection.repetitiveGrouped[taskIndex].deadline) > Date.parse(latestDate)) {
+                latestDate = taskCollection.repetitiveGrouped[taskIndex].deadline;
+            }
+        }
+    }
+
+    return latestDate;
+}
+
+// Execute the correct "findLatest" type of function based on the task type
+export function findLatest(clusterID, group) {
+    let latestDate;
+
+    if (group === undefined) {
+        latestDate = findLatestInRepetitive(clusterID);
+    }
+    else {
+        latestDate = findLatestInRepetitiveGrouped(clusterID);
+    }
+
+    return latestDate;
+}
+
+// Creates clone of origin task when initializing the cluster
+export function initializeTaskCluster(originTask, group = undefined) {
+    if (group === undefined) {
+        createRepetitiveSubTask(originTask, originTask.deadline);
+    }
+    else {
+        // Logic for Grouped & Repetitive
+    }
+}
+
+// Utility for creating ungrouped repetitive sub-tasks via the origin and a new deadline
+export function createRepetitiveSubTask(repetitiveTask, newDeadline) {
+    createRepetitiveTask(repetitiveTask.title, repetitiveTask.description, newDeadline,
+    repetitiveTask.allDay, repetitiveTask.repetitionPattern, repetitiveTask.repetitionValue, false,
+    repetitiveTask.priority, repetitiveTask.clusterID
+    );
+}

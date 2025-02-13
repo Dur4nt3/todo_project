@@ -1,30 +1,7 @@
-import { initializeTaskCluster, createRepetitiveSubTask, findLatest } from "./utility-functions.js";
-import { add as increaseDate, differenceInHours, getYear, getMonth, getDate, getDay, format as formatDate } from "../../node_modules/date-fns";
-import * as taskScheduling from "./task-scheduling.js";
-
-// Format the deadline to ensure consistency in deadline property format across all task objects
-function formateToDeadlineValue(date, time) {
-    let formattedDate;
-
-    let year = getYear(date).toString();
-    let month = (getMonth(date) + 1).toString();
-    let day = getDate(date).toString();
-
-    if (month < 10) {
-        month = "0" + month;
-    }
-    if (day < 10) {
-        day = "0" + day;
-    }
-
-    formattedDate = year+"-"+month+"-"+day;
-
-    if (time) {
-        formattedDate += time;
-    }
-
-    return formattedDate;
-}
+import { formateToDeadlineValue } from "./task-utility-functions.js";
+import { initializeTaskCluster, createRepetitiveSubTask, findLatest } from "./repetitive-task-utilities.js";
+import { add as increaseDate, differenceInHours, getDay, format as formatDate } from "../../node_modules/date-fns";
+import * as taskScheduling from "./repetitive-task-scheduling.js";
 
 // Generation algorithm for repetitive tasks with the repetition pattern "time"
 function generateTimeRepetition(task, latestAppearance) {

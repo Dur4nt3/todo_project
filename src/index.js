@@ -1,7 +1,7 @@
 import "./styles.css";
 import "./stylesheets/reset.css";
 
-import * as taskUtil from "./modules/utility-functions.js";
+import * as taskUtil from "./modules/task-utility-functions.js";
 import * as repetitionGenerator from "./modules/repetition-generator.js";
 
 import { getDay } from "../node_modules/date-fns"
