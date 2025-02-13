@@ -125,6 +125,8 @@ It is important to note that the time will be fetched from the origin.
 
 - Repetitive task generation: generate tasks based on repetition timing => on every page load repeat that generation process
 
+**On page load: run the above for every origin task**
+
 - Generation based on timing: 
 
     1) up-until 12 hours: generate weekly (i.e., 1 week ahead) >=12 hours

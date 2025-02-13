@@ -179,10 +179,10 @@ export function createRepetitiveTask(title, description, deadline,
 }
 
 const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
-    "2025-02-14", true, "day", [1,3,5], true, 2, null
+    "2025-02-14T12:30:00", false, "day", [0,2,4], true, 2, null
 );
 
-repetitionGenerator.generateRepetition(repetitiveTask);
+repetitionGenerator.generateRepetition(repetitiveTask, true);
 
 console.log(taskUtil.taskCollection);
 

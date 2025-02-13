@@ -1,4 +1,5 @@
 import { add as increaseDate } from "../../node_modules/date-fns/add.js";
+import * as CreateTask from "../index.js";
 
 // stores information about tasks and tasks groups
 const taskCollection = {};
@@ -113,4 +114,66 @@ export function findOriginGrouped(clusterID) {
             return task;
         }
     }
+}
+
+// Creates clone of origin task when initializing the cluster
+export function initializeTaskCluster(originTask, group = undefined) {
+    if (group === undefined) {
+        createRepetitiveSubTask(originTask, originTask.deadline);
+    }
+    else {
+        // Logic for Grouped & Repetitive
+    }
+}
+
+// Utility for creating ungrouped repetitive sub-tasks via the origin and a new deadline
+export function createRepetitiveSubTask(repetitiveTask, newDeadline) {
+    CreateTask.createRepetitiveTask(repetitiveTask.title, repetitiveTask.description, newDeadline,
+    repetitiveTask.allDay, repetitiveTask.repetitionPattern, repetitiveTask.repetitionValue, false,
+    repetitiveTask.priority, repetitiveTask.clusterID
+    );
+}
+
+// Finds the latest task in the cluster (for ungrouped repetitive tasks)
+function findLatestInRepetitive(clusterID) {
+    let latestDate = findOriginUngrouped(clusterID).deadline;
+
+    for (let taskIndex in taskCollection.repetitive) {
+        if (taskCollection.repetitive[taskIndex].clusterID === clusterID) {
+            if (Date.parse(taskCollection.repetitive[taskIndex].deadline) > Date.parse(latestDate)) {
+                latestDate = taskCollection.repetitive[taskIndex].deadline;
+            }
+        }
+    }
+
+    return latestDate;
+}
+
+// Finds the latest task in the cluster (for grouped repetitive tasks)
+function findLatestInRepetitiveGrouped(clusterID) {
+    let latestDate = findOriginGrouped(clusterID).deadline;
+
+    for (taskIndex in taskCollection.repetitiveGrouped) {
+        if (taskCollection.repetitiveGrouped[taskIndex].clusterID === clusterID) {
+            if (Date.parse(taskCollection.repetitiveGrouped[taskIndex].deadline) > Date.parse(latestDate)) {
+                latestDate = taskCollection.repetitiveGrouped[taskIndex].deadline;
+            }
+        }
+    }
+
+    return latestDate;
+}
+
+// Execute the correct "findLatest" type of function based on the task type
+export function findLatest(clusterID, group) {
+    let latestDate;
+
+    if (group === undefined) {
+        latestDate = findLatestInRepetitive(clusterID);
+    }
+    else {
+        latestDate = findLatestInRepetitiveGrouped(clusterID);
+    }
+
+    return latestDate;
 }
