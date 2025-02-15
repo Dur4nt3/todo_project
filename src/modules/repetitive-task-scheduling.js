@@ -54,6 +54,9 @@ export function getCumulativeHours(patternType, patternValue) {
         case "hybrid-weekly":
             cumulativeHours = getCumulativeHoursHybridWeeklyPattern(patternValue);
             break;
+        case "hybrid-monthly":
+            cumulativeHours = getCumulativeHoursTimePattern(patternValue[patternValue.length - 1]);
+            break;
     }
     return cumulativeHours;
 }

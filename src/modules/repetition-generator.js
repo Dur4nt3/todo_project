@@ -1,16 +1,10 @@
 import { formateToDeadlineValue } from "./task-utility-functions.js";
-import { 
-    initializeTaskCluster, createRepetitiveSubTask, findLatest,
-    jumpToFirstOccurrence, jumpToNextOccurrence, findClosestOccurrence
-} from "./repetitive-task-utilities.js";
-import { add as increaseDate, differenceInHours, getDay, format as formatDate, sub as decreaseDate } from "../../node_modules/date-fns";
+import * as repTaskUtil from "./repetitive-task-utilities.js";
+import { add as increaseDate, differenceInHours, getDay, format as formatDate, endOfMonth } from "../../node_modules/date-fns";
 import * as taskScheduling from "./repetitive-task-scheduling.js";
 
 // Generation algorithm for repetitive tasks with the repetition pattern "time"
-function generateTimeRepetition(task, latestAppearance) {
-    let schedulingLimit = taskScheduling.determineScheduling(taskScheduling.getCumulativeHours(
-        task.repetitionPattern, task.repetitionValue));
-
+function generateTimeRepetition(task, latestAppearance, schedulingLimit) {
     let newestLatest = latestAppearance;
 
     let formattedDate;
@@ -37,15 +31,12 @@ function generateTimeRepetition(task, latestAppearance) {
 
         formattedDate = formateToDeadlineValue(newestLatest, time);
 
-        createRepetitiveSubTask(task, formattedDate);
+        repTaskUtil.createRepetitiveSubTask(task, formattedDate);
     }
 }
 
 // Generation algorithm for repetitive tasks with the repetition pattern "day"
-function generateDayRepetition(task, latestAppearance) {
-    let schedulingLimit = taskScheduling.determineScheduling(taskScheduling.getCumulativeHours(
-        task.repetitionPattern, task.repetitionValue));
-
+function generateDayRepetition(task, latestAppearance, schedulingLimit) {
     let newestLatest = latestAppearance;
 
     let formattedDate;
@@ -63,16 +54,13 @@ function generateDayRepetition(task, latestAppearance) {
     
             formattedDate = formateToDeadlineValue(newestLatest, time);
     
-            createRepetitiveSubTask(task, formattedDate);
+            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
         }
     }
 
 }
 
-function generateHybridWeeklyRepetition(task, latestAppearance) {
-    let schedulingLimit = taskScheduling.determineScheduling(taskScheduling.getCumulativeHours(
-        task.repetitionPattern, task.repetitionValue));
-
+function generateHybridWeeklyRepetition(task, latestAppearance, schedulingLimit) {
     let newestLatest = latestAppearance;
 
     let daysArray = task.repetitionValue[0];
@@ -85,12 +73,13 @@ function generateHybridWeeklyRepetition(task, latestAppearance) {
         time = task.deadline.slice(-9);
     }
 
-    // Relevant to newly created repetitive tasks as they can be created on days not a part of the template
+    // Relevant when the day of the latest appearance isn't in the pattern's value 
+    // The above happens when changing patterns and/or creating new task clusters
     if (!daysArray.includes(getDay(latestAppearance))) {
-            newestLatest = findClosestOccurrence(daysArray, latestAppearance);
+            newestLatest = repTaskUtil.findClosestOccurrence(daysArray, latestAppearance);
 
             formattedDate = formateToDeadlineValue(newestLatest, time);
-            createRepetitiveSubTask(task, formattedDate);
+            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
 
             currentDayIndex = daysArray.indexOf(getDay(newestLatest));
     }
@@ -101,26 +90,64 @@ function generateHybridWeeklyRepetition(task, latestAppearance) {
 
     while (differenceInHours(Date.parse(newestLatest), Date.parse(new Date())) < schedulingLimit) {
         if (currentDayIndex === daysArray.length - 1) {
-            newestLatest = jumpToFirstOccurrence(daysArray[0], newestLatest);
+            newestLatest = repTaskUtil.jumpToFirstOccurrence(daysArray[0], newestLatest);
             newestLatest = increaseDate(newestLatest, task.repetitionValue[1]);
 
             formattedDate = formateToDeadlineValue(newestLatest, time);
     
-            createRepetitiveSubTask(task, formattedDate);
+            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
             currentDayIndex = 0;
         }
         else {
-            newestLatest = jumpToNextOccurrence(daysArray[currentDayIndex+1], newestLatest);
+            newestLatest = repTaskUtil.jumpToNextOccurrence(daysArray[currentDayIndex+1], newestLatest);
 
             formattedDate = formateToDeadlineValue(newestLatest, time);
-            createRepetitiveSubTask(task, formattedDate);
+            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
             currentDayIndex++;
         }
     }
 }
 
-function generateHybridMonthlyRepetition(task, latestAppearance) {
+function generateHybridMonthlyRepetition(task, latestAppearance, schedulingLimit) {
+    let newestLatest = latestAppearance;
 
+    let formattedDate;
+
+    let time = '';
+    if (!task.allDay) {
+        time = task.deadline.slice(-9);
+    }
+
+    let specificOccurrence = false;
+    if (task.repetitionValue.length === 3) {
+        specificOccurrence = true;
+    }
+
+    while (differenceInHours(Date.parse(newestLatest), Date.parse(new Date())) < schedulingLimit) {
+        newestLatest = increaseDate(newestLatest, task.repetitionValue[task.repetitionValue.length - 1]);
+
+        if (specificOccurrence) {
+            if (Number.isInteger(task.repetitionValue[0])) {
+                newestLatest = repTaskUtil.findAnOccurrence(
+                    task.repetitionValue[1], task.repetitionValue[0],newestLatest
+                );
+
+                formattedDate = formateToDeadlineValue(newestLatest, time);
+                repTaskUtil.createRepetitiveSubTask(task, formattedDate);
+            }
+            else {
+                newestLatest = repTaskUtil.findLastOccurrence(task.repetitionValue[1], newestLatest);
+
+                formattedDate = formateToDeadlineValue(newestLatest, time);
+                repTaskUtil.createRepetitiveSubTask(task, formattedDate);
+            }
+        }
+        else {
+            newestLatest = endOfMonth(newestLatest);
+            formattedDate = formateToDeadlineValue(newestLatest, time);
+            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
+        }
+    }
 }
 
 
@@ -133,27 +160,31 @@ export function generateRepetition(task, initialization = false) {
     // If this is the first time the generation function is run for a specific task => clone the origin
     // This is done because the origin is unlisted
     if (initialization) {
-        initializeTaskCluster(task, task.group);
+        repTaskUtil.initializeTaskCluster(task, task.group);
     }
 
     // Using "task.group" allows narrowing the search to one specific task type
-    const latestAppearanceInCluster = findLatest(task.clusterID, task.group);
+    const latestAppearanceInCluster = repTaskUtil.findLatest(task.clusterID, task.group);
+
+    // How long ahead to schedule
+    const schedulingLimit = taskScheduling.determineScheduling(taskScheduling.getCumulativeHours(
+        task.repetitionPattern, task.repetitionValue));
 
     switch (task.repetitionPattern) {
         case "time":
-            generateTimeRepetition(task, latestAppearanceInCluster);
+            generateTimeRepetition(task, latestAppearanceInCluster, schedulingLimit);
             break;
 
         case "day":
-            generateDayRepetition(task, latestAppearanceInCluster);
+            generateDayRepetition(task, latestAppearanceInCluster, schedulingLimit);
             break;
         
         case "hybrid-weekly":
-            generateHybridWeeklyRepetition(task, latestAppearanceInCluster);
+            generateHybridWeeklyRepetition(task, latestAppearanceInCluster, schedulingLimit);
             break;
 
         case "hybrid-monthly":
-            generateHybridMonthlyRepetition(task, latestAppearanceInCluster);
+            generateHybridMonthlyRepetition(task, latestAppearanceInCluster, schedulingLimit);
             break;
     }
 }

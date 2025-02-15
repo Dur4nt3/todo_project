@@ -179,7 +179,7 @@ export function createRepetitiveTask(title, description, deadline,
 }
 
 const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
-    "2025-02-28T12:30:00", false, "hybrid-weekly", [[0,3,4,6], { "weeks": 3 }], true, 2, null
+    "2025-02-16T12:30:00", false, "hybrid-monthly", [1, 5, { "months": 1 }], true, 2, null
 );
 
 repetitionGenerator.generateRepetition(repetitiveTask, true);

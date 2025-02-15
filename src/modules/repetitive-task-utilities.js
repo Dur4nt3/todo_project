@@ -1,6 +1,6 @@
 import { createRepetitiveTask } from "../index.js";
 import { taskCollection, taskGroups } from "./task-utility-functions.js";
-import { add as increaseDate, sub as decreaseDate, getDay } from "../../node_modules/date-fns";
+import { add as increaseDate, sub as decreaseDate, getDay, startOfMonth, endOfMonth } from "../../node_modules/date-fns";
 
 // Used to find the origin task of an ungrouped repetitive task cluster
 function findOriginUngrouped(clusterID) {
@@ -66,6 +66,7 @@ export function findLatest(clusterID, group) {
     return latestDate;
 }
 
+
 // Creates clone of origin task when initializing the cluster
 export function initializeTaskCluster(originTask, group = undefined) {
     if (group === undefined) {
@@ -84,6 +85,7 @@ export function createRepetitiveSubTask(repetitiveTask, newDeadline) {
     );
 }
 
+
 // Go back from the current date until the day of the week matches the first element in the hybrid-weekly pattern
 export function jumpToFirstOccurrence(firstOccurrence, currentDate) {
     let targetDate = currentDate;
@@ -95,7 +97,7 @@ export function jumpToFirstOccurrence(firstOccurrence, currentDate) {
     return targetDate;
 }
 
-// move forward from the current date until the day of the week matches the next element in the hybrid-weekly pattern
+// Move forward from the current date until the day of the week matches the next element in the hybrid-weekly pattern
 export function jumpToNextOccurrence(nextOccurrence, currentDate) {
     let targetDate = currentDate;
 
@@ -105,12 +107,45 @@ export function jumpToNextOccurrence(nextOccurrence, currentDate) {
     return targetDate;
 }
 
-// move forward from the current date until the day of the week matches the an element in the hybrid-weekly
+// Move forward from the current date until the day of the week matches the an element in the hybrid-weekly
 export function findClosestOccurrence(days, currentDate) {
     let targetDate = currentDate;
 
     while (!days.includes(getDay(targetDate))) {
         targetDate = increaseDate(targetDate, { "days": 1 });
+    }
+
+    return targetDate;
+}
+
+// Find the first occurrence of the specified day in the specified month and year
+// The month and the year are pulled from the given date
+export function findFirstOccurrenceOfMonth(day, date) {
+    let targetDate = startOfMonth(date);
+
+    while (getDay(targetDate) !== day) {
+        targetDate = increaseDate(targetDate, { "days": 1 });
+    }
+
+    return targetDate;
+}
+
+// Find the 1st/2nd/3rd/4th occurrence of a specified day in the specified month and year
+export function findAnOccurrence(day, occurrence, date) {
+    let targetDate = findFirstOccurrenceOfMonth(day, date);
+
+    targetDate = increaseDate(targetDate, { "weeks": (occurrence-1) });
+
+    return targetDate;
+}
+
+// Find the last occurrence of a specified day in the specified month and year
+// This function might return the same result as 'findAnOccurrence' depending on the selected day and month
+export function findLastOccurrence(day, date) {
+    let targetDate = endOfMonth(date);
+
+    while(getDay(targetDate) !== day) {
+        targetDate = decreaseDate(targetDate, { "days": 1 });
     }
 
     return targetDate;

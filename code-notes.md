@@ -14,8 +14,8 @@
 
 **Changing all sub tasks:**
 
-1) Generate an "clusterID" => that id will be given to every sub task of a repetitive tasks
-*sub tasks will have different IDs but similar cluster IDs*
+1) Generate a "clusterID" => that id will be given to every sub task of a repetitive tasks
+*sub tasks will have different IDs but the same cluster IDs*
 
 2) When attempting to apply title and/or description changes to all sub tasks simply apply the changes to the origin task first and then to all sub tasks with the same "clusterID".
 *sub tasks with the same clusterID are sub tasks that are a part of a singular  general task that repeats itself*
@@ -67,7 +67,13 @@
 
 - repetitionPattern info: "day": repeat on day x
 
-- repetitionPattern info: "hybrid": repeat every x time on day y
+- repetitionPattern info: "hybrid-weekly": repeat on certain days every x weeks
+
+- repetitionPattern info: "hybrid-monthly": repeat on the 1st/2nd/3rd/4th x-day of the month every y months || repeat on the end of each month
+
+*Disclaimer: using the "time" pattern and repeating on the 30th of the month is an issue => after getting to february, because february doesn't have a 30th it will automatically retroactively change all tasks to repeat on the 28th*
+*This is still essentially respecting the pattern but the user might want something more nuanced, therefore, "hybrid-monthly" can be a good solution*
+*Additional disclaimer: hybrid monthly on the start of each month might be redundant as setting pattern "time" with {"months": 1} to a deadline set on the 1st of each month will not pose an issue*
 
 **repetitionValue property:**
 
@@ -78,15 +84,12 @@
 *The user chooses days of the week to repeat the pattern on and an array including those days are dynamically created*
 **When generating tasks, increment the latest date by one day until you hit a day that is an element in the array, when you do => create a task with that deadline (after formatting it) and with the same cluster id**
 
-- Value for "hybrid" pattern: the following array structure: [["day1", "day2", ...], { years: x, months: y, weeks: z, ... }]
-*Loop count formula: time / (day count) => rounded, e.g., every 2 week on monday and wednesday is 2 weeks / 2 days => 1 week => generate quarterly*
-*First iteration: loop until the end of the week and check whether you match the day pattern, if matching the day pattern => generate tasks accordingly*
-*After finishing the first iteration, regardless of whether or not tasks were generated, simply increase the date by the specified time and repeat the process in the first iteration starting from monday*
+- Value for "hybrid-weekly" pattern: the following array structure: [["day1", "day2", ...], { weeks: x }]
+*Simply repeat every x weeks on the specified days*
+*After reaching the final day in the rotation, jump to the first day mentioned in the pattern and jump x weeks forward as specified*
 
-*Example: repeat every 2 week on monday and wednesday: currently tuesday => loop until sunday => when hitting wednesday create a task => continue until sunday without creating any tasks.*
-*After iterating through sunday => increase date by two weeks => date should now be monday two weeks from the initial tuesday => again loop until sunday => create tasks when hitting monday and wednesday*
-*Repeat the process until the date limit*
-
+- Value for "hybrid-monthly" pattern: the following array structure: [1|2|3|4|f, 0|1|2|3|4|5|6, { months: x }] || [e, { months: x }]
+*1 - First occurrence of specified day; 2 - Second occurrence of specified day; 3 - third occurrence of specified day; 4 - forth occurrence of specified day; f - final occurrence of specified day; e - the last day of the month*
 
 **clusterID:**
 
@@ -144,7 +147,7 @@ It is important to note that the time will be fetched from the origin.
     7) 90 days+: generate 5 years ahead 2160+ hours
 
 
-# ------------------- To Do ---------------
+# ------------------- To Do 1 - Fixed ---------------
 
 - When creating tasks with the "time" pattern ensure to clone the origin task as it isn't listed and therefore the first intended task will be missed
 
@@ -163,3 +166,29 @@ This prevents assuming the user's desires, e.g., maybe the user intends to start
 If the user doesn't intend to do such, they can simply choose an appropriate deadline that is on a day the is in the pattern value.
 
 *This gives the user more freedom when it comes to task configuration*
+
+**Update: This was fixed via an initialization function that simply cloned the origin**
+
+# ------------------- To Do 2 - Implemented ---------------
+
+- "hybrid-monthly": 
+
+    1) for repeat on the 1st of x day every y months: simply fetch the start of the month and increase the date by 1 day until hitting the specified day
+
+    2) repeat every 2nd/3rd/4th of x day every y months: fetch the first occurrence of the day via the above function => increase the date by 1/2/3 weeks accordingly
+
+    3) repeat on the final occurrence of x day every y months: fetch the end of the month and decrease the date by 1 day until hitting the specified day
+
+    4) repeat on the final day of the month every y months: fetch the end of the month
+
+- Helpful functions: date-fns: endOfMonth => returns the end of the month from a given date | startOfMonth => similar to "endOfMonth" but returns the start of the month
+
+# ------------------- To Do 3 - Fixed ---------------
+
+- Change schedulingLimit to a const
+
+- Change import from repetitive task utilities to import * (no need to specify individual functions)
+
+# ------------------- To Do 4 ---------------
+
+- Re-use the "jumpTo..." functions in "day" pattern generation to optimize the algorithm
