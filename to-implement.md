@@ -2,6 +2,8 @@
 
 **Mark as completing**
 
+- **Implement all getter/setter checks as individual functions that run even before the object is created**
+
 - Ability to change task types between: basic, dated, grouped, datedGrouped
 
 - Ability to remove individual tasks via unique ID

@@ -6,6 +6,7 @@ const taskGroups = {};
 
 export { taskCollection, taskGroups };
 
+const reservedGroups = ["__unlisted__"];
 
 // General Utility Functions:
 export function deepClone(...objects) {
@@ -110,7 +111,7 @@ export function updateGroups(groupName, obj, oldGroup = null) {
 }
 
 export function validateGroup(groupName) {
-    if (groupName === "" || groupName.length > 30) {
+    if (groupName === "" || groupName.length > 30 || reservedGroups.includes(groupName)) {
         return false;
     }
     return true;
