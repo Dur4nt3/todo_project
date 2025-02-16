@@ -178,20 +178,42 @@ export function createRepetitiveTask(title, description, deadline,
     return repetitiveTask;
 }
 
-const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
-    "2025-02-17T12:30:00", false, "hybrid-weekly", [[1,3,5], {"weeks": 1}], true, 2, null
+export function createRepetitiveGroupedTask(title, description, groupName, deadline,
+    allDay, repetitionPattern, repetitionValue, origin, priority, clusterID) {
+    
+    const repetitiveGroupedTask = taskUtil.deepClone(
+        handleTaskBasics(title, description, priority),
+        handleTaskDates(deadline, allDay),
+        handleTaskGroups(groupName),
+        handleTaskRepetition(repetitionPattern, repetitionValue, origin, clusterID)
+    )
+
+    taskUtil.updateTaskCollection(repetitiveGroupedTask, "repetitiveGrouped");
+    taskUtil.updateGroups(repetitiveGroupedTask.group, repetitiveGroupedTask);
+
+    return repetitiveGroupedTask;
+}
+
+// const repetitiveTask = createRepetitiveTask("repetitive task", "checking repetition",
+//     "2025-02-17T12:30:00", false, "hybrid-weekly", [[1,3,5], {"weeks": 1}], true, 2, null
+// );
+
+const repetitiveGroupedTask = createRepetitiveGroupedTask("repetitive & grouped task", "checking repetition & groups",
+    "reoccurs", "2025-02-21", true, "hybrid-monthly", [1,3,{ "months": 1 }], true, 3, null
 );
 
-repetitionGenerator.generateRepetition(repetitiveTask, true);
+// repetitionGenerator.generateRepetition(repetitiveTask, true);
+repetitionGenerator.generateRepetition(repetitiveGroupedTask, true);
+
 
 console.log(taskUtil.taskCollection);
 
 let count = 0;
 
-for (let index in taskUtil.taskCollection.repetitive) {
+for (let index in taskUtil.taskCollection.repetitiveGrouped) {
     count++;
-    let task = taskUtil.taskCollection.repetitive[index];
-    console.log(task.title, task.id, task.clusterID, task.origin, task.deadline);
+    let task = taskUtil.taskCollection.repetitiveGrouped[index];
+    console.log(task.title, task.id, task.clusterID, task.origin, task.deadline, task.group);
     console.log("Task on Day:", getDay(Date.parse(task.deadline)));
 }
 

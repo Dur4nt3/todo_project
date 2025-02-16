@@ -1,5 +1,5 @@
-import { createRepetitiveTask } from "../index.js";
-import { taskCollection, taskGroups } from "./task-utility-functions.js";
+import { createRepetitiveTask, createRepetitiveGroupedTask } from "../index.js";
+import { taskCollection } from "./task-utility-functions.js";
 import { add as increaseDate, sub as decreaseDate, getDay, startOfMonth, endOfMonth } from "../../node_modules/date-fns";
 
 // Used to find the origin task of an ungrouped repetitive task cluster
@@ -41,7 +41,7 @@ function findLatestInRepetitive(clusterID) {
 function findLatestInRepetitiveGrouped(clusterID) {
     let latestDate = findOriginGrouped(clusterID).deadline;
 
-    for (taskIndex in taskCollection.repetitiveGrouped) {
+    for (let taskIndex in taskCollection.repetitiveGrouped) {
         if (taskCollection.repetitiveGrouped[taskIndex].clusterID === clusterID) {
             if (Date.parse(taskCollection.repetitiveGrouped[taskIndex].deadline) > Date.parse(latestDate)) {
                 latestDate = taskCollection.repetitiveGrouped[taskIndex].deadline;
@@ -67,22 +67,22 @@ export function findLatest(clusterID, group) {
 }
 
 
-// Creates clone of origin task when initializing the cluster
-export function initializeTaskCluster(originTask, group = undefined) {
-    if (group === undefined) {
-        createRepetitiveSubTask(originTask, originTask.deadline);
-    }
-    else {
-        // Logic for Grouped & Repetitive
-    }
-}
-
-// Utility for creating ungrouped repetitive sub-tasks via the origin and a new deadline
+// Utility for creating ungrouped/grouped repetitive sub-tasks via the origin and a new deadline
 export function createRepetitiveSubTask(repetitiveTask, newDeadline) {
-    createRepetitiveTask(repetitiveTask.title, repetitiveTask.description, newDeadline,
-    repetitiveTask.allDay, repetitiveTask.repetitionPattern, repetitiveTask.repetitionValue, false,
-    repetitiveTask.priority, repetitiveTask.clusterID
-    );
+    // For grouped tasks
+    if (repetitiveTask.group !== undefined) {
+        createRepetitiveGroupedTask(repetitiveTask.title, repetitiveTask.description, repetitiveTask.group,
+            newDeadline, repetitiveTask.allDay, repetitiveTask.repetitionPattern, 
+            repetitiveTask.repetitionValue, false, repetitiveTask.priority, repetitiveTask.clusterID
+            );
+    }
+    // For ungrouped tasks
+    else {
+        createRepetitiveTask(repetitiveTask.title, repetitiveTask.description, newDeadline,
+            repetitiveTask.allDay, repetitiveTask.repetitionPattern, repetitiveTask.repetitionValue, false,
+            repetitiveTask.priority, repetitiveTask.clusterID
+            );
+    }
 }
 
 // Handles inconsistencies between the latest appearance's day and the days specified in the pattern value

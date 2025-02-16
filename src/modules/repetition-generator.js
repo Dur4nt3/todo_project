@@ -1,6 +1,6 @@
 import { formateToDeadlineValue } from "./task-utility-functions.js";
 import * as repTaskUtil from "./repetitive-task-utilities.js";
-import { add as increaseDate, differenceInHours, getDay, format as formatDate, endOfMonth } from "../../node_modules/date-fns";
+import { add as increaseDate, differenceInHours, format as formatDate, endOfMonth } from "../../node_modules/date-fns";
 import * as taskScheduling from "./repetitive-task-scheduling.js";
 
 // Generation algorithm for repetitive tasks with the repetition pattern "time"
@@ -181,7 +181,7 @@ export function generateRepetition(task, initialization = false) {
     // If this is the first time the generation function is run for a specific task => clone the origin
     // This is done because the origin is unlisted
     if (initialization) {
-        repTaskUtil.initializeTaskCluster(task, task.group);
+        repTaskUtil.createRepetitiveSubTask(task, task.deadline);
     }
 
     // Using "task.group" allows narrowing the search to one specific task type
