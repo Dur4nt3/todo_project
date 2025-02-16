@@ -85,6 +85,26 @@ export function createRepetitiveSubTask(repetitiveTask, newDeadline) {
     );
 }
 
+// Handles inconsistencies between the latest appearance's day and the days specified in the pattern value
+// Relevant when the day of the latest appearance isn't in the pattern's value 
+// The above happens when changing patterns and/or creating new task clusters
+export function handleDayPatternInconsistencies(latestAppearance, daysArray) {
+    let newestLatest, currentDayIndex, inconsistent;
+    if (!daysArray.includes(getDay(latestAppearance))) {
+            newestLatest = findClosestOccurrence(daysArray, latestAppearance);
+            currentDayIndex = daysArray.indexOf(getDay(newestLatest));
+            inconsistent = true;
+        }
+    else {
+            currentDayIndex = daysArray.indexOf(getDay(latestAppearance));
+            newestLatest = latestAppearance;
+            inconsistent = false;
+        }
+
+        return { inconsistent, currentDayIndex, newestLatest };
+}
+
+
 
 // Go back from the current date until the day of the week matches the first element in the hybrid-weekly pattern
 export function jumpToFirstOccurrence(firstOccurrence, currentDate) {

@@ -39,32 +39,10 @@ function generateTimeRepetition(task, latestAppearance, schedulingLimit) {
 function generateDayRepetition(task, latestAppearance, schedulingLimit) {
     let newestLatest = latestAppearance;
 
-    let formattedDate;
-
-    let time = '';
-    if (!task.allDay) {
-        time = task.deadline.slice(-9);
-    }
-
-
-    while (differenceInHours(Date.parse(newestLatest), Date.parse(new Date())) < schedulingLimit) {
-        newestLatest = increaseDate(newestLatest, { "days": 1 });
-
-        if(task.repetitionValue.includes(getDay(newestLatest))) {
-    
-            formattedDate = formateToDeadlineValue(newestLatest, time);
-    
-            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
-        }
-    }
-
-}
-
-function generateHybridWeeklyRepetition(task, latestAppearance, schedulingLimit) {
-    let newestLatest = latestAppearance;
-
-    let daysArray = task.repetitionValue[0];
+    let daysArray = task.repetitionValue;
     let currentDayIndex;
+
+    let inconsistent;
 
     let formattedDate;
 
@@ -75,16 +53,59 @@ function generateHybridWeeklyRepetition(task, latestAppearance, schedulingLimit)
 
     // Relevant when the day of the latest appearance isn't in the pattern's value 
     // The above happens when changing patterns and/or creating new task clusters
-    if (!daysArray.includes(getDay(latestAppearance))) {
-            newestLatest = repTaskUtil.findClosestOccurrence(daysArray, latestAppearance);
+    ({ inconsistent, currentDayIndex, newestLatest } = repTaskUtil.handleDayPatternInconsistencies(
+        latestAppearance, daysArray
+    ));
+
+    if (inconsistent) {
+        formattedDate = formateToDeadlineValue(newestLatest, time);
+        repTaskUtil.createRepetitiveSubTask(task, formattedDate);
+    }
+
+    while (differenceInHours(Date.parse(newestLatest), Date.parse(new Date())) < schedulingLimit) {
+        if (currentDayIndex === daysArray.length - 1) {
+            newestLatest = repTaskUtil.jumpToFirstOccurrence(daysArray[0], newestLatest);
+            newestLatest = increaseDate(newestLatest, { "weeks": 1 });
+
+            formattedDate = formateToDeadlineValue(newestLatest, time);
+    
+            repTaskUtil.createRepetitiveSubTask(task, formattedDate);
+            currentDayIndex = 0;
+        }
+        else {
+            newestLatest = repTaskUtil.jumpToNextOccurrence(daysArray[currentDayIndex+1], newestLatest);
 
             formattedDate = formateToDeadlineValue(newestLatest, time);
             repTaskUtil.createRepetitiveSubTask(task, formattedDate);
-
-            currentDayIndex = daysArray.indexOf(getDay(newestLatest));
+            currentDayIndex++;
+        }
     }
-    else {
-        currentDayIndex = daysArray.indexOf(getDay(latestAppearance));
+}
+
+function generateHybridWeeklyRepetition(task, latestAppearance, schedulingLimit) {
+    let newestLatest = latestAppearance;
+
+    let daysArray = task.repetitionValue[0];
+    let currentDayIndex;
+
+    let inconsistent;
+
+    let formattedDate;
+
+    let time = '';
+    if (!task.allDay) {
+        time = task.deadline.slice(-9);
+    }
+
+    // Relevant when the day of the latest appearance isn't in the pattern's value 
+    // The above happens when changing patterns and/or creating new task clusters
+    ({ inconsistent, currentDayIndex, newestLatest } = repTaskUtil.handleDayPatternInconsistencies(
+        latestAppearance, daysArray
+    ));
+
+    if (inconsistent) {
+        formattedDate = formateToDeadlineValue(newestLatest, time);
+        repTaskUtil.createRepetitiveSubTask(task, formattedDate);
     }
 
 
