@@ -31,6 +31,30 @@ export function updateTaskCollection(taskObj, taskType) {
     }
 }
 
+export function determineTaskType(task) {
+    if (task.deadline === undefined && task.group === undefined) {
+        return "basic";
+    }
+
+    else if (task.deadline !== undefined && task.group === undefined && task.repetitionPattern === undefined) {
+        return "dated";
+    }
+
+    else if (task.deadline === undefined && task.group !== undefined) {
+        return "grouped";
+    }
+
+    else if (task.deadline !== undefined && task.group !== undefined && task.repetitionPattern === undefined) {
+        return "datedGrouped";
+    }
+    else if (task.deadline !== undefined && task.group === undefined && task.repetitionPattern !== undefined) {
+        return "repetitive";
+    }
+    else if (task.deadline !== undefined && task.group !== undefined && task.repetitionPattern !== undefined) {
+        return "repetitiveGrouped";
+    }
+}
+
 // Task-Specific Utility Functions (Dated Tasks):
 
 export function validateDeadline(newDeadline) {
@@ -111,7 +135,12 @@ export function updateGroups(groupName, obj, oldGroup = null) {
 }
 
 export function validateGroup(groupName) {
-    if (groupName === "" || groupName.length > 30 || reservedGroups.includes(groupName)) {
+    
+    if (Array.isArray(groupName) && groupName[0] === "__unlisted__") {
+        return true;
+    }
+
+    else if (groupName === "" || groupName.length > 30 || reservedGroups.includes(groupName)) {
         return false;
     }
     return true;

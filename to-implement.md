@@ -6,10 +6,10 @@
 
 - Ability to change task types between: basic, dated, grouped, datedGrouped
 
-- Ability to remove individual tasks via unique ID
+- Ability to change tasks into repetitive ones (use the given task as a template for the origin)
 
-- Ability to remove task clusters
+- Ability to change task clusters' title/description/group
 
-- Ability to change task clusters' title/description
+- Ability to remove task clusters - *COMPLETE*
 
-- Ability to change task clusters' group
+- Ability to remove individual tasks via unique ID - *COMPLETE*

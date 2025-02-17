@@ -1,0 +1,21 @@
+@import url(./stylesheets/fonts.css);
+
+/* Initial Styles */
+
+:root {
+    --font-stack: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    --primary-text-color: #f8f1ff;
+    --background-color: #0d0d0e;
+    --primary-color: #241e41;
+    --secondary-color: #542b77;
+    --accent-color: #9757ea;
+}
+
+body {
+    min-height: 100svh;
+    background-color: var(--background-color);
+
+    font-family: Inter, var(--font-stack);
+    
+}

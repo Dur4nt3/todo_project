@@ -1,4 +1,4 @@
-import { createRepetitiveTask, createRepetitiveGroupedTask } from "../index.js";
+import { createRepetitiveTask, createRepetitiveGroupedTask } from "./create-task-objects.js";
 import { taskCollection } from "./task-utility-functions.js";
 import { add as increaseDate, sub as decreaseDate, getDay, startOfMonth, endOfMonth } from "../../node_modules/date-fns";
 
