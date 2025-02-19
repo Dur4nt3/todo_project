@@ -1,5 +1,7 @@
 @import url(./stylesheets/fonts.css);
 
+/*-----------------------------------------------------------------------*/
+
 /* Initial Styles */
 
 :root {
@@ -21,6 +23,10 @@ body {
     color: var(--primary-text-color);
 }
 
+.hide {
+    display: none;
+}
+
 .page-grid {
     min-height: 100svh;
 
@@ -31,6 +37,10 @@ body {
 /* Initial Styles */
 
 /* Sidebar Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Sidebar Header Styles */
 
 .sidebar-cont {
     padding: 0.65rem 0.25rem 0rem 1rem;
@@ -83,6 +93,13 @@ body {
     color: #ffffff;
 }
 
+/* Sidebar Header Styles */
+
+/*-----------------------------------------------------------------------*/
+
+
+/* Sidebar Functionalities Styles */
+
 .sidebar-functionalities-cont > *:first-child {
     margin-bottom: 0.5rem;
 }
@@ -114,12 +131,13 @@ body {
 }
 
 .sidebar-functionality-cont:first-child:hover > h3 {
-    font-weight: 600;
+    font-weight: 700;
 }
 
-.sidebar-functionality-cont:first-child > h3:active,
-.sidebar-functionality-cont:first-child > img:active + h3 {
-    font-weight: 400;
+.sidebar-functionality-cont:first-child > *:active,
+.sidebar-functionality-cont:first-child > img:active + h3,
+.sidebar-functionality-cont:first-child > img:has(+ h3:active) {
+    opacity: 0.85;
 }
 
 .sidebar-functionality-cont.active-tab {
@@ -133,4 +151,82 @@ body {
     opacity: 1;
 }
 
+/* Sidebar Functionalities Styles */
+
+/*-----------------------------------------------------------------------*/
+
+
+/* Sidebar Lists Styles */
+
+.groups-header {
+    padding: 0.35rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.group-list-cont {
+    padding: 0.5rem;
+}
+
+.group-cont {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.group-cont > p {
+    font-style: italic;
+}
+
+.no-groups-cont {
+    padding: 0.5rem;
+}
+
+.no-groups-text {
+    opacity: 0.75;
+}
+
+/* Sidebar Lists Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Sidebar Info Styles */
+
+.sidebar-info-cont {
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.sidebar-info-cont > * {
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+.sidebar-info-cont:hover > * {
+    opacity: 1;
+}
+
+.sidebar-info-cont > img:has(+ h3:active),
+.sidebar-info-cont > *:active,
+.sidebar-info-cont > img:active + h3 {
+    opacity: 0.85;
+}
+
+.info-text {
+    font-weight: 400;
+    font-size: 1.15rem;
+}
+
+/* Sidebar Info Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Sidebar Styles */
+

@@ -145,3 +145,15 @@ export function validateGroup(groupName) {
     }
     return true;
 }
+
+// Checks whether there are task groups ("__unlisted__" not included)
+export function checkTaskGroupsEmptiness() {
+    // There are no groups if:
+    // tasksGroups has no properties or taskGroups only includes the "__unlisted__" property
+    // The unlisted property is reserved for grouped tasks without a group
+    if (Object.keys(taskGroups).length === 0 ||
+    (Object.keys(taskGroups).length === 1 && Object.hasOwn(taskGroups, "__unlisted__"))) {
+        return true;
+    }
+    return false;
+}
