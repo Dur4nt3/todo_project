@@ -5,3 +5,10 @@ export function hide(element) {
 export function show(element) {
     element.classList.remove("hide");
 }
+
+export function buildElement(type, ...classNames) {
+    const createdElement = document.createElement(type);
+    createdElement.classList.add(...classNames);
+    
+    return createdElement;
+}

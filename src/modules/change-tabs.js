@@ -16,3 +16,21 @@ function makeActive(tab) {
 export function changeTab(tab) {
     makeActive(tab);
 }
+
+function makeGroupTabActive(groupCont) {
+    const groupListCont = groupCont.parentNode;
+    const groupListChildrenArray = Array.from(groupListCont.children);
+
+    for (let index in groupListChildrenArray) {
+        let groupCont = groupListChildrenArray[index];
+        if (groupCont.classList.contains("active-group-tab")) {
+            groupCont.classList.remove("active-group-tab");
+        }
+    }
+
+    groupCont.classList.add("active-group-tab");
+}
+
+export function changeGroupTab(groupCont) {
+    makeGroupTabActive(groupCont);
+}

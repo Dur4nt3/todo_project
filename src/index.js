@@ -9,14 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const sidebarFunctionalities = document.querySelector(".sidebar-functionalities-cont");
+const groupListCont = document.querySelector(".group-list-cont");
 
 sidebarFunctionalities.addEventListener("click", (e) => {
+    const target = e.target;
+
     // Exit if not clicking on icon/label
-    if (e.target.parentNode === sidebarFunctionalities || e.target === sidebarFunctionalities) {
+    if (target.parentNode === sidebarFunctionalities || target === sidebarFunctionalities) {
         return;
     }
 
-    const target = e.target;
 
     // Different function for adding tasks as opposed to changing tabs
     if (!target.parentNode.classList.contains("add-cont")) {
@@ -24,5 +26,21 @@ sidebarFunctionalities.addEventListener("click", (e) => {
     }
     else {
         console.log("Trying to add a task");
+    }
+});
+
+groupListCont.addEventListener("click", (e) => {
+    // Exit if not clicking icon/label/more groups
+    let target = e.target;
+
+    if (!(target.classList[0] === "group-symbol" || target.classList[0] === "group-name" || target.classList[0] === "view-more-groups")) {
+        return;
+    }
+
+    if (target.classList[0] === "group-symbol" || target.classList[0] === "group-name" ) {
+        changeTabs.changeGroupTab(target.parentNode);
+    }
+    else {
+        console.log("trying to view more groups");
     }
 });

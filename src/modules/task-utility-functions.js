@@ -4,7 +4,15 @@ import { add as increaseDate, getYear, getMonth, getDate } from "../../node_modu
 const taskCollection = {};
 const taskGroups = {};
 
-export { taskCollection, taskGroups };
+const groupsColorLabels = {}
+const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
+    "#E15554", "#E1BC29", "#3BB273", "#7768AE", "#CF5C36", "#DC136C",
+    "#84B082", "#1B998B", "#2E294E", "#028090", "#DCED31", "#F42272",
+    "#3423A6", "#8EA604", "#F5BB00", "#C73E1D", "#34623F", "#FE9920",
+    "#DDDBF1", "#F18805", "#A1EF8B", "#772D8B", "#92D5E6", "#FF7F11",
+    "#FF1B1C", "#6FFFE9", "#FF6978", "#F65BE3", "#8E0045", "#16DB65"];
+
+export { taskCollection, taskGroups, groupsColorLabels };
 
 const reservedGroups = ["__unlisted__"];
 
@@ -29,6 +37,17 @@ export function updateTaskCollection(taskObj, taskType) {
     else {
         taskCollection[taskType].push(taskObj);
     }
+}
+
+export function generateGroupColorLabels(groupName) {
+    if (Object.hasOwn(groupsColorLabels, groupName)) {
+        return groupsColorLabels[groupName];
+    }
+
+    let randomColor = colorPool[Math.floor(Math.random() * colorPool.length)];
+    groupsColorLabels[groupName] = randomColor;
+
+    return randomColor;
 }
 
 export function determineTaskType(task) {
@@ -123,6 +142,7 @@ export function updateGroups(groupName, obj, oldGroup = null) {
         // Prevent bloating the object with empty groups by deleting groups without any tasks
         if (taskGroups[oldGroup].length === 0) {
             delete taskGroups[oldGroup];
+            delete groupsColorLabels[oldGroup];
         }
     }
 
@@ -140,20 +160,26 @@ export function validateGroup(groupName) {
         return true;
     }
 
-    else if (groupName === "" || groupName.length > 30 || reservedGroups.includes(groupName)) {
+    else if (groupName === "" || groupName.length > 25 || reservedGroups.includes(groupName)) {
         return false;
     }
     return true;
 }
 
 // Checks whether there are task groups ("__unlisted__" not included)
-export function checkTaskGroupsEmptiness() {
+export function getGroupCount() {
+    const groupsArray = Object.keys(taskGroups);
+
     // There are no groups if:
     // tasksGroups has no properties or taskGroups only includes the "__unlisted__" property
     // The unlisted property is reserved for grouped tasks without a group
-    if (Object.keys(taskGroups).length === 0 ||
-    (Object.keys(taskGroups).length === 1 && Object.hasOwn(taskGroups, "__unlisted__"))) {
-        return true;
+    if (groupsArray.length === 0 ||
+    (groupsArray.length === 1 && Object.hasOwn(taskGroups, "__unlisted__"))) {
+        return 0;
     }
-    return false;
+
+    if (groupsArray.includes("__unlisted__")) {
+        return groupsArray.length - 1;
+    }
+    return groupsArray.length;
 }

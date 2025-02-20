@@ -166,18 +166,85 @@ body {
     gap: 0.5rem;
 }
 
+.edit-groups-icon {
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.edit-groups-icon:active {
+    opacity: 0.85;
+}
+
+.groups-header:hover > img {
+    visibility: visible;
+}
+
 .group-list-cont {
     padding: 0.5rem;
 }
 
 .group-cont {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.35rem;
 }
 
+.group-symbol {
+    font-size: 1.75rem;
+    font-weight: 500;
+    
+    cursor: pointer;
+}
+
 .group-cont > p {
+    font-size: 1.15rem;
     font-style: italic;
+
+    cursor: pointer;
+    opacity: 0.75;
+    position: relative; 
+}
+
+.group-cont:hover > * {
+    opacity: 1;    
+}
+
+.active-group-tab > p {
+    opacity: 1;
+}
+
+.active-group-tab > p::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background: var(--accent-color);
+    transform: skew(-30deg);
+}
+
+.view-more-groups {
+    display: flex;
+    justify-content: center;
+
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-align: center;
+
+    cursor: pointer;
+
+    border-radius: 1.5rem;
+}
+
+.view-more-groups:hover {
+    background-color: rgba(120,120,120,0.25);
+    color: var(--accent-color);
+}
+
+.view-more-groups:active {
+    background-color: transparent;
 }
 
 .no-groups-cont {

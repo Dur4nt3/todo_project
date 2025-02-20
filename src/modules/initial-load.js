@@ -1,5 +1,5 @@
-import { generateGroupsCont } from "./create-groups-cont.js";
+import { generateGroupList } from "./create-groups-cont.js";
 
 export default function initialLoad() {
-    generateGroupsCont();
+    generateGroupList();
 }
