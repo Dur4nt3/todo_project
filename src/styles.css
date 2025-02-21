@@ -13,6 +13,10 @@
     --primary-color: #241e41;
     --secondary-color: #542b77;
     --accent-color: #9757ea;
+
+    --due-color: #04ec00;
+    --due-soon-color: #ffae00;
+    --past-due-color: #f90000;
 }
 
 body {
@@ -297,3 +301,158 @@ body {
 
 /* Sidebar Styles */
 
+/* Main Content Styles */
+
+.main-cont {
+    padding: 2rem 0 0 1.5rem;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    margin: 0;
+
+    font: inherit;
+    color: var(--accent-color);
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0.15rem solid var(--accent-color);
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    transform: translateY(-0.075rem);
+    cursor: pointer;
+
+    display: grid;
+    place-content: center;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+
+    /* Accessability Option*/
+    /* background-color: CanvasText; */
+
+    width: 0.95rem;
+    height: 0.95rem;
+    transform: scale(0);
+    transition: 0.12s transform ease-in-out;
+    box-shadow: inset 1rem 1rem var(--secondary-color);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:focus {
+    outline: max(2px, 0.15rem) solid var(--secondary-color);
+    outline-offset: max(2px, 0.15rem);
+}
+
+/*-----------------------------------------------------------------------*/
+
+/* Today Tab Styles */
+
+.today-tab-header {
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.no-scheduled-tasks-msg {
+    font-size: 1.3rem;
+    opacity: 0.85;
+    padding: 1rem;
+}
+
+.task-cont {
+    cursor: pointer;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+
+    max-width: 60ch;
+    height: 5rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    box-shadow: 0 3px 12px 1px #020202;
+    transition: 0.3s;
+}
+
+.task-cont:hover {
+    transform: translateY(-0.25rem);
+}
+
+.priority-two {
+    background: rgba(255,174,0,0.125);
+    -webkit-backdrop-filter: blur(1px);
+    backdrop-filter: blur(1px);
+    border: 1px solid rgba(255,174,0,0.125);
+}
+
+.priority-three {
+    background: rgba(217,0,0,0.15);
+    -webkit-backdrop-filter: blur(1px);
+    backdrop-filter: blur(1px);
+    border: 1px solid rgba(217,0,0,0.125);
+}
+
+.task-title {
+    font-size: 1.05rem;
+}
+
+.dated-task-time {
+    opacity: 0.85;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.dated-task-time.due {
+    color: var(--due-color);
+}
+
+.dated-task-time.due-soon {
+    color: var(--due-soon-color);
+}
+
+
+.dated-task-time.past-due {
+    color: var(--past-due-color);
+}
+
+.task-options {
+    margin-left: auto;
+    visibility: hidden;
+    
+    display: flex;
+    gap: 0.75rem;
+}
+
+.task-options-icon:active {
+    opacity: 0.85;
+}
+
+.task-cont:hover .task-options {
+    visibility: visible;
+}
+
+.completed-animation {
+    animation: complete-task 0.4s steps(20, end) forwards;
+    position: relative;
+}
+
+@keyframes complete-task {
+    from {left: 0px}
+    to {left: 35vw; opacity: 0}
+}
+
+
+/* Today Tab Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Main Content Styles */

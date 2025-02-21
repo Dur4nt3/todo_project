@@ -76,6 +76,7 @@ export function determineTaskType(task) {
 
 // Task-Specific Utility Functions (Dated Tasks):
 
+// Validates deadline both regular and overridden
 export function validateDeadline(newDeadline) {
     // Date cannot be more than 5 years into the future or 5 years back
     if ((increaseDate(new Date(), {years: 5}) < Date.parse(newDeadline))
@@ -95,8 +96,9 @@ export function validateDeadline(newDeadline) {
     return newDeadline;
 }
 
+// Remove the "Thh:mm:ss" portion from a deadline to ensure no time is specified
 export function formatAllDayDeadline(date) {
-    // Remove the "Thh:mm:ss" portion from a deadline to ensure no time is specified
+    
 
     // Date is formatted correctly if the below is true
     if (!(date.includes("T"))) {
@@ -131,6 +133,38 @@ export function formateToDeadlineValue(date, time) {
 
     return formattedDate;
 }
+
+// Get all tasks scheduled for today
+export function getTodayTasks() {
+    let todayTasks = [];
+
+    for (let taskType in taskCollection) {
+        // No need to cycle over non-dated tasks
+        if (taskType === "basic" || taskType === "grouped") {
+            continue;
+        }
+
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+
+            if (getDate(task.deadline) === getDate(new Date())) {
+                todayTasks.push(task);
+            }
+        }
+    }
+
+    return todayTasks;
+}
+
+// Get specific time of the task (only relevant for not all-day tasks)
+export function getTaskTime(task) {
+    if (task.allDay) {
+        return "";
+    }
+
+    return task.deadline.slice(-9).slice(1).slice(0,5);
+}
+
 
 // Task-Specific Utility Functions (Grouped Tasks):
 export function updateGroups(groupName, obj, oldGroup = null) {
