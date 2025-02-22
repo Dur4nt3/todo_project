@@ -360,6 +360,27 @@ input[type="checkbox"]:focus {
     font-style: italic;
 }
 
+.filter-options {
+    display: flex;
+    gap: 1rem;
+    opacity: 0.15;
+    margin-bottom: 1.25rem;
+}
+
+.filter-options:hover {
+    opacity: 1;
+}
+
+.filter-options > * {
+    padding: 0.35rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.active-filter {
+    background-color: var(--accent-color);
+}
+
 .no-scheduled-tasks-msg {
     font-size: 1.3rem;
     opacity: 0.85;

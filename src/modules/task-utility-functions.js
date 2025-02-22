@@ -135,7 +135,7 @@ export function formateToDeadlineValue(date, time) {
 }
 
 // Get all tasks scheduled for today
-export function getTodayTasks() {
+export function getTodayTasks(filterOn = true) {
     let todayTasks = [];
 
     for (let taskType in taskCollection) {
@@ -146,6 +146,10 @@ export function getTodayTasks() {
 
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
+
+            if (task.completionStatus === true && filterOn) {
+                continue;
+            }
 
             if (getDate(task.deadline) === getDate(new Date())) {
                 todayTasks.push(task);
