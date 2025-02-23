@@ -10,14 +10,14 @@ import * as createTask from "./modules/create-task-objects.js";
 
 const basicTask = createTask.createBasicTask("testing basic", "basic task");
 
-const originallyAllDay = createTask.createDatedTask("testing all day", "all day task", "2025-02-23T12:30:00", false, 3);
-const originallyTimed = createTask.createDatedTask("testing dated", "dated task", "2025-02-23T23:35:00", false);
+const originallyAllDay = createTask.createDatedTask("testing all day", "all day task", "2025-02-24T12:30:00", false, 3);
+const originallyTimed = createTask.createDatedTask("testing dated", "dated task", "2025-02-24T23:35:00", false);
 
 const groupedTask1 = createTask.createGroupedTask("testing groups", "grouped task 1", "group1");
 const groupedTask2 = createTask.createGroupedTask("more groups", "grouped task 2", "group2", 3);
 
-const datedGroupedTask1 = createTask.createDatedGroupedTask("dated & grouped", "timed grouped", "group1", "2025-02-23T01:45:00", false, 2);
-const datedGroupedTask2 = createTask.createDatedGroupedTask("dated & grouped 2", "all-day grouped", "group3", "2025-02-23", true, 2);
+const datedGroupedTask1 = createTask.createDatedGroupedTask("dated & grouped", "timed grouped", "group1", "2025-02-24T01:45:00", false, 2);
+const datedGroupedTask2 = createTask.createDatedGroupedTask("dated & grouped 2", "all-day grouped", "group3", "2025-02-24", true, 2);
 
 datedGroupedTask2.complete();
 

@@ -20,7 +20,13 @@
 
     2) Sort tasks - Either by priority or by time (timed first, allDay later; sort timed by hour) - *COMPLETE*
 
-    3) Filters - Fix "choose-one" filters being disabled when disabling "Show Completed" filter
+    3) Filters - Fix "choose-one" filters being disabled when disabling "Show Completed" filter - *COMPLETE*
 
-- Add "Past Due" tab that includes all past due tasks
+- Create a confirmation modal when deleting tasks
+
+- Task modals:
+
+    1) Type 1 - Not Editable: Modals that include a task's information but don't include an option to edit the task's details
+
+    2) Type 2 - Editable: Modal that both include a task's information and include an option to edit the task's details
 

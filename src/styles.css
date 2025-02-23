@@ -14,9 +14,16 @@
     --secondary-color: #542b77;
     --accent-color: #9757ea;
 
+    --secondary-contrast-border: #40215a;
+
     --due-color: #04ec00;
     --due-soon-color: #ffae00;
     --past-due-color: #f90000;
+
+    --negative-low-opacity: rgba(249,0,0,0.75);
+
+    --cancel-gray: #6b6b6b;
+    --cancel-gray-low-opacity: rgba(107,107,107,0.75);
 }
 
 body {
@@ -448,9 +455,14 @@ input[type="checkbox"]:focus {
 .task-options {
     margin-left: auto;
     visibility: hidden;
+    cursor: default;
     
     display: flex;
     gap: 0.75rem;
+}
+
+.task-options > * {
+    cursor: pointer;
 }
 
 .task-options-icon:active {
@@ -463,17 +475,107 @@ input[type="checkbox"]:focus {
 
 .completed-animation {
     animation: complete-task 0.4s steps(20, end) forwards;
-    position: relative;
 }
 
 @keyframes complete-task {
+    from {opacity: 1}
+    to {opacity: 0}
+}
+
+.deleted-animation {
+    animation: delete-task 0.4s steps(20, end) forwards;
+    position: relative;
+}
+
+@keyframes delete-task {
     from {left: 0px}
     to {left: 35vw; opacity: 0}
 }
-
 
 /* Today Tab Styles */
 
 /*-----------------------------------------------------------------------*/
 
 /* Main Content Styles */
+
+
+/* Modal Styles */
+
+.modal {
+    position: fixed;
+    background-color: rgba(0,0,0,0.35);
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 1;
+}
+
+/*-----------------------------------------------------------------------*/
+
+/* Confirmation Modals Styles */
+
+.deletion-confirmation {
+    padding: 1rem;
+    border-radius: 0.7rem;
+
+    background: rgba(84,43,119,0.75);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(84,43,119,0.375);
+
+    position: fixed;
+    z-index: 2;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deletion-confirmation > *:last-child {
+    margin-top: 1rem;
+}
+
+.deletion-confirmation-button-cont {
+    display: flex;
+    gap: 3.5rem;
+}
+
+.deletion-confirmation-button {
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    width: 10ch;
+
+    transition: 0.2s;
+}
+
+.deletion-confirmation-button:hover {
+    transform: translateY(-0.15rem);
+}
+
+.cancel-button {
+    background-color: var(--cancel-gray);
+}
+
+.cancel-button:active {
+    background-color: var(--cancel-gray-low-opacity);
+}
+
+.confirm-button {
+    background-color: var(--past-due-color);
+}
+
+.confirm-button:active {
+    background-color: var(--negative-low-opacity);
+}
+
+/* Confirmation Modals Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Modal Styles */
+

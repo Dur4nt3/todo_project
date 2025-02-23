@@ -1,7 +1,6 @@
 import { getTodayTasks, getTaskTime } from "./task-utility-functions.js";
 import { buildElement } from "./dom-manipulator.js";
-import { differenceInHours } from "../../node_modules/date-fns";
-import { taskContEventListeners, resetChooseOneFilterSelection } from "./ui-task-utilities.js";
+import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus } from "./ui-task-utilities.js";
 import { priorityFirst, latestTodayFirst } from "./filter-tasks.js";
 
 import editSvg from "../images/Edit.svg";
@@ -11,21 +10,42 @@ function showCompletedTasksToday(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
     const noMsg = document.querySelector(".no-scheduled-tasks-msg");
 
+    // Check if there are no tasks
     if (todayTaskCont === null) {
+        // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
         if (getTodayTasks(false).length === 0 ) {
+            filterButton.parentNode.remove();
+            createNoScheduledTasksMsg(document.querySelector(".today-tab-cont"), "today");
             return;
         }
+
+        // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
             document.querySelector(".no-scheduled-tasks-msg").remove();
         }
     }
 
+    // Preemptively remove the container and prepare to generate a new one
     if (!(todayTaskCont === null)) {
         todayTaskCont.remove();
     }
 
+
+    // Check what filters are active to ensure they are kept
+    const activePriority = filterButton.parentNode.querySelector(".filter-priority").classList.contains("active-filter");
+    const activeTime = filterButton.parentNode.querySelector(".filter-time").classList.contains("active-filter");
+
+    // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
         filterButton.classList.remove("active-filter");
+        if (activePriority) {
+            filterByPriority(filterButton.parentNode.querySelector(".filter-priority"));
+            return;
+        }
+        else if (activeTime) {
+            filterByTime(filterButton.parentNode.querySelector(".filter-time"));
+            return;
+        }
         createTodayTabTasks(document.querySelector(".today-tab-cont"));
         return;
     }
@@ -33,10 +53,10 @@ function showCompletedTasksToday(filterButton, directClick = false) {
     filterButton.classList.add("active-filter");
     const taskList = getTodayTasks(false);
 
-    if (filterButton.parentNode.querySelector(".filter-priority").classList.contains("active-filter")) {
+    if (activePriority) {
         filterByPriority(filterButton.parentNode.querySelector(".filter-priority"));
     }
-    else if (filterButton.parentNode.querySelector(".filter-time").classList.contains("active-filter")) {
+    else if (activeTime) {
         filterByTime(filterButton.parentNode.querySelector(".filter-time"));
     }
     else {
@@ -49,21 +69,29 @@ function filterByPriority(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
     const noMsg = document.querySelector(".no-scheduled-tasks-msg");
 
+    // Check if there are no tasks
     if (todayTaskCont === null) {
+        // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
         if (getTodayTasks(false).length === 0 ) {
+            filterButton.parentNode.remove();
+            createNoScheduledTasksMsg(document.querySelector(".today-tab-cont"), "today");
             return;
         }
+
+        // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
             document.querySelector(".no-scheduled-tasks-msg").remove();
         }
     }
 
+    // Preemptively remove the container and prepare to generate a new one
     if (!(todayTaskCont === null)) {
         todayTaskCont.remove();
     }
 
     const includeCompleted = filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
 
+    // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
         filterButton.classList.remove("active-filter");
         if (includeCompleted) {
@@ -87,21 +115,29 @@ function filterByTime(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
     const noMsg = document.querySelector(".no-scheduled-tasks-msg");
 
+    // Check if there are no tasks
     if (todayTaskCont === null) {
+        // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
         if (getTodayTasks(false).length === 0 ) {
+            filterButton.parentNode.remove();
+            createNoScheduledTasksMsg(document.querySelector(".today-tab-cont"), "today");
             return;
         }
+
+        // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
             document.querySelector(".no-scheduled-tasks-msg").remove();
         }
     }
 
+    // Preemptively remove the container and prepare to generate a new one
     if (!(todayTaskCont === null)) {
         todayTaskCont.remove();
     }
 
     const includeCompleted = filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
 
+    // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
         filterButton.classList.remove("active-filter");
         if (includeCompleted) {
@@ -114,7 +150,7 @@ function filterByTime(filterButton, directClick = false) {
 
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
-    // Using ! because the function takes the argument "filterOn" which is false if we're showing completed tasks 
+    // Using ! because the function takes the argument "filterOn" (i.e., filter completed tasks) which is false if we're showing completed tasks 
     const taskList = latestTodayFirst(getTodayTasks(!includeCompleted));
 
     createTodayTabTasks(document.querySelector(".today-tab-cont"), taskList);
@@ -160,29 +196,6 @@ function createTodayTabHeader(tabCont) {
     tabCont.appendChild(tabHeader);
 }
 
-
-function createNoScheduledTasksMsg(tabCont) {
-    const msgCont = buildElement("div", "no-scheduled-tasks-msg");
-    msgCont.textContent = "No tasks scheduled for today";
-
-    tabCont.appendChild(msgCont);
-}
-
-// Decides how to color the time of a task
-function checkDueStatus(deadline) {
-
-    if (differenceInHours(deadline, new Date()) > 1) {
-        return "due";
-    }
-    else if (differenceInHours(deadline, new Date()) <= 1 && differenceInHours(deadline, new Date()) > 0) {
-        return "due-soon";
-    }
-    else if (differenceInHours(deadline, new Date()) <= 0) {
-        return "past-due";
-    }
-}
-
-
 function createTodayFilterOptions(tabCont) {
     if (getTodayTasks(false).length === 0) {
         return;
@@ -208,7 +221,6 @@ function createTodayFilterOptions(tabCont) {
     tabCont.appendChild(filterOptionsCont);
 }
 
-
 function createTodayTabTasks(tabCont, filter = false) {
     let todayTasks;
     if (!filter) {
@@ -219,7 +231,11 @@ function createTodayTabTasks(tabCont, filter = false) {
     }
 
     if (todayTasks.length === 0) {
-        createNoScheduledTasksMsg(tabCont);
+        const filterCont = getFilterOptionsCont(tabCont);
+        if (filterCont !== null && getTodayTasks(false).length === 0) {
+            filterCont.remove();
+        }
+        createNoScheduledTasksMsg(tabCont, "today");
         return;
     }
 
@@ -287,7 +303,6 @@ function createTodayTabTasks(tabCont, filter = false) {
 
     tabCont.appendChild(tasksTodayCont);
 }
-
 
 export function createTodayTab() {
     const todayTabCont = document.querySelector(".today-tab-cont");

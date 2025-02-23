@@ -74,6 +74,19 @@ export function determineTaskType(task) {
     }
 }
 
+// Returns a task given an ID
+export function findByID(id) {
+    for (let taskType in taskCollection) {
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+
+            if (task.id === id) {
+                return task;
+            }
+        }
+    }
+}
+
 // Task-Specific Utility Functions (Dated Tasks):
 
 // Validates deadline both regular and overridden
