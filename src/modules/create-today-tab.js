@@ -1,8 +1,10 @@
-import { getTodayTasks, getTaskTime } from "./task-utility-functions.js";
+import { getTodayTasks } from "./task-utility-functions.js";
+import { getTaskTime } from "./misc-utilities.js";
 import { buildElement } from "./dom-manipulator.js";
 import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus } from "./ui-task-utilities.js";
 import { priorityFirst, latestTodayFirst } from "./filter-tasks.js";
 
+import clockSvg from "../images/Clock.svg"
 import editSvg from "../images/Edit.svg";
 import deleteSvg from "../images/Delete.svg";
 
@@ -272,8 +274,17 @@ function createTodayTabTasks(tabCont, filter = false) {
 
         if(!task.allDay) {
             let dueStatus = checkDueStatus(task.deadline);
-            let taskTimeCont = buildElement("div", "dated-task-time", dueStatus);
-            taskTimeCont.textContent = getTaskTime(task);
+            let taskTimeCont = buildElement("div", "dated-task-time-cont");
+
+            let taskTime = buildElement("p", "dated-task-time-text", dueStatus);
+            taskTime.textContent = getTaskTime(task);
+
+            let clockIcon = buildElement("img", "clock-icon");
+            clockIcon.src = clockSvg;
+            clockIcon.alt = "Due Time";
+
+            taskTimeCont.appendChild(taskTime);
+            taskTimeCont.appendChild(clockIcon);
 
             taskInfo.appendChild(taskTimeCont);
         }

@@ -1,4 +1,4 @@
-import { add as increaseDate, getYear, getMonth, getDate } from "../../node_modules/date-fns";
+import { add as increaseDate, getYear, getMonth, getDate, getDay } from "../../node_modules/date-fns";
 
 // stores information about tasks and tasks groups
 const taskCollection = {};
@@ -172,16 +172,6 @@ export function getTodayTasks(filterOn = true) {
 
     return todayTasks;
 }
-
-// Get specific time of the task (only relevant for not all-day tasks)
-export function getTaskTime(task) {
-    if (task.allDay) {
-        return "";
-    }
-
-    return task.deadline.slice(-9).slice(1).slice(0,5);
-}
-
 
 // Task-Specific Utility Functions (Grouped Tasks):
 export function updateGroups(groupName, obj, oldGroup = null) {

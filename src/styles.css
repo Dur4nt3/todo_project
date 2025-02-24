@@ -272,9 +272,12 @@ body {
 
 /* Sidebar Info Styles */
 
-.sidebar-info-cont {
+.sidebar-settings-cont {
     margin-top: auto;
     margin-bottom: 0.5rem;
+}
+
+.sidebar-info-cont {
     padding: 0.5rem;
 
     display: flex;
@@ -433,22 +436,31 @@ input[type="checkbox"]:focus {
     font-size: 1.05rem;
 }
 
-.dated-task-time {
+.dated-task-time-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.dated-task-time-text {
     opacity: 0.85;
     font-size: 0.875rem;
     font-weight: 500;
 }
 
-.dated-task-time.due {
+.clock-icon {
+    opacity: 0.75;
+}
+
+.dated-task-time-text.due {
     color: var(--due-color);
 }
 
-.dated-task-time.due-soon {
+.dated-task-time-text.due-soon {
     color: var(--due-soon-color);
 }
 
-
-.dated-task-time.past-due {
+.dated-task-time-text.past-due {
     color: var(--past-due-color);
 }
 
@@ -509,18 +521,14 @@ input[type="checkbox"]:focus {
     z-index: 1;
 }
 
-/*-----------------------------------------------------------------------*/
-
-/* Confirmation Modals Styles */
-
-.deletion-confirmation {
+.modal-cont {
     padding: 1rem;
     border-radius: 0.7rem;
 
-    background: rgba(84,43,119,0.75);
+    background: rgba(36,30,65,0.65);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(84,43,119,0.375);
+    border: 1px solid rgba(36,30,65,0.325);
 
     position: fixed;
     z-index: 2;
@@ -533,6 +541,19 @@ input[type="checkbox"]:focus {
     align-items: center;
     gap: 0.5rem;
 }
+
+.close-modal-animation {
+    animation: close-modal 0.25s steps(15, end) forwards;
+}
+
+@keyframes close-modal {
+    from {transform: translateY(0rem) translate(-50%, -50%); opacity: 1}
+    to {transform: translateY(-20rem) translate(-50%, -50%); opacity: 0;}
+}
+
+/*-----------------------------------------------------------------------*/
+
+/* Confirmation Modals Styles */
 
 .deletion-confirmation > *:last-child {
     margin-top: 1rem;
@@ -554,7 +575,8 @@ input[type="checkbox"]:focus {
 }
 
 .deletion-confirmation-button:hover {
-    transform: translateY(-0.15rem);
+    transform: translateY(-0.25rem);
+    box-shadow: 0 1.5px 6px 2px #301b44;
 }
 
 .cancel-button {
@@ -574,6 +596,75 @@ input[type="checkbox"]:focus {
 }
 
 /* Confirmation Modals Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Information Modals Styles */
+
+.task-info-modal {
+    top: 35%;
+
+    min-width: 45ch;
+    max-width: 55ch;
+
+    background: rgba(43,43,44,0.55);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(13,13,14,0.25);
+}
+
+.task-info-modal.priority-two {
+    background: rgba(255,174,0,0.55);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,174,0,0.25);
+}
+
+.task-info-modal.priority-three {
+    background: rgba(217,0,0,0.55);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(217,0,0,0.25);
+}
+
+.task-info-modal > *:not(:last-child) {
+    margin-bottom: 1.25rem;
+}
+
+.task-info-group {
+    font-weight: 500;
+    font-size: 1.05rem;
+    font-style: italic;
+}
+
+.task-info-description {
+    line-height: 1.8;
+}
+
+.close-modal-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 1.25%;
+    right: 0.25%;
+}
+
+.close-modal-icon:active {
+    opacity: 0.85;
+}
+
+.task-info-time-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+}
+
+.task-info-time {
+    font-weight: 300;
+    font-size: 0.875rem;
+}
+
+
+/* Information Modals Styles */
 
 /*-----------------------------------------------------------------------*/
 

@@ -2,6 +2,7 @@ import { findByID, determineTaskType } from "./task-utility-functions.js";
 import * as removeTask from "./task-removal.js";
 import { buildElement } from "./dom-manipulator.js";
 import { differenceInHours } from "../../node_modules/date-fns";
+import { deletionConfirmationModal } from "./confirmation-modals.js";
 
 // Finds the tab container of a given element within the tab
 function findTabCont(element) {
@@ -68,12 +69,12 @@ export function createNoScheduledTasksMsg(tabCont, msgType) {
 
 // Open a modal with the task's information (uneditable fields)
 function openTaskModal(task) {
-    console.log("modal");
+    console.log("modal", task);
 }
 
 // Open a modal with the task's information (editable fields)
 function editTaskUI(task) {
-    console.log("edit");
+    console.log("edit", task);
 }
 
 // Completes the task & plays an animation
@@ -109,18 +110,55 @@ function deleteTaskUI(task, taskCont) {
     setTimeout(() => { taskCont.remove() }, 600);
 }
 
+function showDeletionConfirmationModal(task, taskCont) {
+    const deletionModal = deletionConfirmationModal(task.title);
+
+    
+    document.body.prepend(deletionModal);
+
+    deletionModal.addEventListener("click", (e) => {
+        const target = e.target;
+
+        if (!target.classList.contains("deletion-confirmation-button")) {
+            return;
+        }
+
+        if (target.classList.contains("cancel-button")) {
+            deletionModal.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { deletionModal.remove(); }, 300);
+            return;
+        }
+        else if (target.classList.contains("confirm-button")) {
+            deletionModal.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { deletionModal.remove(); }, 300);
+            deleteTaskUI(task, taskCont);
+            return;
+        }
+    });
+}
+
 export function taskContEventListeners(taskCont) {
     taskCont.addEventListener("click", (e) => {
         const target = e.target;
         const targetClassList = target.classList;
 
-        if (targetClassList.contains("task-title") || targetClassList.contains("task-cont") || targetClassList.contains("dated-task-time")) {
+        // Elements that when clicked should open the task's modal
+        if (targetClassList.contains("task-title") || targetClassList.contains("task-cont") || targetClassList.contains("dated-task-time-cont")
+            || targetClassList.contains("dated-task-time-text") || targetClassList.contains("clock-icon")) {
+
             if (targetClassList.contains("task-cont")) {
                 openTaskModal(findByID(target.id));
                 return;
             }
-            openTaskModal(findByID(target.parentNode.parentNode.id));
+            else if (targetClassList.contains("task-title") || targetClassList.contains("dated-task-time-cont")) {
+                openTaskModal(findByID(target.parentNode.parentNode.id));
                 return;
+            }
+            else {
+                openTaskModal(findByID(target.parentNode.parentNode.parentNode.id));
+                return;
+            }
+
         }
 
         else if (targetClassList.contains("task-options-icon")) {
@@ -129,7 +167,7 @@ export function taskContEventListeners(taskCont) {
                 return;
             }
             if (target.classList.contains("delete-task")) {
-                deleteTaskUI(findByID(target.parentNode.parentNode.id), target.parentNode.parentNode);
+                showDeletionConfirmationModal(findByID(target.parentNode.parentNode.id), target.parentNode.parentNode);
                 return;
             }
         }

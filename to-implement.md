@@ -22,11 +22,25 @@
 
     3) Filters - Fix "choose-one" filters being disabled when disabling "Show Completed" filter - *COMPLETE*
 
-- Create a confirmation modal when deleting tasks
+- Create a confirmation modal when deleting tasks - *COMPLETE*
 
 - Task modals:
 
     1) Type 1 - Not Editable: Modals that include a task's information but don't include an option to edit the task's details
 
     2) Type 2 - Editable: Modal that both include a task's information and include an option to edit the task's details
+
+- Settings:
+
+**Create a settings tab that includes the following options:**
+
+Settings will be saved to the localStorage using a JSON object with settings as properties
+
+    1) Do not show deletion confirmation => for non-repetitive tasks => dismiss the modal
+
+    2) Do not show welcome message => by default a welcome message will appear when visiting the page containing useful information => dismiss the message
+    *That same welcome message will appear under the "Help" tab*
+
+    3) Modal Coloring: Based on priority | light gray regardless of priority
+
 
