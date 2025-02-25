@@ -5,6 +5,6 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'eval-source-map',
   devServer: {
-    watchFiles: ["./src/index.html", "./src/style.css"],
+    watchFiles: ["./src/index.html", "./src/styles.css"],
   },
 });

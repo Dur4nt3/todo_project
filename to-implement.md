@@ -24,9 +24,11 @@
 
 - Create a confirmation modal when deleting tasks - *COMPLETE*
 
+- Create a "refresh" utility for every tab to regenerate the contents of the tab (without reloading the window)
+
 - Task modals:
 
-    1) Type 1 - Not Editable: Modals that include a task's information but don't include an option to edit the task's details
+    1) Type 1 - Not Editable: Modals that include a task's information but don't include an option to edit the task's details - *COMPLETE*
 
     2) Type 2 - Editable: Modal that both include a task's information and include an option to edit the task's details
 

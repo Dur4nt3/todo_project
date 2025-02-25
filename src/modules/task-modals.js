@@ -1,12 +1,12 @@
 import { buildElement } from "./dom-manipulator.js";
 import { getTaskDateTextFormat, getTaskTime } from "./misc-utilities.js"
-import { getDate } from "../../node_modules/date-fns";
 
 import closeSvg from "../images/Close.svg";
 import clockSvg from "../images/Clock.svg";
 
-export function taskInformationModal(task) {
+function taskInformationModal(task) {
     const modalCont = buildElement("div", "modal");
+    modalCont.tabIndex = 0;
 
     let priorityClass = "priority-one";
 
@@ -72,4 +72,35 @@ export function taskInformationModal(task) {
     modalCont.appendChild(infoModalCont);
 
     return modalCont;
+}
+
+export function taskInformationModalInteractivity(task) {
+    const modalCont = taskInformationModal(task);
+
+    document.body.prepend(modalCont);
+    modalCont.focus();
+
+    modalCont.addEventListener("click", (e) => {
+        const target = e.target;
+
+        if (target.classList.contains("modal")) {
+            modalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { modalCont.remove() }, 300);
+        }
+
+        else if (target.classList.contains("close-modal-icon")) {
+            modalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { modalCont.remove() }, 300);
+        }
+
+    });
+
+    modalCont.addEventListener("keyup", (e) => {
+        if (e.key === "Escape") {
+            modalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { modalCont.remove() }, 300);
+        }
+    });
+
+    // modalCont.onkeypress = (e) => { console.log(e.key); }
 }

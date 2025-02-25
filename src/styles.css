@@ -24,6 +24,8 @@
 
     --cancel-gray: #6b6b6b;
     --cancel-gray-low-opacity: rgba(107,107,107,0.75);
+
+    --button-hover-background: rgba(107,107,107,0.25);
 }
 
 body {
@@ -365,10 +367,40 @@ input[type="checkbox"]:focus {
 
 /* Today Tab Styles */
 
-.today-tab-header {
+.today-tab-header-cont {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
     margin-bottom: 2rem;
+}
+
+.today-tab-header {
     font-style: italic;
 }
+
+.refresh-icon {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    padding: 0.25rem;
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.refresh-icon:hover {
+    opacity: 1;
+    background-color: var(--button-hover-background);
+}
+
+.rotate-refresh {
+    animation: rotate-refresh 0.5s steps(20, end) forwards;
+    opacity: 1;
+}
+
+@keyframes rotate-refresh {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(720deg); }
+}
+
+
 
 .filter-options {
     display: flex;
@@ -474,7 +506,13 @@ input[type="checkbox"]:focus {
 }
 
 .task-options > * {
+    border-radius: 0.6rem;
+    padding: 0.25rem;
     cursor: pointer;
+}
+
+.task-options > *:hover {
+    background-color: var(--button-hover-background);
 }
 
 .task-options-icon:active {
@@ -519,6 +557,10 @@ input[type="checkbox"]:focus {
     min-width: 100%;
     min-height: 100%;
     z-index: 1;
+}
+
+.modal:focus {
+    outline: none;
 }
 
 .modal-cont {

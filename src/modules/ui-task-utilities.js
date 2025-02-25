@@ -1,8 +1,8 @@
 import { findByID, determineTaskType } from "./task-utility-functions.js";
-import * as removeTask from "./task-removal.js";
 import { buildElement } from "./dom-manipulator.js";
 import { differenceInHours } from "../../node_modules/date-fns";
-import { deletionConfirmationModal } from "./confirmation-modals.js";
+import { deletionConfirmationModalInteractivity } from "./confirmation-modals.js";
+import { taskInformationModalInteractivity } from "./task-modals.js";
 
 // Finds the tab container of a given element within the tab
 function findTabCont(element) {
@@ -67,11 +67,6 @@ export function createNoScheduledTasksMsg(tabCont, msgType) {
     tabCont.appendChild(msgCont);
 }
 
-// Open a modal with the task's information (uneditable fields)
-function openTaskModal(task) {
-    console.log("modal", task);
-}
-
 // Open a modal with the task's information (editable fields)
 function editTaskUI(task) {
     console.log("edit", task);
@@ -101,42 +96,6 @@ function completeTaskUI(task, taskCont) {
     }
 }
 
-// Deletes the task & plays an animation
-function deleteTaskUI(task, taskCont) {
-    const taskType = determineTaskType(task)
-    removeTask.removeFromTaskCollection(task.id, taskType);
-
-    taskCont.classList.add("deleted-animation");
-    setTimeout(() => { taskCont.remove() }, 600);
-}
-
-function showDeletionConfirmationModal(task, taskCont) {
-    const deletionModal = deletionConfirmationModal(task.title);
-
-    
-    document.body.prepend(deletionModal);
-
-    deletionModal.addEventListener("click", (e) => {
-        const target = e.target;
-
-        if (!target.classList.contains("deletion-confirmation-button")) {
-            return;
-        }
-
-        if (target.classList.contains("cancel-button")) {
-            deletionModal.children[0].classList.add("close-modal-animation");
-            setTimeout(() => { deletionModal.remove(); }, 300);
-            return;
-        }
-        else if (target.classList.contains("confirm-button")) {
-            deletionModal.children[0].classList.add("close-modal-animation");
-            setTimeout(() => { deletionModal.remove(); }, 300);
-            deleteTaskUI(task, taskCont);
-            return;
-        }
-    });
-}
-
 export function taskContEventListeners(taskCont) {
     taskCont.addEventListener("click", (e) => {
         const target = e.target;
@@ -147,15 +106,15 @@ export function taskContEventListeners(taskCont) {
             || targetClassList.contains("dated-task-time-text") || targetClassList.contains("clock-icon")) {
 
             if (targetClassList.contains("task-cont")) {
-                openTaskModal(findByID(target.id));
+                taskInformationModalInteractivity(findByID(target.id));
                 return;
             }
             else if (targetClassList.contains("task-title") || targetClassList.contains("dated-task-time-cont")) {
-                openTaskModal(findByID(target.parentNode.parentNode.id));
+                taskInformationModalInteractivity(findByID(target.parentNode.parentNode.id));
                 return;
             }
             else {
-                openTaskModal(findByID(target.parentNode.parentNode.parentNode.id));
+                taskInformationModalInteractivity(findByID(target.parentNode.parentNode.parentNode.id));
                 return;
             }
 
@@ -167,7 +126,7 @@ export function taskContEventListeners(taskCont) {
                 return;
             }
             if (target.classList.contains("delete-task")) {
-                showDeletionConfirmationModal(findByID(target.parentNode.parentNode.id), target.parentNode.parentNode);
+                deletionConfirmationModalInteractivity(findByID(target.parentNode.parentNode.id), target.parentNode.parentNode);
                 return;
             }
         }
@@ -189,6 +148,14 @@ export function resetChooseOneFilterSelection(filterCont) {
     })
 }
 
+export function resetAllFilterChoices(filterCont) {
+    const filtersArray = Array.from(filterCont.children);
+
+    filtersArray.forEach((filter) => {
+        filter.classList.remove("active-filter");
+    })
+}
+
 // Decides how to color the time of a task
 export function checkDueStatus(deadline) {
 
@@ -201,4 +168,19 @@ export function checkDueStatus(deadline) {
     else if (differenceInHours(deadline, new Date()) <= 0) {
         return "past-due";
     }
+}
+
+export function refreshTabEvent(button, contToDeleteClass, generationFunction, tabCont) {
+    button.addEventListener("click", () => {
+        button.classList.add("rotate-refresh");
+        setTimeout(() => { button.classList.remove("rotate-refresh"); }, 600);
+
+        const contToDelete = document.querySelector(contToDeleteClass);
+        if (contToDelete !== null) {
+            contToDelete.remove();
+        }
+
+        resetAllFilterChoices(getFilterOptionsCont(findTabCont(button)))
+        generationFunction(tabCont);
+    });
 }

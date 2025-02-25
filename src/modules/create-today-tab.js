@@ -1,12 +1,13 @@
 import { getTodayTasks } from "./task-utility-functions.js";
 import { getTaskTime } from "./misc-utilities.js";
 import { buildElement } from "./dom-manipulator.js";
-import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus } from "./ui-task-utilities.js";
+import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus, refreshTabEvent } from "./ui-task-utilities.js";
 import { priorityFirst, latestTodayFirst } from "./filter-tasks.js";
 
 import clockSvg from "../images/Clock.svg"
 import editSvg from "../images/Edit.svg";
 import deleteSvg from "../images/Delete.svg";
+import refreshSvg from "../images/Refresh.svg";
 
 function showCompletedTasksToday(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
@@ -192,10 +193,20 @@ function getTodayDate() {
 function createTodayTabHeader(tabCont) {
     const todayDate = getTodayDate();
 
+    const tabHeaderCont = buildElement("div", "today-tab-header-cont");
+
     const tabHeader = buildElement("h1", "today-tab-header");
     tabHeader.textContent = "Today - " + todayDate;
 
-    tabCont.appendChild(tabHeader);
+    const refreshIcon = buildElement("img", "refresh-icon");
+    refreshIcon.src = refreshSvg;
+    refreshIcon.alt = "Refresh";
+    refreshTabEvent(refreshIcon, ".tasks-today-cont", createTodayTabTasks, tabCont);
+
+    tabHeaderCont.appendChild(tabHeader);
+    tabHeaderCont.appendChild(refreshIcon);
+
+    tabCont.appendChild(tabHeaderCont);
 }
 
 function createTodayFilterOptions(tabCont) {

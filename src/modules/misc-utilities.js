@@ -40,7 +40,7 @@ export function getTaskDay(deadline) {
 export function getTaskMonth(deadline) {
     const deadlineMonth = getMonth(deadline);
 
-    switch (dayOfTheWeek) {
+    switch (deadlineMonth) {
         case 0:
             return "January";
 
