@@ -367,20 +367,20 @@ input[type="checkbox"]:focus {
 
 /* Today Tab Styles */
 
-.today-tab-header-cont {
+.tab-header-cont {
     display: flex;
     align-items: center;
     gap: 1.25rem;
     margin-bottom: 2rem;
 }
 
-.today-tab-header {
+.tab-header {
     font-style: italic;
 }
 
 .refresh-icon {
     border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-    padding: 0.25rem;
+    padding: 0.35rem;
     opacity: 0.75;
     cursor: pointer;
 }
@@ -391,16 +391,14 @@ input[type="checkbox"]:focus {
 }
 
 .rotate-refresh {
-    animation: rotate-refresh 0.5s steps(20, end) forwards;
+    animation: rotate-refresh 0.4s steps(20, end) forwards;
     opacity: 1;
 }
 
 @keyframes rotate-refresh {
     from { transform: rotate(0deg); }
-    to { transform: rotate(720deg); }
+    to { transform: rotate(360deg); }
 }
-
-
 
 .filter-options {
     display: flex;
@@ -468,7 +466,7 @@ input[type="checkbox"]:focus {
     font-size: 1.05rem;
 }
 
-.dated-task-time-cont {
+.dated-task-time-cont, .dated-task-full-date-cont {
     display: flex;
     align-items: center;
     gap: 0.2rem;
@@ -478,6 +476,12 @@ input[type="checkbox"]:focus {
     opacity: 0.85;
     font-size: 0.875rem;
     font-weight: 500;
+}
+
+.dated-task-full-date-text {
+    opacity: 0.75;
+    font-size: 0.825rem;
+    font-weight: 400;
 }
 
 .clock-icon {
@@ -644,10 +648,11 @@ input[type="checkbox"]:focus {
 /* Information Modals Styles */
 
 .task-info-modal {
-    top: 35%;
+    top: 45%;
 
     min-width: 45ch;
-    max-width: 55ch;
+    max-width: 65ch;
+    max-height: 80svh;
 
     background: rgba(43,43,44,0.55);
     -webkit-backdrop-filter: blur(5px);
@@ -680,7 +685,12 @@ input[type="checkbox"]:focus {
 }
 
 .task-info-description {
-    line-height: 1.8;
+    font-size: 0.875rem;
+    padding: 0.25rem;
+    line-height: 1.75;
+
+    max-height: 65svh;
+    overflow: auto;
 }
 
 .close-modal-icon {

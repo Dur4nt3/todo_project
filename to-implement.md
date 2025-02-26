@@ -24,7 +24,11 @@
 
 - Create a confirmation modal when deleting tasks - *COMPLETE*
 
-- Create a "refresh" utility for every tab to regenerate the contents of the tab (without reloading the window)
+- Create a "refresh" utility for every tab to regenerate the contents of the tab (without reloading the window) - *COMPLETE*
+
+- Add a pop-up for the "refresh" utility explaining it refreshes the current tab
+
+- Decide whether to incorporate a custom scrollbar
 
 - Task modals:
 

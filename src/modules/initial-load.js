@@ -1,6 +1,7 @@
 import { generateGroupList } from "./create-groups-cont.js";
-import { createTodayTab } from "./create-today-tab.js";
+import generateAllTabs from "./generate-all-tabs.js";
 import { hide } from "./dom-manipulator.js";
+import { makeActive } from "./change-tabs.js";
 
 function hideNonDefaultTabs(defaultTabContClass) {
     const mainCont = document.querySelector(".main-cont");
@@ -19,6 +20,7 @@ function hideNonDefaultTabs(defaultTabContClass) {
 
 export default function initialLoad() {
     generateGroupList();
-    hideNonDefaultTabs("today-tab-cont");
-    createTodayTab();
+    hideNonDefaultTabs("past-due-tab-cont");
+    makeActive(document.querySelector(".past-due-cont"));
+    generateAllTabs();
 }

@@ -39,26 +39,32 @@ export function createNoScheduledTasksMsg(tabCont, msgType) {
 
     switch (msgType) {
         case "today":
+            msgCont.classList.add("no-tasks-today-msg");
             msgCont.textContent = "No tasks scheduled for today";
             break;
         
         case "upcoming":
+            msgCont.classList.add("no-upcoming-tasks-msg");
             msgCont.textContent = "No upcoming tasks";
             break;
         
         case "past-due":
+            msgCont.classList.add("no-past-due-tasks-msg");
             msgCont.textContent = "No past due tasks";
             break;
 
         case "completed":
+            msgCont.classList.add("no-completed-tasks-msg");
             msgCont.textContent = "No completed tasks";
             break;
 
         case "all":
+            msgCont.classList.add("no-tasks-msg");
             msgCont.textContent = "No tasks";
             break;
         
         default:
+            msgCont.classList.add("no-tasks-msg");
             msgCont.textContent = "No tasks";
             break;
     }
@@ -79,7 +85,11 @@ function completeTaskUI(task, taskCont) {
         return;
     }
     
-    const includeCompleted = (getFilterOptionsCont(findTabCont(taskCont))).querySelector(".show-completed").classList.contains("active-filter");
+    let includeCompleted = false
+    if ((getFilterOptionsCont(findTabCont(taskCont))).querySelector(".show-completed") !== null) {
+        includeCompleted = (getFilterOptionsCont(findTabCont(taskCont))).querySelector(".show-completed").classList.contains("active-filter");
+    }
+
 
     // Completing a task when the "Show Completed" filter is off
     if (task.completionStatus === false && !includeCompleted) {
@@ -96,20 +106,32 @@ function completeTaskUI(task, taskCont) {
     }
 }
 
+const modalOpeningClasses = ["task-title", "task-cont", "dated-task-time-cont", "dated-task-full-date-cont",
+    "dated-task-time-text", "dated-task-full-date-text", "clock-icon"]
+
 export function taskContEventListeners(taskCont) {
     taskCont.addEventListener("click", (e) => {
         const target = e.target;
         const targetClassList = target.classList;
+        const targetClassListArray = Array.from(target.classList);
+
+        let openModal = false;
+        for (let index in targetClassListArray) {
+            if (modalOpeningClasses.includes(targetClassListArray[index])) {
+                openModal = true;
+                break;
+            }
+        }
 
         // Elements that when clicked should open the task's modal
-        if (targetClassList.contains("task-title") || targetClassList.contains("task-cont") || targetClassList.contains("dated-task-time-cont")
-            || targetClassList.contains("dated-task-time-text") || targetClassList.contains("clock-icon")) {
+        if (openModal) {
 
             if (targetClassList.contains("task-cont")) {
                 taskInformationModalInteractivity(findByID(target.id));
                 return;
             }
-            else if (targetClassList.contains("task-title") || targetClassList.contains("dated-task-time-cont")) {
+            else if (targetClassList.contains("task-title") || targetClassList.contains("dated-task-time-cont")
+                || targetClassList.contains("dated-task-full-date-cont")) {
                 taskInformationModalInteractivity(findByID(target.parentNode.parentNode.id));
                 return;
             }
@@ -149,6 +171,10 @@ export function resetChooseOneFilterSelection(filterCont) {
 }
 
 export function resetAllFilterChoices(filterCont) {
+    if (filterCont === null) {
+        return;
+    }
+
     const filtersArray = Array.from(filterCont.children);
 
     filtersArray.forEach((filter) => {

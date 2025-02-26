@@ -1,4 +1,4 @@
-import { add as increaseDate, getYear, getMonth, getDate, getDay } from "../../node_modules/date-fns";
+import { add as increaseDate, getYear, getMonth, getDate, isSameDay } from "../../node_modules/date-fns";
 
 // stores information about tasks and tasks groups
 const taskCollection = {};
@@ -164,7 +164,7 @@ export function getTodayTasks(filterOn = true) {
                 continue;
             }
 
-            if (getDate(task.deadline) === getDate(new Date())) {
+            if (isSameDay(new Date(), new Date(task.deadline))) {
                 todayTasks.push(task);
             }
         }
@@ -172,6 +172,55 @@ export function getTodayTasks(filterOn = true) {
 
     return todayTasks;
 }
+
+// Get all past-due tasks (uncompleted tasks that are at least one calender day behind the current date)
+export function getPastDueTasks() {
+    let pastDueTasks = [];
+
+    const currentYear = getYear(new Date());
+    const currentMonth = getMonth(new Date());
+    const currentDate = getDate(new Date());
+
+    for (let taskType in taskCollection) {
+        // No need to cycle over non-dated tasks
+        if (taskType === "basic" || taskType === "grouped") {
+            continue;
+        }
+
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+
+            let taskYear = getYear(task.deadline);
+            let taskMonth = getMonth(task.deadline);
+            let taskDate = getDate(task.deadline);
+
+            if (task.completionStatus === true) {
+                continue;
+            }
+
+            if (currentYear >= taskYear) {
+                if (currentYear > taskYear) {
+                    pastDueTasks.push(task);
+                    continue;
+                }
+                else if (currentMonth > taskMonth) {
+                    pastDueTasks.push(task);
+                    continue;
+                }
+                else if (currentMonth < taskMonth) {
+                    continue;
+                }
+                else if (currentDate > taskDate) {
+                    pastDueTasks.push(task);
+                    continue;
+                }
+            }
+        }
+    }
+
+    return pastDueTasks;
+}
+
 
 // Task-Specific Utility Functions (Grouped Tasks):
 export function updateGroups(groupName, obj, oldGroup = null) {
