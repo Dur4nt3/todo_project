@@ -1,8 +1,7 @@
-import { ta } from "date-fns/locale";
 import { hide, show } from "./dom-manipulator.js";
 
 // Apply CSS styling to indicate the active tab
-function makeActive(tab) {
+export function makeActive(tab) {
     const functionalitiesCont = tab.parentNode;
     const functionalitiesChildrenArray = Array.from(functionalitiesCont.children);
 

@@ -1,4 +1,4 @@
-import { getMonth, getDate, getDay } from "../../node_modules/date-fns";
+import { getMonth, getDate, getDay, getYear } from "../../node_modules/date-fns";
 
 // Get specific time of the task (only relevant for not all-day tasks)
 export function getTaskTime(task) {
@@ -83,6 +83,9 @@ export function getTaskDateTextFormat(deadline) {
     const taskDate = getDate(deadline);
     const taskMonth = getTaskMonth(deadline);
     const taskDay = getTaskDay(deadline);
+    const taskYear = ", " + getYear(deadline);
 
-    return taskDay + ", " + taskMonth + " " + taskDate;
+
+
+    return taskDay + ", " + taskMonth + " " + taskDate + taskYear;
 }

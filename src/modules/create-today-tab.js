@@ -2,7 +2,7 @@ import { getTodayTasks } from "./task-utility-functions.js";
 import { getTaskTime } from "./misc-utilities.js";
 import { buildElement } from "./dom-manipulator.js";
 import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus, refreshTabEvent } from "./ui-task-utilities.js";
-import { priorityFirst, latestTodayFirst } from "./filter-tasks.js";
+import { priorityFirst, latestFirst } from "./filter-tasks.js";
 
 import clockSvg from "../images/Clock.svg"
 import editSvg from "../images/Edit.svg";
@@ -11,7 +11,7 @@ import refreshSvg from "../images/Refresh.svg";
 
 function showCompletedTasksToday(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
-    const noMsg = document.querySelector(".no-scheduled-tasks-msg");
+    const noMsg = document.querySelector(".no-tasks-today-msg");
 
     // Check if there are no tasks
     if (todayTaskCont === null) {
@@ -24,7 +24,7 @@ function showCompletedTasksToday(filterButton, directClick = false) {
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
-            document.querySelector(".no-scheduled-tasks-msg").remove();
+            document.querySelector(".no-tasks-today-msg").remove();
         }
     }
 
@@ -70,7 +70,7 @@ function showCompletedTasksToday(filterButton, directClick = false) {
 
 function filterByPriority(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
-    const noMsg = document.querySelector(".no-scheduled-tasks-msg");
+    const noMsg = document.querySelector(".no-tasks-today-msg");
 
     // Check if there are no tasks
     if (todayTaskCont === null) {
@@ -83,7 +83,7 @@ function filterByPriority(filterButton, directClick = false) {
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
-            document.querySelector(".no-scheduled-tasks-msg").remove();
+            document.querySelector(".no-tasks-today-msg").remove();
         }
     }
 
@@ -116,7 +116,7 @@ function filterByPriority(filterButton, directClick = false) {
 
 function filterByTime(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
-    const noMsg = document.querySelector(".no-scheduled-tasks-msg");
+    const noMsg = document.querySelector(".no-tasks-today-msg");
 
     // Check if there are no tasks
     if (todayTaskCont === null) {
@@ -129,7 +129,7 @@ function filterByTime(filterButton, directClick = false) {
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
-            document.querySelector(".no-scheduled-tasks-msg").remove();
+            document.querySelector(".no-tasks-today-msg").remove();
         }
     }
 
@@ -154,7 +154,7 @@ function filterByTime(filterButton, directClick = false) {
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
     // Using ! because the function takes the argument "filterOn" (i.e., filter completed tasks) which is false if we're showing completed tasks 
-    const taskList = latestTodayFirst(getTodayTasks(!includeCompleted));
+    const taskList = latestFirst(getTodayTasks(!includeCompleted));
 
     createTodayTabTasks(document.querySelector(".today-tab-cont"), taskList);
 }
@@ -193,9 +193,9 @@ function getTodayDate() {
 function createTodayTabHeader(tabCont) {
     const todayDate = getTodayDate();
 
-    const tabHeaderCont = buildElement("div", "today-tab-header-cont");
+    const tabHeaderCont = buildElement("div", "today-tab-header-cont", "tab-header-cont");
 
-    const tabHeader = buildElement("h1", "today-tab-header");
+    const tabHeader = buildElement("h1", "today-tab-header", "tab-header");
     tabHeader.textContent = "Today - " + todayDate;
 
     const refreshIcon = buildElement("img", "refresh-icon");
@@ -248,7 +248,11 @@ function createTodayTabTasks(tabCont, filter = false) {
         if (filterCont !== null && getTodayTasks(false).length === 0) {
             filterCont.remove();
         }
-        createNoScheduledTasksMsg(tabCont, "today");
+
+        if (document.querySelector(".no-tasks-today-msg") === null) {
+            createNoScheduledTasksMsg(tabCont, "today");
+        }
+
         return;
     }
 
