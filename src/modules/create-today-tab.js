@@ -1,8 +1,9 @@
-import { getTodayTasks } from "./task-utility-functions.js";
+import { getTodayTasks } from "./fetch-tasks.js";
 import { getTaskTime } from "./misc-utilities.js";
 import { buildElement } from "./dom-manipulator.js";
+import { completedPriorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus, refreshTabEvent } from "./ui-task-utilities.js";
-import { priorityFirst, latestFirst } from "./filter-tasks.js";
+import { priorityFirst, earliestFirst } from "./filter-tasks.js";
 
 import clockSvg from "../images/Clock.svg"
 import editSvg from "../images/Edit.svg";
@@ -24,7 +25,7 @@ function showCompletedTasksToday(filterButton, directClick = false) {
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
-            document.querySelector(".no-tasks-today-msg").remove();
+            noMsg.remove();
         }
     }
 
@@ -83,7 +84,7 @@ function filterByPriority(filterButton, directClick = false) {
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
         else if (noMsg !== null) {
-            document.querySelector(".no-tasks-today-msg").remove();
+            noMsg.remove();
         }
     }
 
@@ -154,7 +155,7 @@ function filterByTime(filterButton, directClick = false) {
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
     // Using ! because the function takes the argument "filterOn" (i.e., filter completed tasks) which is false if we're showing completed tasks 
-    const taskList = latestFirst(getTodayTasks(!includeCompleted));
+    const taskList = earliestFirst(getTodayTasks(!includeCompleted));
 
     createTodayTabTasks(document.querySelector(".today-tab-cont"), taskList);
 }
@@ -198,13 +199,15 @@ function createTodayTabHeader(tabCont) {
     const tabHeader = buildElement("h1", "today-tab-header", "tab-header");
     tabHeader.textContent = "Today - " + todayDate;
 
+    const refreshIconCont = buildElement("div", "refresh-icon-cont");
     const refreshIcon = buildElement("img", "refresh-icon");
     refreshIcon.src = refreshSvg;
     refreshIcon.alt = "Refresh";
     refreshTabEvent(refreshIcon, ".tasks-today-cont", createTodayTabTasks, tabCont);
+    refreshIconCont.appendChild(refreshIcon);
 
     tabHeaderCont.appendChild(tabHeader);
-    tabHeaderCont.appendChild(refreshIcon);
+    tabHeaderCont.appendChild(refreshIconCont);
 
     tabCont.appendChild(tabHeaderCont);
 }
@@ -214,20 +217,7 @@ function createTodayFilterOptions(tabCont) {
         return;
     }
 
-    const filterOptionsCont = buildElement("div", "filter-options");
-
-    const showCompleted = buildElement("p", "show-completed");
-    showCompleted.textContent = "Show Completed";
-
-    const filterPriority = buildElement("p", "filter-priority", "choose-one");
-    filterPriority.textContent = "Filter by Priority";
-
-    const filterTime = buildElement("p", "filter-time", "choose-one");
-    filterTime.textContent = "Filter by Time";
-
-    filterOptionsCont.appendChild(showCompleted);
-    filterOptionsCont.appendChild(filterPriority);
-    filterOptionsCont.appendChild(filterTime);
+    const filterOptionsCont = completedPriorityAndTimeFilterCont();
 
     todayFilterEvent(filterOptionsCont);
 

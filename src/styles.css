@@ -56,6 +56,10 @@ body {
 /* Sidebar Header Styles */
 
 .sidebar-cont {
+    max-height: 100svh;
+    position: sticky;
+    top: 0;
+
     padding: 0.65rem 0.25rem 0rem 1rem;
     border-right: 1px solid #1e1e20;
 
@@ -378,11 +382,35 @@ input[type="checkbox"]:focus {
     font-style: italic;
 }
 
+.refresh-icon-cont {
+    position: relative;
+}
+
+.refresh-icon-cont::before {
+    content: "Refresh Tab";
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    position: absolute;
+    white-space: nowrap;
+    top: 20%;
+    left: 117.5%;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+}
+
+.refresh-icon-cont:hover::before {
+    opacity: 1;
+}
+
 .refresh-icon {
     border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
     padding: 0.35rem;
     opacity: 0.75;
     cursor: pointer;
+    position: relative;
 }
 
 .refresh-icon:hover {
@@ -721,4 +749,3 @@ input[type="checkbox"]:focus {
 /*-----------------------------------------------------------------------*/
 
 /* Modal Styles */
-
