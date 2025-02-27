@@ -175,25 +175,11 @@ export function resetAllFilterChoices(filterCont) {
         return;
     }
 
-    const filtersArray = Array.from(filterCont.children);
-
+    const filtersArray = Array.from(filterCont.querySelector(".filter-types").children);
+    
     filtersArray.forEach((filter) => {
         filter.classList.remove("active-filter");
     })
-}
-
-// Decides how to color the time of a task
-export function checkDueStatus(deadline) {
-
-    if (differenceInHours(deadline, new Date()) > 1) {
-        return "due";
-    }
-    else if (differenceInHours(deadline, new Date()) <= 1 && differenceInHours(deadline, new Date()) > 0) {
-        return "due-soon";
-    }
-    else if (differenceInHours(deadline, new Date()) <= 0) {
-        return "past-due";
-    }
 }
 
 export function refreshTabEvent(button, contToDeleteClass, generationFunction, tabCont) {
@@ -209,4 +195,26 @@ export function refreshTabEvent(button, contToDeleteClass, generationFunction, t
         resetAllFilterChoices(getFilterOptionsCont(findTabCont(button)))
         generationFunction(tabCont);
     });
+}
+
+export function clearTab(tabCont, fetchTasksFunction, fetchArgs = null, noMsgCont, noMsgType) {
+    const filterCont = getFilterOptionsCont(tabCont);
+    let taskList;
+    if (fetchArgs === null) {
+        taskList = fetchTasksFunction();
+    }
+    else {
+        taskList = fetchTasksFunction(fetchArgs);
+    }
+
+
+    if (filterCont !== null && taskList.length === 0) {
+        filterCont.remove();
+    }
+
+    if (noMsgCont === null) {
+        createNoScheduledTasksMsg(tabCont, noMsgType);
+    }
+    
+    return;
 }

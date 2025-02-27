@@ -56,6 +56,10 @@ body {
 /* Sidebar Header Styles */
 
 .sidebar-cont {
+    max-height: 100svh;
+    position: sticky;
+    top: 0;
+
     padding: 0.65rem 0.25rem 0rem 1rem;
     border-right: 1px solid #1e1e20;
 
@@ -378,11 +382,35 @@ input[type="checkbox"]:focus {
     font-style: italic;
 }
 
+.refresh-icon-cont {
+    position: relative;
+}
+
+.refresh-icon-cont::before {
+    content: "Refresh Tab";
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    position: absolute;
+    white-space: nowrap;
+    top: 20%;
+    left: 117.5%;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+}
+
+.refresh-icon-cont:hover::before {
+    opacity: 1;
+}
+
 .refresh-icon {
     border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
     padding: 0.35rem;
     opacity: 0.75;
     cursor: pointer;
+    position: relative;
 }
 
 .refresh-icon:hover {
@@ -401,21 +429,66 @@ input[type="checkbox"]:focus {
 }
 
 .filter-options {
+    height: 3rem;
     display: flex;
-    gap: 1rem;
-    opacity: 0.15;
+    align-items: center;
+    gap: 0.25rem;
     margin-bottom: 1.25rem;
 }
 
-.filter-options:hover {
+.filter-types {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0.15;
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-types:hover {
     opacity: 1;
 }
 
-.filter-options > * {
+.filter-types > * {
     padding: 0.35rem;
     border-radius: 1rem;
     cursor: pointer;
 }
+
+.filter-options > img {
+    cursor: pointer;
+}
+
+.filter-options > img:active {
+    opacity: 0.75;
+}
+
+.hidden-filters {
+    display: none;
+}
+
+.hidden-filters > * {
+    transform: translateX(-60ch);
+}
+
+.hide-filters > * {
+    animation: hide-filters 0.4s steps(15, end) forwards;
+}
+
+@keyframes hide-filters {
+    from { transform: translateX(0); opacity: 1;}
+    to { transform: translateX(-300%); opacity: 0;}
+}
+
+.show-filters > * {
+    animation: show-filters 0.4s steps(15, end) forwards;
+}
+
+@keyframes show-filters {
+    from { transform: translateX(-300%);}
+    to { transform: translateX(0);}
+}
+
 
 .active-filter {
     background-color: var(--accent-color);
@@ -721,4 +794,3 @@ input[type="checkbox"]:focus {
 /*-----------------------------------------------------------------------*/
 
 /* Modal Styles */
-

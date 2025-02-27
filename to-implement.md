@@ -26,9 +26,7 @@
 
 - Create a "refresh" utility for every tab to regenerate the contents of the tab (without reloading the window) - *COMPLETE*
 
-- Add a pop-up for the "refresh" utility explaining it refreshes the current tab
-
-- Decide whether to incorporate a custom scrollbar
+- Add animation to filter container - *COMPLETE*
 
 - Task modals:
 
@@ -49,4 +47,4 @@ Settings will be saved to the localStorage using a JSON object with settings as 
 
     3) Modal Coloring: Based on priority | light gray regardless of priority
 
-
+**Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal**
