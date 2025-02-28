@@ -1,12 +1,10 @@
-import { getCompletedTasks, getPastDueTasks } from "./fetch-tasks.js";
-import { getTaskTime, getTaskDateTextFormat } from "./misc-utilities.js";
+import { getCompletedTasks } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, refreshTabEvent } from "./ui-task-utilities.js";
 import { priorityFirst, earliestFirst } from "./filter-tasks.js";
+import { generalTaskCont } from "./build-task-cont.js";
 
-import editSvg from "../images/Edit.svg";
-import deleteSvg from "../images/Delete.svg";
 import refreshSvg from "../images/Refresh.svg";
 
 function filterByPriorityCompleted(filterButton, directClick = false) {
@@ -98,7 +96,7 @@ function completedFilterEvent(filterCont) {
         if (target.classList.contains("filter-priority")) {
             filterByPriorityCompleted(target, true);
         }
-        else {
+        else if (target.classList.contains("filter-time")) {
             filterByTimeCompleted(target, true);
         }
     });
@@ -161,65 +159,7 @@ function createCompletedTabTasks(tabCont, filter = false) {
         for (let taskIndex in completedTasks) {
             let task = completedTasks[taskIndex];
     
-            let priorityClass = "priority-one";
-    
-            if (task.priority === 2) {
-                priorityClass = "priority-two";
-            }
-            else if (task.priority === 3) {
-                priorityClass = "priority-three";
-            }
-    
-            let taskCont = buildElement("div", "task-cont", priorityClass);
-            taskCont.id = task.id;
-    
-            let checkbox = buildElement("input", "complete-task");
-            checkbox.type = "checkbox";
-            checkbox.checked = true;
-    
-            let taskInfo = buildElement("div", "task-info");
-    
-            let taskTitle = buildElement("div", "task-title");
-            taskTitle.textContent = task.title;
-    
-            taskInfo.appendChild(taskTitle);
-    
-            if (!(task.deadline === undefined)) {
-                let taskDateCont = buildElement("div", "dated-task-full-date-cont");
-        
-                let taskDateText = buildElement("p", "dated-task-full-date-text");
-                taskDateText.textContent = getTaskDateTextFormat(task.deadline);
-        
-                taskDateCont.appendChild(taskDateText);
-        
-                if(!task.allDay) {
-                    let taskTime = buildElement("p", "dated-task-full-date-text");
-                    taskTime.textContent = "at " + getTaskTime(task);
-        
-                    taskDateCont.appendChild(taskTime);
-                }
-        
-                taskInfo.appendChild(taskDateCont);
-            }
-
-            let taskOptions = buildElement("div", "task-options");
-    
-            let editIcon = buildElement("img", "task-options-icon", "edit-task");
-            let deleteIcon = buildElement("img", "task-options-icon", "delete-task");
-    
-            editIcon.src = editSvg;
-            editIcon.alt = "Edit Task";
-    
-            deleteIcon.src = deleteSvg;
-            deleteIcon.alt = "Delete Task";
-    
-            taskOptions.appendChild(editIcon);
-            taskOptions.appendChild(deleteIcon);
-    
-            taskCont.appendChild(checkbox);
-            taskCont.appendChild(taskInfo);
-            taskCont.appendChild(taskOptions);
-    
+            let taskCont = generalTaskCont(task);
             taskContEventListeners(taskCont);
     
             completedCont.appendChild(taskCont);

@@ -26,6 +26,8 @@
 
 - Create a "refresh" utility for every tab to regenerate the contents of the tab (without reloading the window) - *COMPLETE*
 
+- Add animation to filter container - *COMPLETE*
+
 - Task modals:
 
     1) Type 1 - Not Editable: Modals that include a task's information but don't include an option to edit the task's details - *COMPLETE*

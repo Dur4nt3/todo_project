@@ -1,14 +1,11 @@
 import { getTodayTasks } from "./fetch-tasks.js";
-import { getTaskTime } from "./misc-utilities.js";
 import { buildElement } from "./dom-manipulator.js";
 import { completedPriorityAndTimeFilterCont } from "./build-filter-cont.js";
-import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, checkDueStatus, refreshTabEvent } from "./ui-task-utilities.js";
+import { todayTaskCont } from "./build-task-cont.js";
+import { todayTabHeader } from "./build-tab-header.js";
+import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont,
+    createNoScheduledTasksMsg, refreshTabEvent } from "./ui-task-utilities.js";
 import { priorityFirst, earliestFirst } from "./filter-tasks.js";
-
-import clockSvg from "../images/Clock.svg"
-import editSvg from "../images/Edit.svg";
-import deleteSvg from "../images/Delete.svg";
-import refreshSvg from "../images/Refresh.svg";
 
 function showCompletedTasksToday(filterButton, directClick = false) {
     const todayTaskCont = document.querySelector(".tasks-today-cont");
@@ -168,49 +165,18 @@ function todayFilterEvent(filterCont) {
         if (target.classList.contains("filter-options")) {
             return;
         }
-
         if (target.classList.contains("show-completed")) {
             showCompletedTasksToday(target, true);
         }
         else if (target.classList.contains("filter-priority")) {
             filterByPriority(target, true);
         }
-        else {
+        else if (target.classList.contains("filter-time")) {
             filterByTime(target, true);
         }
     });
 }
 
-
-function getTodayDate() {
-    let fullDate = new Date();
-
-    let formattedDate = fullDate.getDate() + "." + (fullDate.getMonth() + 1) + "." + fullDate.getFullYear();
-
-    return formattedDate;
-}
-
-
-function createTodayTabHeader(tabCont) {
-    const todayDate = getTodayDate();
-
-    const tabHeaderCont = buildElement("div", "today-tab-header-cont", "tab-header-cont");
-
-    const tabHeader = buildElement("h1", "today-tab-header", "tab-header");
-    tabHeader.textContent = "Today - " + todayDate;
-
-    const refreshIconCont = buildElement("div", "refresh-icon-cont");
-    const refreshIcon = buildElement("img", "refresh-icon");
-    refreshIcon.src = refreshSvg;
-    refreshIcon.alt = "Refresh";
-    refreshTabEvent(refreshIcon, ".tasks-today-cont", createTodayTabTasks, tabCont);
-    refreshIconCont.appendChild(refreshIcon);
-
-    tabHeaderCont.appendChild(tabHeader);
-    tabHeaderCont.appendChild(refreshIconCont);
-
-    tabCont.appendChild(tabHeaderCont);
-}
 
 function createTodayFilterOptions(tabCont) {
     if (getTodayTasks(false).length === 0) {
@@ -223,6 +189,15 @@ function createTodayFilterOptions(tabCont) {
 
     tabCont.appendChild(filterOptionsCont);
 }
+
+function createTodayTabHeader(tabCont) {
+    const tabHeaderCont = todayTabHeader();
+
+    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".tasks-today-cont", createTodayTabTasks, tabCont);
+
+    tabCont.appendChild(tabHeaderCont);
+}
+
 
 function createTodayTabTasks(tabCont, filter = false) {
     let todayTasks;
@@ -251,67 +226,7 @@ function createTodayTabTasks(tabCont, filter = false) {
     for (let taskIndex in todayTasks) {
         let task = todayTasks[taskIndex];
 
-        let priorityClass = "priority-one";
-
-        if (task.priority === 2) {
-            priorityClass = "priority-two";
-        }
-        else if (task.priority === 3) {
-            priorityClass = "priority-three";
-        }
-
-        let taskCont = buildElement("div", "task-cont", priorityClass);
-        taskCont.id = task.id;
-
-        let checkbox = buildElement("input", "complete-task");
-        checkbox.type = "checkbox";
-
-        if (task.completionStatus === true) {
-            checkbox.checked = true;
-        }
-
-        let taskInfo = buildElement("div", "task-info");
-
-        let taskTitle = buildElement("div", "task-title");
-        taskTitle.textContent = task.title;
-
-        taskInfo.appendChild(taskTitle);
-
-        if(!task.allDay) {
-            let dueStatus = checkDueStatus(task.deadline);
-            let taskTimeCont = buildElement("div", "dated-task-time-cont");
-
-            let taskTime = buildElement("p", "dated-task-time-text", dueStatus);
-            taskTime.textContent = getTaskTime(task);
-
-            let clockIcon = buildElement("img", "clock-icon");
-            clockIcon.src = clockSvg;
-            clockIcon.alt = "Due Time";
-
-            taskTimeCont.appendChild(taskTime);
-            taskTimeCont.appendChild(clockIcon);
-
-            taskInfo.appendChild(taskTimeCont);
-        }
-
-        let taskOptions = buildElement("div", "task-options");
-
-        let editIcon = buildElement("img", "task-options-icon", "edit-task");
-        let deleteIcon = buildElement("img", "task-options-icon", "delete-task");
-
-        editIcon.src = editSvg;
-        editIcon.alt = "Edit Task";
-
-        deleteIcon.src = deleteSvg;
-        deleteIcon.alt = "Delete Task";
-
-        taskOptions.appendChild(editIcon);
-        taskOptions.appendChild(deleteIcon);
-
-        taskCont.appendChild(checkbox);
-        taskCont.appendChild(taskInfo);
-        taskCont.appendChild(taskOptions);
-
+        let taskCont = todayTaskCont(task);
         taskContEventListeners(taskCont);
 
         tasksTodayCont.appendChild(taskCont);

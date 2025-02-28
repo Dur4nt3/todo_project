@@ -1,13 +1,10 @@
 import { getPastDueTasks } from "./fetch-tasks.js";
-import { getTaskTime, getTaskDateTextFormat } from "./misc-utilities.js";
 import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
+import { generalTaskCont } from "./build-task-cont.js";
+import { generalTabHeader } from "./build-tab-header.js";
 import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, refreshTabEvent } from "./ui-task-utilities.js";
 import { priorityFirst, earliestFirst } from "./filter-tasks.js";
-
-import editSvg from "../images/Edit.svg";
-import deleteSvg from "../images/Delete.svg";
-import refreshSvg from "../images/Refresh.svg";
 
 function filterByPriorityPastDue(filterButton, directClick = false) {
     const pastDueTaskCont = document.querySelector(".past-due-tasks-cont");
@@ -99,7 +96,7 @@ function pastDueFilterEvent(filterCont) {
         if (target.classList.contains("filter-priority")) {
             filterByPriorityPastDue(target, true);
         }
-        else {
+        else if (target.classList.contains("filter-time")) {
             filterByTimePastDue(target, true);
         }
     });
@@ -118,20 +115,9 @@ function createPastDueFilterOptions(tabCont) {
 }
 
 function createPastDueTabHeader(tabCont) {
-    const tabHeaderCont = buildElement("div", "past-due-tab-header-cont", "tab-header-cont");
+    const tabHeaderCont = generalTabHeader("past-due-tab", "Past Due");
 
-    const tabHeader = buildElement("h1", "past-due-tab-header", "tab-header");
-    tabHeader.textContent = "Past Due";
-    
-    const refreshIconCont = buildElement("div", "refresh-icon-cont");
-    const refreshIcon = buildElement("img", "refresh-icon");
-    refreshIcon.src = refreshSvg;
-    refreshIcon.alt = "Refresh";
-    refreshTabEvent(refreshIcon, ".past-due-tasks-cont", createPastDueTabTasks, tabCont);
-    refreshIconCont.appendChild(refreshIcon);
-
-    tabHeaderCont.appendChild(tabHeader);
-    tabHeaderCont.appendChild(refreshIconCont);
+    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".past-due-tasks-cont", createPastDueTabTasks, tabCont);
 
     tabCont.appendChild(tabHeaderCont);
 }
@@ -162,61 +148,7 @@ function createPastDueTabTasks(tabCont, filter = false) {
     for (let taskIndex in pastDueTasks) {
         let task = pastDueTasks[taskIndex];
 
-        let priorityClass = "priority-one";
-
-        if (task.priority === 2) {
-            priorityClass = "priority-two";
-        }
-        else if (task.priority === 3) {
-            priorityClass = "priority-three";
-        }
-
-        let taskCont = buildElement("div", "task-cont", priorityClass);
-        taskCont.id = task.id;
-
-        let checkbox = buildElement("input", "complete-task");
-        checkbox.type = "checkbox";
-
-        let taskInfo = buildElement("div", "task-info");
-
-        let taskTitle = buildElement("div", "task-title");
-        taskTitle.textContent = task.title;
-
-        taskInfo.appendChild(taskTitle);
-
-        let taskDateCont = buildElement("div", "dated-task-full-date-cont");
-
-        let taskDateText = buildElement("p", "dated-task-full-date-text");
-        taskDateText.textContent = getTaskDateTextFormat(task.deadline);
-
-        taskDateCont.appendChild(taskDateText);
-
-        if(!task.allDay) {
-            let taskTime = buildElement("p", "dated-task-full-date-text");
-            taskTime.textContent = "at " + getTaskTime(task);
-
-            taskDateCont.appendChild(taskTime);
-        }
-
-        taskInfo.appendChild(taskDateCont);
-
-        let taskOptions = buildElement("div", "task-options");
-
-        let editIcon = buildElement("img", "task-options-icon", "edit-task");
-        let deleteIcon = buildElement("img", "task-options-icon", "delete-task");
-
-        editIcon.src = editSvg;
-        editIcon.alt = "Edit Task";
-
-        deleteIcon.src = deleteSvg;
-        deleteIcon.alt = "Delete Task";
-
-        taskOptions.appendChild(editIcon);
-        taskOptions.appendChild(deleteIcon);
-
-        taskCont.appendChild(checkbox);
-        taskCont.appendChild(taskInfo);
-        taskCont.appendChild(taskOptions);
+        let taskCont = generalTaskCont(task);
 
         taskContEventListeners(taskCont);
 
@@ -225,7 +157,6 @@ function createPastDueTabTasks(tabCont, filter = false) {
 
     tabCont.appendChild(pastDueCont);
 } 
-
 
 export function createPastDueTab() {
     const PastDueTabCont = document.querySelector(".past-due-tab-cont");
