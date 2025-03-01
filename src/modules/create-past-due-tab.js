@@ -3,82 +3,40 @@ import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
-import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, refreshTabEvent } from "./ui-task-utilities.js";
+import { taskContEventListeners, resetChooseOneFilterSelection, 
+    refreshTabEvent, clearTab } from "./ui-task-utilities.js";
+import { filterInitialCheck, deactivateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst } from "./filter-tasks.js";
 
 function filterByPriorityPastDue(filterButton, directClick = false) {
-    const pastDueTaskCont = document.querySelector(".past-due-tasks-cont");
-    const noMsg = document.querySelector(".no-past-due-tasks-msg");
-
-    // Check if there are no tasks
-    if (pastDueTaskCont === null) {
-        // If there are truly no tasks scheduled remove the filter container and display the "no tasks ..." message
-        if (getPastDueTasks().length === 0 ) {
-            filterButton.parentNode.remove();
-            createNoScheduledTasksMsg(document.querySelector(".past-due-tab-cont"), "past-due");
-            return;
-        }
-
-        // If there are tasks scheduled remove the "no tasks ..." message
-        else if (noMsg !== null) {
-            noMsg.remove();
-        }
-    }
-
-    // Preemptively remove the container and prepare to generate a new one
-    if (!(pastDueTaskCont === null)) {
-        pastDueTaskCont.remove();
-    }
+    filterInitialCheck(filterButton, document.querySelector(".past-due-tab-cont"), document.querySelector(".past-due-tasks-cont"),
+    document.querySelector(".no-past-due-tasks-msg"), "past-due", getPastDueTasks, null);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        filterButton.classList.remove("active-filter");
-        createPastDueTabTasks(document.querySelector(".past-due-tab-cont"));
+        deactivateChooseOneFilter(filterButton, createPastDueTabTasks, document.querySelector(".past-due-tab-cont"));
         return;
     }
 
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
-    // Using ! because the function takes the argument "filterOn" which is false if we're showing completed tasks 
     const taskList = priorityFirst(getPastDueTasks());
 
     createPastDueTabTasks(document.querySelector(".past-due-tab-cont"), taskList);
 }
 
-function filterByTimePastDue(filterButton, directClick = false) {
-    const pastDueTaskCont = document.querySelector(".past-due-tasks-cont");
-    const noMsg = document.querySelector(".no-past-due-tasks-msg");
-
-    // Check if there are no tasks
-    if (pastDueTaskCont === null) {
-        // If there are truly no tasks scheduled remove the filter container and display the "no tasks ..." message
-        if (getPastDueTasks().length === 0 ) {
-            filterButton.parentNode.remove();
-            createNoScheduledTasksMsg(document.querySelector(".past-due-tab-cont"), "past-due");
-            return;
-        }
-
-        // If there are tasks scheduled remove the "no tasks ..." message
-        else if (noMsg !== null) {
-            noMsg.remove();
-        }
-    }
-
-    // Preemptively remove the container and prepare to generate a new one
-    if (!(pastDueTaskCont === null)) {
-        pastDueTaskCont.remove();
-    }
+function filterByEarliestFirstPastDue(filterButton, directClick = false) {
+    filterInitialCheck(filterButton, document.querySelector(".past-due-tab-cont"), document.querySelector(".past-due-tasks-cont"),
+    document.querySelector(".no-past-due-tasks-msg"), "past-due", getPastDueTasks, null);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        filterButton.classList.remove("active-filter");
-        createPastDueTabTasks(document.querySelector(".past-due-tab-cont"));
+        deactivateChooseOneFilter(filterButton, createPastDueTabTasks, document.querySelector(".past-due-tab-cont"));
         return;
     }
 
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
-    // Using ! because the function takes the argument "filterOn" which is false if we're showing completed tasks 
     const taskList = earliestFirst(getPastDueTasks());
 
     createPastDueTabTasks(document.querySelector(".past-due-tab-cont"), taskList);
@@ -97,7 +55,7 @@ function pastDueFilterEvent(filterCont) {
             filterByPriorityPastDue(target, true);
         }
         else if (target.classList.contains("filter-time")) {
-            filterByTimePastDue(target, true);
+            filterByEarliestFirstPastDue(target, true);
         }
     });
 }
@@ -123,6 +81,8 @@ function createPastDueTabHeader(tabCont) {
 }
 
 function createPastDueTabTasks(tabCont, filter = false) {
+    const noMsg = document.querySelector(".no-past-due-tasks-msg");
+
     let pastDueTasks;
     if (!filter) {
         pastDueTasks = getPastDueTasks();
@@ -132,15 +92,16 @@ function createPastDueTabTasks(tabCont, filter = false) {
     }
 
     if (pastDueTasks.length === 0) {
-        const filterCont = getFilterOptionsCont(tabCont);
-        if (filterCont !== null) {
-            filterCont.remove();
-        }
-
-        if (document.querySelector(".no-past-due-tasks-msg") === null) {
-            createNoScheduledTasksMsg(tabCont, "past-due");
-        }
+        clearTab(tabCont, getPastDueTasks, null, noMsg, "past-due");
         return;
+    }
+    else {
+        if (noMsg !== null) {
+            noMsg.remove();
+        }
+        if (tabCont.querySelector(".filter-options") === null) {
+            createPastDueFilterOptions(tabCont);
+        }
     }
 
     const pastDueCont = buildElement("div", "past-due-tasks-cont");

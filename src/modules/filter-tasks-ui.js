@@ -9,7 +9,7 @@ export function filterInitialCheck(filterButton, tabCont, tasksCont, noMsgCont, 
             if (fetchTasksFunction().length === 0 ) {
                 filterButton.parentNode.remove();
                 createNoScheduledTasksMsg(tabCont, noMsgType);
-                return false;
+                return;
             }
         }
 
@@ -17,7 +17,7 @@ export function filterInitialCheck(filterButton, tabCont, tasksCont, noMsgCont, 
         else if (fetchTasksFunction(fetchArgs).length === 0 ) {
             filterButton.parentNode.remove();
             createNoScheduledTasksMsg(tabCont, noMsgType);
-            return false;
+            return;
         }
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
@@ -31,5 +31,41 @@ export function filterInitialCheck(filterButton, tabCont, tasksCont, noMsgCont, 
         tasksCont.remove();
     }
 
-    return true;
+    return;
+}
+
+export function deactivateCompletedFilter(filterButton, chooseOneFilterButtons, chooseOneFilterFuncs, tabTasksCreationFunc, tabCont) {    
+    filterButton.classList.remove("active-filter");
+    
+    for (let i in chooseOneFilterButtons) {
+        let chooseOneFilter = chooseOneFilterButtons[i];
+        let chooseOneFilterFunction = chooseOneFilterFuncs[i];
+
+        if (chooseOneFilter.classList.contains("active-filter")) {
+            chooseOneFilterFunction(chooseOneFilter);
+            return;
+        }
+    }
+
+    tabTasksCreationFunc(tabCont);
+    return;
+}
+
+export function deactivateChooseOneFilterWithCompleted(filterButton, completedActive, showCompletedFilterFunc, tabTasksCreationFunc, tabCont) {
+    filterButton.classList.remove("active-filter");
+
+    if (completedActive) {
+        showCompletedFilterFunc(filterButton.parentNode.querySelector(".show-completed"));
+        return;
+    }
+
+    tabTasksCreationFunc(tabCont);
+    return;
+}
+
+export function deactivateChooseOneFilter(filterButton, tabTasksCreationFunc, tabCont) {
+    filterButton.classList.remove("active-filter");
+
+    tabTasksCreationFunc(tabCont);
+    return;
 }

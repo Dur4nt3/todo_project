@@ -44,7 +44,7 @@ export function priorityAndTimeFilterCont() {
     filterPriority.textContent = "Filter by Priority";
 
     const filterTime = buildElement("p", "filter-time", "choose-one");
-    filterTime.textContent = "Filter by Time";
+    filterTime.textContent = "Filter by Earliest First";
 
     filterTypes.appendChild(filterPriority);
     filterTypes.appendChild(filterTime);
@@ -77,7 +77,7 @@ export function completedPriorityAndTimeFilterCont() {
     filterPriority.textContent = "Filter by Priority";
 
     const filterTime = buildElement("p", "filter-time", "choose-one");
-    filterTime.textContent = "Filter by Time";
+    filterTime.textContent = "Filter by Earliest First";
 
     filterTypes.appendChild(showCompleted);
     filterTypes.appendChild(filterPriority);

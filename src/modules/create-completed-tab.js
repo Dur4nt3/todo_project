@@ -1,85 +1,43 @@
 import { getCompletedTasks } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
-import { taskContEventListeners, resetChooseOneFilterSelection, getFilterOptionsCont, createNoScheduledTasksMsg, refreshTabEvent } from "./ui-task-utilities.js";
+import { taskContEventListeners, resetChooseOneFilterSelection, 
+    refreshTabEvent, clearTab } from "./ui-task-utilities.js";
+import { filterInitialCheck, deactivateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst } from "./filter-tasks.js";
 import { generalTaskCont } from "./build-task-cont.js";
 
 import refreshSvg from "../images/Refresh.svg";
 
 function filterByPriorityCompleted(filterButton, directClick = false) {
-    const completedTaskCont = document.querySelector(".completed-tasks-cont");
-    const noMsg = document.querySelector(".no-completed-tasks-msg");
-
-    // Check if there are no tasks
-    if (completedTaskCont === null) {
-        // If there are truly no tasks scheduled remove the filter container and display the "no tasks ..." message
-        if (getCompletedTasks().length === 0 ) {
-            filterButton.parentNode.remove();
-            createNoScheduledTasksMsg(document.querySelector(".completed-tab-cont"), "completed");
-            return;
-        }
-
-        // If there are tasks scheduled remove the "no tasks ..." message
-        else if (noMsg !== null) {
-            noMsg.remove();
-        }
-    }
-
-    // Preemptively remove the container and prepare to generate a new one
-    if (!(completedTaskCont === null)) {
-        completedTaskCont.remove();
-    }
+    filterInitialCheck(filterButton, document.querySelector(".completed-tab-cont"), document.querySelector(".completed-tasks-cont"),
+    document.querySelector(".no-completed-tasks-msg"), "completed", getCompletedTasks, null);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        filterButton.classList.remove("active-filter");
-        createCompletedTabTasks(document.querySelector(".completed-tab-cont"));
+        deactivateChooseOneFilter(filterButton, createCompletedTabTasks, document.querySelector(".completed-tab-cont"));
         return;
     }
 
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
-    // Using ! because the function takes the argument "filterOn" which is false if we're showing completed tasks 
     const taskList = priorityFirst(getCompletedTasks());
 
     createCompletedTabTasks(document.querySelector(".completed-tab-cont"), taskList);
 }
 
-function filterByTimeCompleted(filterButton, directClick = false) {
-    const completedTaskCont = document.querySelector(".completed-tasks-cont");
-    const noMsg = document.querySelector(".no-completed-tasks-msg");
-
-    // Check if there are no tasks
-    if (completedTaskCont === null) {
-        // If there are truly no tasks scheduled remove the filter container and display the "no tasks ..." message
-        if (getCompletedTasks().length === 0 ) {
-            filterButton.parentNode.remove();
-            createNoScheduledTasksMsg(document.querySelector(".completed-tab-cont"), "completed");
-            return;
-        }
-
-        // If there are tasks scheduled remove the "no tasks ..." message
-        else if (noMsg !== null) {
-            noMsg.remove();
-        }
-    }
-
-    // Preemptively remove the container and prepare to generate a new one
-    if (!(completedTaskCont === null)) {
-        completedTaskCont.remove();
-    }
+function filterByEarliestFirstCompleted(filterButton, directClick = false) {
+    filterInitialCheck(filterButton, document.querySelector(".completed-tab-cont"), document.querySelector(".completed-tasks-cont"),
+    document.querySelector(".no-completed-tasks-msg"), "completed", getCompletedTasks, null);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        filterButton.classList.remove("active-filter");
-        createCompletedTabTasks(document.querySelector(".completed-tab-cont"));
+        deactivateChooseOneFilter(filterButton, createCompletedTabTasks, document.querySelector(".completed-tab-cont"));
         return;
     }
 
     resetChooseOneFilterSelection(filterButton.parentNode);
     filterButton.classList.add("active-filter");
-    // Using ! because the function takes the argument "filterOn" which is false if we're showing completed tasks 
     const taskList = earliestFirst(getCompletedTasks());
 
     createCompletedTabTasks(document.querySelector(".completed-tab-cont"), taskList);
@@ -97,7 +55,7 @@ function completedFilterEvent(filterCont) {
             filterByPriorityCompleted(target, true);
         }
         else if (target.classList.contains("filter-time")) {
-            filterByTimeCompleted(target, true);
+            filterByEarliestFirstCompleted(target, true);
         }
     });
 }
@@ -134,38 +92,41 @@ function createCompletedTabHeader(tabCont) {
 }
 
 function createCompletedTabTasks(tabCont, filter = false) {
+    const noMsg = document.querySelector(".no-completed-tasks-msg");
+
     let completedTasks;
-        if (!filter) {
-            completedTasks = getCompletedTasks();
+    if (!filter) {
+        completedTasks = getCompletedTasks();
+    }
+    else {
+        completedTasks = filter;
+    }
+
+    if (completedTasks.length === 0) {
+        clearTab(tabCont, getCompletedTasks, null, noMsg, "completed");
+        return;
+    }
+    else {
+        if (noMsg !== null) {
+            noMsg.remove();
         }
-        else {
-            completedTasks = filter;
+        if (tabCont.querySelector(".filter-options") === null) {
+            createCompletedFilterOptions(tabCont);
         }
+    }
     
-        if (completedTasks.length === 0) {
-            const filterCont = getFilterOptionsCont(tabCont);
-            if (filterCont !== null) {
-                filterCont.remove();
-            }
-    
-            if (document.querySelector(".no-completed-tasks-msg") === null) {
-                createNoScheduledTasksMsg(tabCont, "completed");
-            }
-            return;
-        }
-    
-        const completedCont = buildElement("div", "completed-tasks-cont");
-    
-        for (let taskIndex in completedTasks) {
-            let task = completedTasks[taskIndex];
-    
-            let taskCont = generalTaskCont(task);
-            taskContEventListeners(taskCont);
-    
-            completedCont.appendChild(taskCont);
-        }
-    
-        tabCont.appendChild(completedCont);
+    const completedCont = buildElement("div", "completed-tasks-cont");
+
+    for (let taskIndex in completedTasks) {
+        let task = completedTasks[taskIndex];
+
+        let taskCont = generalTaskCont(task);
+        taskContEventListeners(taskCont);
+
+        completedCont.appendChild(taskCont);
+    }
+
+    tabCont.appendChild(completedCont);
 }
 
 export function createCompletedTab() {
