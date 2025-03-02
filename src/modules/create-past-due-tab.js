@@ -8,13 +8,12 @@ import { taskContEventListeners, resetChooseOneFilterSelection,
 import { filterInitialCheck, deactivateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst } from "./filter-tasks.js";
 
-function filterByPriorityPastDue(filterButton, directClick = false) {
-    filterInitialCheck(filterButton, document.querySelector(".past-due-tab-cont"), document.querySelector(".past-due-tasks-cont"),
-    document.querySelector(".no-past-due-tasks-msg"), "past-due", getPastDueTasks, null);
+function filterByPriorityPastDue(filterButton, directClick = false, filterInfoObj) {
+    filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        deactivateChooseOneFilter(filterButton, createPastDueTabTasks, document.querySelector(".past-due-tab-cont"));
+        deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
@@ -25,13 +24,12 @@ function filterByPriorityPastDue(filterButton, directClick = false) {
     createPastDueTabTasks(document.querySelector(".past-due-tab-cont"), taskList);
 }
 
-function filterByEarliestFirstPastDue(filterButton, directClick = false) {
-    filterInitialCheck(filterButton, document.querySelector(".past-due-tab-cont"), document.querySelector(".past-due-tasks-cont"),
-    document.querySelector(".no-past-due-tasks-msg"), "past-due", getPastDueTasks, null);
+function filterByEarliestFirstPastDue(filterButton, directClick = false, filterInfoObj) {
+    filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        deactivateChooseOneFilter(filterButton, createPastDueTabTasks, document.querySelector(".past-due-tab-cont"));
+        deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
@@ -47,15 +45,37 @@ function pastDueFilterEvent(filterCont) {
     filterCont.addEventListener("click", (e) => {
         const target = e.target;
 
+        const filterInfoObj = {
+            directClick: false,
+            filterButton: target,
+            tabCont: document.querySelector(".past-due-tab-cont"),
+            tasksCont: document.querySelector(".past-due-tasks-cont"),
+            noMsgCont: document.querySelector(".no-past-due-tasks-msg"),
+            noMsgType: "past-due",
+            fetchTasksFunc: getPastDueTasks,
+            fetchArgs: null,
+            tabTasksCreationFunc: createPastDueTabTasks,
+            chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-time")],
+            chooseOneFilterFuncs: [filterByPriorityPastDue, filterByEarliestFirstPastDue],
+        }
+
         if (target.classList.contains("filter-options")) {
             return;
         }
 
         if (target.classList.contains("filter-priority")) {
-            filterByPriorityPastDue(target, true);
+            let filterInfoCopy = filterInfoObj;
+            filterInfoCopy.directClick = true;
+            filterInfoCopy.filterFunc = priorityFirst;
+
+            filterByPriorityPastDue(target, true, filterInfoCopy);
         }
         else if (target.classList.contains("filter-time")) {
-            filterByEarliestFirstPastDue(target, true);
+            let filterInfoCopy = filterInfoObj;
+            filterInfoCopy.directClick = true;
+            filterInfoCopy.filterFunc = priorityFirst;
+
+            filterByEarliestFirstPastDue(target, true, filterInfoCopy);
         }
     });
 }

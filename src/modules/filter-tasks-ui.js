@@ -1,71 +1,70 @@
-import * as filterTask from "./filter-tasks.js"
-import { resetChooseOneFilterSelection } from "./ui-task-utilities.js"
+import { resetChooseOneFilterSelection, createNoScheduledTasksMsg } from "./ui-task-utilities.js"
 
-export function filterInitialCheck(filterButton, tabCont, tasksCont, noMsgCont, noMsgType, fetchTasksFunction, fetchArgs = null) {
+export function filterInitialCheck(filterInfoObj) {
     // Check if there are no tasks
-    if (tasksCont === null) {
+    if (filterInfoObj.tasksCont === null) {
         // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
-        if (fetchArgs === null) {
-            if (fetchTasksFunction().length === 0 ) {
-                filterButton.parentNode.remove();
-                createNoScheduledTasksMsg(tabCont, noMsgType);
+        if (filterInfoObj.fetchArgs === null) {
+            if (filterInfoObj.fetchTasksFunc().length === 0 ) {
+                filterInfoObj.filterButton.parentNode.remove();
+                createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
                 return;
             }
         }
 
         // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
-        else if (fetchTasksFunction(fetchArgs).length === 0 ) {
-            filterButton.parentNode.remove();
-            createNoScheduledTasksMsg(tabCont, noMsgType);
+        else if (filterInfoObj.fetchTasksFunc(filterInfoObj.fetchArgs).length === 0 ) {
+            filterInfoObj.filterButton.parentNode.remove();
+            createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
             return;
         }
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
-        if (noMsgCont !== null) {
-            noMsgCont.remove();
+        if (filterInfoObj.noMsgCont !== null) {
+            filterInfoObj.noMsgCont.remove();
         }
     }
 
     // Preemptively remove the container and prepare to generate a new one
-    else if (!(tasksCont === null)) {
-        tasksCont.remove();
+    else if (!(filterInfoObj.tasksCont === null)) {
+        filterInfoObj.tasksCont.remove();
     }
 
     return;
 }
 
-export function deactivateCompletedFilter(filterButton, chooseOneFilterButtons, chooseOneFilterFuncs, tabTasksCreationFunc, tabCont) {    
-    filterButton.classList.remove("active-filter");
+export function deactivateCompletedFilter(filterInfoObj) {    
+    filterInfoObj.filterButton.classList.remove("active-filter");
     
-    for (let i in chooseOneFilterButtons) {
-        let chooseOneFilter = chooseOneFilterButtons[i];
-        let chooseOneFilterFunction = chooseOneFilterFuncs[i];
+    for (let i in filterInfoObj.chooseOneFilterButtons) {
+        let chooseOneFilter = filterInfoObj.chooseOneFilterButtons[i];
+        let chooseOneFilterFunc = filterInfoObj.chooseOneFilterFuncs[i];
 
         if (chooseOneFilter.classList.contains("active-filter")) {
-            chooseOneFilterFunction(chooseOneFilter);
+            chooseOneFilterFunc(chooseOneFilter, false, filterInfoObj);
             return;
         }
     }
 
-    tabTasksCreationFunc(tabCont);
+    filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont);
     return;
 }
 
-export function deactivateChooseOneFilterWithCompleted(filterButton, completedActive, showCompletedFilterFunc, tabTasksCreationFunc, tabCont) {
-    filterButton.classList.remove("active-filter");
+export function deactivateChooseOneFilterWithCompleted(filterInfoObj) {
+    filterInfoObj.filterButton.classList.remove("active-filter");
 
-    if (completedActive) {
-        showCompletedFilterFunc(filterButton.parentNode.querySelector(".show-completed"));
+    if (filterInfoObj.completedActive) {
+        filterInfoObj.showCompletedFilterFunc(filterInfoObj.filterButton.parentNode.querySelector(".show-completed"), false, filterInfoObj);
         return;
     }
 
-    tabTasksCreationFunc(tabCont);
+    filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont);
     return;
 }
 
-export function deactivateChooseOneFilter(filterButton, tabTasksCreationFunc, tabCont) {
-    filterButton.classList.remove("active-filter");
+export function deactivateChooseOneFilter(filterInfoObj) {
+    filterInfoObj.filterButton.classList.remove("active-filter");
 
-    tabTasksCreationFunc(tabCont);
+    filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont);
     return;
 }

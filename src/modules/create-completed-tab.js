@@ -9,13 +9,12 @@ import { generalTaskCont } from "./build-task-cont.js";
 
 import refreshSvg from "../images/Refresh.svg";
 
-function filterByPriorityCompleted(filterButton, directClick = false) {
-    filterInitialCheck(filterButton, document.querySelector(".completed-tab-cont"), document.querySelector(".completed-tasks-cont"),
-    document.querySelector(".no-completed-tasks-msg"), "completed", getCompletedTasks, null);
+function filterByPriorityCompleted(filterButton, directClick = false, filterInfoObj) {
+    filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        deactivateChooseOneFilter(filterButton, createCompletedTabTasks, document.querySelector(".completed-tab-cont"));
+        deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
@@ -26,13 +25,12 @@ function filterByPriorityCompleted(filterButton, directClick = false) {
     createCompletedTabTasks(document.querySelector(".completed-tab-cont"), taskList);
 }
 
-function filterByEarliestFirstCompleted(filterButton, directClick = false) {
-    filterInitialCheck(filterButton, document.querySelector(".completed-tab-cont"), document.querySelector(".completed-tasks-cont"),
-    document.querySelector(".no-completed-tasks-msg"), "completed", getCompletedTasks, null);
+function filterByEarliestFirstCompleted(filterButton, directClick = false, filterInfoObj) {
+    filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
     if (filterButton.classList.contains("active-filter") && directClick === true) {
-        deactivateChooseOneFilter(filterButton, createCompletedTabTasks, document.querySelector(".completed-tab-cont"));
+        deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
@@ -47,15 +45,37 @@ function completedFilterEvent(filterCont) {
     filterCont.addEventListener("click", (e) => {
         const target = e.target;
 
+        const filterInfoObj = {
+            directClick: false,
+            filterButton: target,
+            tabCont: document.querySelector(".completed-tab-cont"),
+            tasksCont: document.querySelector(".completed-tasks-cont"),
+            noMsgCont: document.querySelector(".no-completed-tasks-msg"),
+            noMsgType: "completed",
+            fetchTasksFunc: getCompletedTasks,
+            fetchArgs: null,
+            tabTasksCreationFunc: createCompletedTabTasks,
+            chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-time")],
+            chooseOneFilterFuncs: [filterByPriorityCompleted, filterByEarliestFirstCompleted],
+        }
+
         if (target.classList.contains("filter-options")) {
             return;
         }
 
         if (target.classList.contains("filter-priority")) {
-            filterByPriorityCompleted(target, true);
+            let filterInfoCopy = filterInfoObj;
+            filterInfoCopy.directClick = true;
+            filterInfoCopy.filterFunc = priorityFirst;
+
+            filterByPriorityCompleted(target, true, filterInfoCopy);
         }
         else if (target.classList.contains("filter-time")) {
-            filterByEarliestFirstCompleted(target, true);
+            let filterInfoCopy = filterInfoObj;
+            filterInfoCopy.directClick = true;
+            filterInfoCopy.filterFunc = priorityFirst;
+
+            filterByEarliestFirstCompleted(target, true, filterInfoCopy);
         }
     });
 }
