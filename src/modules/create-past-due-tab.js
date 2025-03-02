@@ -3,41 +3,50 @@ import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
-import { taskContEventListeners, resetChooseOneFilterSelection, 
-    refreshTabEvent, clearTab } from "./ui-task-utilities.js";
-import { filterInitialCheck, deactivateChooseOneFilter } from "./filter-tasks-ui.js";
-import { priorityFirst, earliestFirst } from "./filter-tasks.js";
+import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
+import { filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
+import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
-function filterByPriorityPastDue(filterButton, directClick = false, filterInfoObj) {
+function filterByPriorityPastDue(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
-    if (filterButton.classList.contains("active-filter") && directClick === true) {
+    if (filterInfoObj.filterButton.classList.contains("active-filter") && filterInfoObj.directClick === true) {
         deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
-    resetChooseOneFilterSelection(filterButton.parentNode);
-    filterButton.classList.add("active-filter");
     const taskList = priorityFirst(getPastDueTasks());
-
-    createPastDueTabTasks(document.querySelector(".past-due-tab-cont"), taskList);
+    activateChooseOneFilter(filterInfoObj, taskList);
+    return;
 }
 
-function filterByEarliestFirstPastDue(filterButton, directClick = false, filterInfoObj) {
+function filterByEarliestFirstPastDue(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
-    if (filterButton.classList.contains("active-filter") && directClick === true) {
+    if (filterInfoObj.filterButton.classList.contains("active-filter") && filterInfoObj.directClick === true) {
         deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
-    resetChooseOneFilterSelection(filterButton.parentNode);
-    filterButton.classList.add("active-filter");
     const taskList = earliestFirst(getPastDueTasks());
+    activateChooseOneFilter(filterInfoObj, taskList);
+    return;
+}
 
-    createPastDueTabTasks(document.querySelector(".past-due-tab-cont"), taskList);
+function filterByLatestFirstPastDue(filterInfoObj) {
+    filterInitialCheck(filterInfoObj);
+
+    // Disables the filter when the users directly press on it
+    if (filterInfoObj.filterButton.classList.contains("active-filter") && filterInfoObj.directClick === true) {
+        deactivateChooseOneFilter(filterInfoObj);
+        return;
+    }
+
+    const taskList = latestFirst(getPastDueTasks());
+    activateChooseOneFilter(filterInfoObj, taskList);
+    return;
 }
 
 
@@ -54,9 +63,7 @@ function pastDueFilterEvent(filterCont) {
             noMsgType: "past-due",
             fetchTasksFunc: getPastDueTasks,
             fetchArgs: null,
-            tabTasksCreationFunc: createPastDueTabTasks,
-            chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-time")],
-            chooseOneFilterFuncs: [filterByPriorityPastDue, filterByEarliestFirstPastDue],
+            tabTasksCreationFunc: createPastDueTabTasks
         }
 
         if (target.classList.contains("filter-options")) {
@@ -68,14 +75,21 @@ function pastDueFilterEvent(filterCont) {
             filterInfoCopy.directClick = true;
             filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityPastDue(target, true, filterInfoCopy);
+            filterByPriorityPastDue(filterInfoCopy);
         }
-        else if (target.classList.contains("filter-time")) {
+        else if (target.classList.contains("filter-earliest-first")) {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = priorityFirst;
+            filterInfoCopy.filterFunc = earliestFirst;
 
-            filterByEarliestFirstPastDue(target, true, filterInfoCopy);
+            filterByEarliestFirstPastDue(filterInfoCopy);
+        }
+        else if (target.classList.contains("filter-latest-first")) {
+            let filterInfoCopy = filterInfoObj;
+            filterInfoCopy.directClick = true;
+            filterInfoCopy.filterFunc = latestFirst;
+
+            filterByLatestFirstPastDue(filterInfoCopy);
         }
     });
 }

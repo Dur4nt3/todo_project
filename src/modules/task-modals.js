@@ -101,6 +101,4 @@ export function taskInformationModalInteractivity(task) {
             setTimeout(() => { modalCont.remove() }, 300);
         }
     });
-
-    // modalCont.onkeypress = (e) => { console.log(e.key); }
 }
