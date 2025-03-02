@@ -20,7 +20,7 @@ function hideNonDefaultTabs(defaultTabContClass) {
 
 export default function initialLoad() {
     generateGroupList();
-    hideNonDefaultTabs("today-tab-cont");
-    makeActive(document.querySelector(".today-cont"));
+    hideNonDefaultTabs("upcoming-tab-cont");
+    makeActive(document.querySelector(".upcoming-cont"));
     generateAllTabs();
 }

@@ -57,6 +57,7 @@ body {
 
 .sidebar-cont {
     max-height: 100svh;
+    overflow: auto;
     position: sticky;
     top: 0;
 
@@ -132,6 +133,7 @@ body {
 
 .sidebar-functionality-cont > * {
     cursor: pointer;
+    user-select: none;
 }
 
 .sidebar-functionality-cont > h3 {
@@ -185,6 +187,7 @@ body {
 
 .edit-groups-icon {
     cursor: pointer;
+    user-select: none;
     visibility: hidden;
 }
 
@@ -212,6 +215,7 @@ body {
     font-weight: 500;
     
     cursor: pointer;
+    user-select: none;
 }
 
 .group-cont > p {
@@ -219,6 +223,7 @@ body {
     font-style: italic;
 
     cursor: pointer;
+    user-select: none;
     opacity: 0.75;
     position: relative; 
 }
@@ -251,6 +256,7 @@ body {
     text-align: center;
 
     cursor: pointer;
+    user-select: none;
 
     border-radius: 1.5rem;
 }
@@ -293,6 +299,7 @@ body {
 
 .sidebar-info-cont > * {
     cursor: pointer;
+    user-select: none;
     opacity: 0.75;
 }
 
@@ -337,6 +344,7 @@ input[type="checkbox"] {
     border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
     transform: translateY(-0.075rem);
     cursor: pointer;
+    user-select: none;
 
     display: grid;
     place-content: center;
@@ -410,6 +418,7 @@ input[type="checkbox"]:focus {
     padding: 0.35rem;
     opacity: 0.75;
     cursor: pointer;
+    user-select: none;
     position: relative;
 }
 
@@ -434,6 +443,7 @@ input[type="checkbox"]:focus {
     align-items: center;
     gap: 0.25rem;
     margin-bottom: 1.25rem;
+    position: relative;
 }
 
 .filter-types {
@@ -453,10 +463,50 @@ input[type="checkbox"]:focus {
     padding: 0.35rem;
     border-radius: 1rem;
     cursor: pointer;
+    user-select: none;
 }
 
 .filter-options > img {
     cursor: pointer;
+    user-select: none;
+}
+
+.filter-options:has( > img.filter-on-icon:not(.hide))::before {
+    content: "Show Filters";
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    position: absolute;
+    top: -60%;
+    left: -1.25%;
+    white-space: nowrap;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+}
+
+.filter-options:has( > img.filter-off-icon:not(.hide))::before {
+    content: "Hide Filters";
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    position: absolute;
+    top: -60%;
+    left: -1.25%;
+    white-space: nowrap;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+}
+
+.filter-options:has( > img.filter-on-icon:not(.hide):hover)::before {
+    opacity: 1;
+}
+
+.filter-options:has( > img.filter-off-icon:not(.hide):hover)::before {
+    opacity: 1;
 }
 
 .filter-options > img:active {
@@ -502,6 +552,7 @@ input[type="checkbox"]:focus {
 
 .task-cont {
     cursor: pointer;
+    user-select: none;
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 0.5rem;
@@ -586,6 +637,7 @@ input[type="checkbox"]:focus {
     border-radius: 0.6rem;
     padding: 0.25rem;
     cursor: pointer;
+    user-select: none;
 }
 
 .task-options > *:hover {
@@ -688,6 +740,7 @@ input[type="checkbox"]:focus {
     border-radius: 0.5rem;
     border: none;
     cursor: pointer;
+    user-select: none;
     width: 10ch;
 
     transition: 0.2s;
@@ -768,6 +821,7 @@ input[type="checkbox"]:focus {
 
 .close-modal-icon {
     cursor: pointer;
+    user-select: none;
     position: absolute;
     top: 1.25%;
     right: 0.25%;

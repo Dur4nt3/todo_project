@@ -1,5 +1,5 @@
-import { taskCollection, taskGroups } from "./task-utility-functions.js";
-import { getYear, getMonth, getDate, isSameDay } from "../../node_modules/date-fns";
+import { taskCollection } from "./task-utility-functions.js";
+import { getYear, getMonth, getDate, isSameDay, differenceInDays } from "../../node_modules/date-fns";
 
 export function getPastDueTasks() {
     let pastDueTasks = [];
@@ -48,7 +48,7 @@ export function getPastDueTasks() {
     return pastDueTasks;
 }
 
-export function getTodayTasks(filterOn = true) {
+export function getTodayTasks(includeCompleted = false) {
     let todayTasks = [];
 
     for (let taskType in taskCollection) {
@@ -60,7 +60,7 @@ export function getTodayTasks(filterOn = true) {
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
 
-            if (task.completionStatus === true && filterOn) {
+            if (task.completionStatus === true && !includeCompleted) {
                 continue;
             }
 
@@ -89,7 +89,7 @@ export function getCompletedTasks() {
     return completedTasks;
 }
 
-export function getAllTasks(includeCompleted) {
+export function getAllTasks(includeCompleted = false) {
     let allTasks = [];
 
     for (let taskType in taskCollection) {
@@ -105,4 +105,8 @@ export function getAllTasks(includeCompleted) {
     }
 
     return allTasks;
+}
+
+export function getUpcomingTasks(includeCompleted = false) {
+    
 }

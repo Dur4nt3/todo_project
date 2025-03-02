@@ -43,11 +43,15 @@ export function priorityAndTimeFilterCont() {
     const filterPriority = buildElement("p", "filter-priority", "choose-one");
     filterPriority.textContent = "Filter by Priority";
 
-    const filterTime = buildElement("p", "filter-time", "choose-one");
-    filterTime.textContent = "Filter by Earliest First";
+    const filterEarliestFirst = buildElement("p", "filter-earliest-first", "choose-one");
+    filterEarliestFirst.textContent = "Filter by Earliest First";
+
+    const filterLatestFirst = buildElement("p", "filter-latest-first", "choose-one");
+    filterLatestFirst.textContent = "Filter by Latest First";
 
     filterTypes.appendChild(filterPriority);
-    filterTypes.appendChild(filterTime);
+    filterTypes.appendChild(filterEarliestFirst);
+    filterTypes.appendChild(filterLatestFirst);
 
     filterOptionsCont.appendChild(filterOnIcon);
     filterOptionsCont.appendChild(filterOffIcon);
@@ -76,12 +80,16 @@ export function completedPriorityAndTimeFilterCont() {
     const filterPriority = buildElement("p", "filter-priority", "choose-one");
     filterPriority.textContent = "Filter by Priority";
 
-    const filterTime = buildElement("p", "filter-time", "choose-one");
-    filterTime.textContent = "Filter by Earliest First";
+    const filterEarliestFirst = buildElement("p", "filter-earliest-first", "choose-one");
+    filterEarliestFirst.textContent = "Filter by Earliest First";
+
+    const filterLatestFirst = buildElement("p", "filter-latest-first", "choose-one");
+    filterLatestFirst.textContent = "Filter by Latest First";
 
     filterTypes.appendChild(showCompleted);
     filterTypes.appendChild(filterPriority);
-    filterTypes.appendChild(filterTime);
+    filterTypes.appendChild(filterEarliestFirst);
+    filterTypes.appendChild(filterLatestFirst);
 
     filterOptionsCont.appendChild(filterOnIcon);
     filterOptionsCont.appendChild(filterOffIcon);

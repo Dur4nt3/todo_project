@@ -1,44 +1,52 @@
 import { getCompletedTasks } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
-import { taskContEventListeners, resetChooseOneFilterSelection, 
-    refreshTabEvent, clearTab } from "./ui-task-utilities.js";
-import { filterInitialCheck, deactivateChooseOneFilter } from "./filter-tasks-ui.js";
-import { priorityFirst, earliestFirst } from "./filter-tasks.js";
+import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
+import { filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
+import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 import { generalTaskCont } from "./build-task-cont.js";
+import { generalTabHeader } from "./build-tab-header.js";
 
-import refreshSvg from "../images/Refresh.svg";
-
-function filterByPriorityCompleted(filterButton, directClick = false, filterInfoObj) {
+function filterByPriorityCompleted(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
-    if (filterButton.classList.contains("active-filter") && directClick === true) {
+    if (filterInfoObj.filterButton.classList.contains("active-filter") && filterInfoObj.directClick === true) {
         deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
-    resetChooseOneFilterSelection(filterButton.parentNode);
-    filterButton.classList.add("active-filter");
     const taskList = priorityFirst(getCompletedTasks());
-
-    createCompletedTabTasks(document.querySelector(".completed-tab-cont"), taskList);
+    activateChooseOneFilter(filterInfoObj, taskList);
+    return;
 }
 
-function filterByEarliestFirstCompleted(filterButton, directClick = false, filterInfoObj) {
+function filterByEarliestFirstCompleted(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
-    if (filterButton.classList.contains("active-filter") && directClick === true) {
+    if (filterInfoObj.filterButton.classList.contains("active-filter") && filterInfoObj.directClick === true) {
         deactivateChooseOneFilter(filterInfoObj);
         return;
     }
 
-    resetChooseOneFilterSelection(filterButton.parentNode);
-    filterButton.classList.add("active-filter");
     const taskList = earliestFirst(getCompletedTasks());
+    activateChooseOneFilter(filterInfoObj, taskList);
+    return;
+}
 
-    createCompletedTabTasks(document.querySelector(".completed-tab-cont"), taskList);
+function filterByLatestFirstCompleted(filterInfoObj) {
+    filterInitialCheck(filterInfoObj);
+
+    // Disables the filter when the users directly press on it
+    if (filterInfoObj.filterButton.classList.contains("active-filter") && filterInfoObj.directClick === true) {
+        deactivateChooseOneFilter(filterInfoObj);
+        return;
+    }
+
+    const taskList = latestFirst(getCompletedTasks());
+    activateChooseOneFilter(filterInfoObj, taskList);
+    return;
 }
 
 function completedFilterEvent(filterCont) {
@@ -54,9 +62,7 @@ function completedFilterEvent(filterCont) {
             noMsgType: "completed",
             fetchTasksFunc: getCompletedTasks,
             fetchArgs: null,
-            tabTasksCreationFunc: createCompletedTabTasks,
-            chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-time")],
-            chooseOneFilterFuncs: [filterByPriorityCompleted, filterByEarliestFirstCompleted],
+            tabTasksCreationFunc: createCompletedTabTasks
         }
 
         if (target.classList.contains("filter-options")) {
@@ -68,14 +74,21 @@ function completedFilterEvent(filterCont) {
             filterInfoCopy.directClick = true;
             filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityCompleted(target, true, filterInfoCopy);
+            filterByPriorityCompleted(filterInfoCopy);
         }
-        else if (target.classList.contains("filter-time")) {
+        else if (target.classList.contains("filter-earliest-first")) {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = priorityFirst;
+            filterInfoCopy.filterFunc = earliestFirst;
 
-            filterByEarliestFirstCompleted(target, true, filterInfoCopy);
+            filterByEarliestFirstCompleted(filterInfoCopy);
+        }
+        else if (target.classList.contains("filter-latest-first")) {
+            let filterInfoCopy = filterInfoObj;
+            filterInfoCopy.directClick = true;
+            filterInfoCopy.filterFunc = latestFirst;
+
+            filterByLatestFirstCompleted(filterInfoCopy);
         }
     });
 }
@@ -93,22 +106,11 @@ function createCompletedFilterOptions(tabCont) {
 }
 
 function createCompletedTabHeader(tabCont) {
-    const tabHeaderCont = buildElement("div", "completed-tab-header-cont", "tab-header-cont");
+    const tabHeaderCont = generalTabHeader("completed-tab", "Completed");
     
-        const tabHeader = buildElement("h1", "completed-tab-header", "tab-header");
-        tabHeader.textContent = "Completed";
-        
-        const refreshIconCont = buildElement("div", "refresh-icon-cont");
-        const refreshIcon = buildElement("img", "refresh-icon");
-        refreshIcon.src = refreshSvg;
-        refreshIcon.alt = "Refresh";
-        refreshTabEvent(refreshIcon, ".completed-tasks-cont", createCompletedTabTasks, tabCont);
-        refreshIconCont.appendChild(refreshIcon);
+    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".completed-tasks-cont", createCompletedTabTasks, tabCont);
     
-        tabHeaderCont.appendChild(tabHeader);
-        tabHeaderCont.appendChild(refreshIconCont);
-    
-        tabCont.appendChild(tabHeaderCont);
+    tabCont.appendChild(tabHeaderCont);
 }
 
 function createCompletedTabTasks(tabCont, filter = false) {

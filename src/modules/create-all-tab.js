@@ -1,14 +1,14 @@
-import { getTodayTasks } from "./fetch-tasks.js";
+import { getAllTasks } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
 import { completedPriorityAndTimeFilterCont } from "./build-filter-cont.js";
-import { todayTaskCont } from "./build-task-cont.js";
-import { todayTabHeader } from "./build-tab-header.js";
+import { generalTaskCont } from "./build-task-cont.js";
+import { generalTabHeader } from "./build-tab-header.js";
 import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
 import { filterInitialCheck, deactivateCompletedFilter, deactivateChooseOneFilterWithCompleted,
     activateShowCompletedFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
-function showCompletedTasksToday(filterInfoObj) {
+function showCompletedTasksAll(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
@@ -21,7 +21,7 @@ function showCompletedTasksToday(filterInfoObj) {
     return;
 }
 
-function filterByPriorityToday(filterInfoObj) {
+function filterByPriorityAll(filterInfoObj) {
     let filterInfoCopy = filterInfoObj;
     filterInfoCopy.fetchArgs = true;
 
@@ -34,13 +34,13 @@ function filterByPriorityToday(filterInfoObj) {
     }
     
     const includeCompleted = filterInfoObj.filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
-    const taskList = priorityFirst(getTodayTasks(includeCompleted));
+    const taskList = priorityFirst(getAllTasks(includeCompleted));
 
     activateChooseOneFilter(filterInfoObj, taskList);
     return;
 }
 
-function filterByEarliestFirstToday(filterInfoObj) {
+function filterByEarliestFirstAll(filterInfoObj) {
     let filterInfoCopy = filterInfoObj;
     filterInfoCopy.fetchArgs = true;
 
@@ -53,13 +53,13 @@ function filterByEarliestFirstToday(filterInfoObj) {
     }
     
     const includeCompleted = filterInfoObj.filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
-    const taskList = earliestFirst(getTodayTasks(includeCompleted));
+    const taskList = earliestFirst(getAllTasks(includeCompleted));
     
     activateChooseOneFilter(filterInfoObj, taskList);
     return;
 }
 
-function filterByLatestFirstToday(filterInfoObj) {
+function filterByLatestFirstAll(filterInfoObj) {
     let filterInfoCopy = filterInfoObj;
     filterInfoCopy.fetchArgs = true;
 
@@ -72,13 +72,13 @@ function filterByLatestFirstToday(filterInfoObj) {
     }
     
     const includeCompleted = filterInfoObj.filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
-    const taskList = latestFirst(getTodayTasks(includeCompleted));
+    const taskList = latestFirst(getAllTasks(includeCompleted));
     
     activateChooseOneFilter(filterInfoObj, taskList);
     return;
 }
 
-function todayFilterEvent(filterCont) {
+function allFilterEvent(filterCont) {
     filterCont.addEventListener("click", (e) => {
         const target = e.target;
 
@@ -89,19 +89,19 @@ function todayFilterEvent(filterCont) {
         const filterInfoObj = {
             directClick: false,
             filterButton: target,
-            tabCont: document.querySelector(".today-tab-cont"),
-            tasksCont: document.querySelector(".tasks-today-cont"),
-            noMsgCont: document.querySelector(".no-tasks-today-msg"),
-            noMsgType: "today",
-            fetchTasksFunc: getTodayTasks,
+            tabCont: document.querySelector(".all-tab-cont"),
+            tasksCont: document.querySelector(".all-tasks-cont"),
+            noMsgCont: document.querySelector(".no-tasks-msg"),
+            noMsgType: "all",
+            fetchTasksFunc: getAllTasks,
             fetchArgs: null,
             completedActive: target.parentNode.querySelector(".show-completed").classList.contains("active-filter"),
-            tabTasksCreationFunc: createTodayTabTasks,
+            tabTasksCreationFunc: createAllTabTasks,
             chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-earliest-first"),
                 target.parentNode.querySelector(".filter-latest-first")
             ],
-            chooseOneFilterFuncs: [filterByPriorityToday, filterByEarliestFirstToday, filterByLatestFirstToday],
-            showCompletedFilterFunc: showCompletedTasksToday
+            chooseOneFilterFuncs: [filterByPriorityAll, filterByEarliestFirstAll, filterByLatestFirstAll],
+            showCompletedFilterFunc: showCompletedTasksAll
         }
 
         const includeCompleted = target.parentNode.querySelector(".show-completed").classList.contains("active-filter");
@@ -111,7 +111,7 @@ function todayFilterEvent(filterCont) {
             filterInfoCopy.directClick = true;
             filterInfoCopy.fetchArgs = true;
 
-            showCompletedTasksToday(filterInfoCopy);
+            showCompletedTasksAll(filterInfoCopy);
         }
         else if (target.classList.contains("filter-priority")) {
             let filterInfoCopy = filterInfoObj;
@@ -119,7 +119,7 @@ function todayFilterEvent(filterCont) {
             filterInfoCopy.fetchArgs = (includeCompleted);
             filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityToday(filterInfoCopy);
+            filterByPriorityAll(filterInfoCopy);
         }
         else if (target.classList.contains("filter-earliest-first")) {
             let filterInfoCopy = filterInfoObj;
@@ -127,7 +127,7 @@ function todayFilterEvent(filterCont) {
             filterInfoCopy.fetchArgs = (includeCompleted);
             filterInfoCopy.filterFunc = earliestFirst;
 
-            filterByEarliestFirstToday(filterInfoCopy);
+            filterByEarliestFirstAll(filterInfoCopy);
         }
         else if (target.classList.contains("filter-latest-first")) {
             let filterInfoCopy = filterInfoObj;
@@ -135,44 +135,44 @@ function todayFilterEvent(filterCont) {
             filterInfoCopy.fetchArgs = (includeCompleted);
             filterInfoCopy.filterFunc = latestFirst;
 
-            filterByLatestFirstToday(filterInfoCopy);
+            filterByLatestFirstAll(filterInfoCopy);
         }
     });
 }
 
-function createTodayFilterOptions(tabCont) {
-    if (getTodayTasks(false).length === 0) {
+function createAllFilterOptions(tabCont) {
+    if (getAllTasks(true).length === 0) {
         return;
     }
 
     const filterOptionsCont = completedPriorityAndTimeFilterCont();
 
-    todayFilterEvent(filterOptionsCont);
+    allFilterEvent(filterOptionsCont);
 
     tabCont.appendChild(filterOptionsCont);
 }
 
-function createTodayTabHeader(tabCont) {
-    const tabHeaderCont = todayTabHeader();
+function createAllTabHeader(tabCont) {
+    const tabHeaderCont = generalTabHeader("all-tab", "All Tasks");
 
-    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".tasks-today-cont", createTodayTabTasks, tabCont);
+    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".all-tasks-cont", createAllTabTasks, tabCont);
 
     tabCont.appendChild(tabHeaderCont);
 }
 
-function createTodayTabTasks(tabCont, filter = false) {
-    const noMsg = document.querySelector(".no-tasks-today-msg");
+function createAllTabTasks(tabCont, filter = false) {
+    const noMsg = document.querySelector(".no-tasks-msg");
 
-    let todayTasks;
+    let allTasks;
     if (!filter) {
-        todayTasks = getTodayTasks(false);
+        allTasks = getAllTasks();
     }
     else {
-        todayTasks = filter;
+        allTasks = filter;
     }
 
-    if (todayTasks.length === 0) {
-        clearTab(tabCont, getTodayTasks, true, noMsg, "today");
+    if (allTasks.length === 0) {
+        clearTab(tabCont, getAllTasks, true, noMsg, "all");
         return;
     }
     else {
@@ -181,28 +181,28 @@ function createTodayTabTasks(tabCont, filter = false) {
         }
 
         if (tabCont.querySelector(".filter-options") === null) {
-            createTodayFilterOptions(tabCont);
+            createAllFilterOptions(tabCont);
         }
     }
 
-    const tasksTodayCont = buildElement("div", "tasks-today-cont");
+    const allTasksCont = buildElement("div", "all-tasks-cont");
 
-    for (let taskIndex in todayTasks) {
-        let task = todayTasks[taskIndex];
+    for (let taskIndex in allTasks) {
+        let task = allTasks[taskIndex];
 
-        let taskCont = todayTaskCont(task);
+        let taskCont = generalTaskCont(task);
         taskContEventListeners(taskCont);
 
-        tasksTodayCont.appendChild(taskCont);
+        allTasksCont.appendChild(taskCont);
     }
 
-    tabCont.appendChild(tasksTodayCont);
+    tabCont.appendChild(allTasksCont);
 }
 
-export function createTodayTab() {
-    const todayTabCont = document.querySelector(".today-tab-cont");
+export function createAllTab() {
+    const allTabCont = document.querySelector(".all-tab-cont");
 
-    createTodayTabHeader(todayTabCont);
-    createTodayFilterOptions(todayTabCont);
-    createTodayTabTasks(todayTabCont);
+    createAllTabHeader(allTabCont);
+    createAllFilterOptions(allTabCont);
+    createAllTabTasks(allTabCont);
 }
