@@ -4,7 +4,7 @@ import { completedPriorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { todayTaskCont } from "./build-task-cont.js";
 import { todayTabHeader } from "./build-tab-header.js";
 import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
-import { filterInitialCheck, deactivateCompletedFilter, deactivateChooseOneFilterWithCompleted,
+import { filterInfoWithCompleted, filterInitialCheck, deactivateCompletedFilter, deactivateChooseOneFilterWithCompleted,
     activateShowCompletedFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
@@ -86,23 +86,9 @@ function todayFilterEvent(filterCont) {
             return;
         }
 
-        const filterInfoObj = {
-            directClick: false,
-            filterButton: target,
-            tabCont: document.querySelector(".today-tab-cont"),
-            tasksCont: document.querySelector(".tasks-today-cont"),
-            noMsgCont: document.querySelector(".no-tasks-today-msg"),
-            noMsgType: "today",
-            fetchTasksFunc: getTodayTasks,
-            fetchArgs: null,
-            completedActive: target.parentNode.querySelector(".show-completed").classList.contains("active-filter"),
-            tabTasksCreationFunc: createTodayTabTasks,
-            chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-earliest-first"),
-                target.parentNode.querySelector(".filter-latest-first")
-            ],
-            chooseOneFilterFuncs: [filterByPriorityToday, filterByEarliestFirstToday, filterByLatestFirstToday],
-            showCompletedFilterFunc: showCompletedTasksToday
-        }
+        const filterInfoObj = new filterInfoWithCompleted(target, "today-tab-cont", "tasks-today-cont", "no-tasks-today-msg",
+            "today", getTodayTasks, createTodayTabTasks, [filterByPriorityToday, filterByEarliestFirstToday, filterByLatestFirstToday],
+            showCompletedTasksToday);
 
         const includeCompleted = target.parentNode.querySelector(".show-completed").classList.contains("active-filter");
 
@@ -113,29 +99,24 @@ function todayFilterEvent(filterCont) {
 
             showCompletedTasksToday(filterInfoCopy);
         }
-        else if (target.classList.contains("filter-priority")) {
+
+        else {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
             filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityToday(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-earliest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = earliestFirst;
-
-            filterByEarliestFirstToday(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-latest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = latestFirst;
-
-            filterByLatestFirstToday(filterInfoCopy);
+            if (target.classList.contains("filter-priority")) {
+                filterInfoCopy.filterFunc = priorityFirst;
+                filterByPriorityToday(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-earliest-first")) {
+                filterInfoCopy.filterFunc = earliestFirst;
+                filterByEarliestFirstToday(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-latest-first")) {
+                filterInfoCopy.filterFunc = latestFirst;
+                filterByLatestFirstToday(filterInfoCopy);
+            }
         }
     });
 }

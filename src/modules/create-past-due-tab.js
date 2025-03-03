@@ -4,7 +4,7 @@ import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
 import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
-import { filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
+import { filterInfoWithoutCompleted, filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
 function filterByPriorityPastDue(filterInfoObj) {
@@ -54,42 +54,29 @@ function pastDueFilterEvent(filterCont) {
     filterCont.addEventListener("click", (e) => {
         const target = e.target;
 
-        const filterInfoObj = {
-            directClick: false,
-            filterButton: target,
-            tabCont: document.querySelector(".past-due-tab-cont"),
-            tasksCont: document.querySelector(".past-due-tasks-cont"),
-            noMsgCont: document.querySelector(".no-past-due-tasks-msg"),
-            noMsgType: "past-due",
-            fetchTasksFunc: getPastDueTasks,
-            fetchArgs: null,
-            tabTasksCreationFunc: createPastDueTabTasks
-        }
+        const filterInfoObj = new filterInfoWithoutCompleted(target, "past-due-tab-cont", "past-due-tasks-cont", "no-past-due-tasks-msg",
+            "past-due", getPastDueTasks, createPastDueTabTasks);
 
         if (target.classList.contains("filter-options")) {
             return;
         }
 
-        if (target.classList.contains("filter-priority")) {
+        else {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityPastDue(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-earliest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = earliestFirst;
-
-            filterByEarliestFirstPastDue(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-latest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = latestFirst;
-
-            filterByLatestFirstPastDue(filterInfoCopy);
+            if (target.classList.contains("filter-priority")) {
+                filterInfoCopy.filterFunc = priorityFirst;
+                filterByPriorityPastDue(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-earliest-first")) {
+                filterInfoCopy.filterFunc = earliestFirst;
+                filterByEarliestFirstPastDue(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-latest-first")) {
+                filterInfoCopy.filterFunc = latestFirst;
+                filterByLatestFirstPastDue(filterInfoCopy);
+            }
         }
     });
 }

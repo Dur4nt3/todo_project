@@ -1,5 +1,38 @@
 import { resetChooseOneFilterSelection, createNoScheduledTasksMsg } from "./ui-task-utilities.js"
 
+export class filterInfoWithCompleted {
+    constructor(filterButton, tabClass, taskContClass, noMsgContClass, noMsgType, fetchTasksFunc, tabTasksCreationFunc, chooseOneFilterFuncs, showCompletedFilterFunc) {
+        this.directClick = false;
+        this.filterButton = filterButton;
+        this.tabCont = document.querySelector("." + tabClass);
+        this.tasksCont = document.querySelector("." + taskContClass);
+        this.noMsgCont = document.querySelector("." + noMsgContClass);
+        this.noMsgType = noMsgType;
+        this.fetchTasksFunc = fetchTasksFunc;
+        this.fetchArgs = null;
+        this.completedActive = filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
+        this.tabTasksCreationFunc = tabTasksCreationFunc;
+        this.chooseOneFilterButtons = [filterButton.parentNode.querySelector(".filter-priority"), filterButton.parentNode.querySelector(".filter-earliest-first"),
+            filterButton.parentNode.querySelector(".filter-latest-first")];
+        this.chooseOneFilterFuncs = chooseOneFilterFuncs;
+        this.showCompletedFilterFunc = showCompletedFilterFunc;
+    }
+}
+
+export class filterInfoWithoutCompleted {
+    constructor(filterButton, tabClass, taskContClass, noMsgContClass, noMsgType, fetchTasksFunc, tabTasksCreationFunc) {
+        this.directClick = false;
+        this.filterButton = filterButton;
+        this.tabCont = document.querySelector("." + tabClass);
+        this.tasksCont = document.querySelector("." + taskContClass);
+        this.noMsgCont = document.querySelector("." + noMsgContClass);
+        this.noMsgType = noMsgType;
+        this.fetchTasksFunc = fetchTasksFunc;
+        this.fetchArgs = null;
+        this.tabTasksCreationFunc = tabTasksCreationFunc;;
+    }
+}
+
 export function filterInitialCheck(filterInfoObj) {
     // Check if there are no tasks
     if (filterInfoObj.tasksCont === null) {
@@ -17,7 +50,7 @@ export function filterInitialCheck(filterInfoObj) {
         // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
         else if (filterInfoObj.fetchTasksFunc(filterInfoObj.fetchArgs).length === 0) {
             filterInfoObj.filterButton.parentNode.remove();
-            if (filterInfoObj.noMsg === null) {
+            if (filterInfoObj.noMsgCont === null) {
                 createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
             }
             return;

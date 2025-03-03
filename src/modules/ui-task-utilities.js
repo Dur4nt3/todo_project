@@ -1,6 +1,5 @@
 import { findByID, determineTaskType } from "./task-utility-functions.js";
 import { buildElement } from "./dom-manipulator.js";
-import { differenceInHours } from "../../node_modules/date-fns";
 import { deletionConfirmationModalInteractivity } from "./confirmation-modals.js";
 import { taskInformationModalInteractivity } from "./task-modals.js";
 
@@ -192,9 +191,46 @@ export function refreshTabEvent(button, contToDeleteClass, generationFunction, t
             contToDelete.remove();
         }
 
-        resetAllFilterChoices(getFilterOptionsCont(findTabCont(button)))
+        resetAllFilterChoices(getFilterOptionsCont(findTabCont(button)));
         generationFunction(tabCont);
     });
+}
+
+export function hardRefreshTabEvent(button, tabToDeleteClass, tabGenerationFunction) {
+    button.addEventListener("click", () => {
+        button.classList.add("rotate-refresh");
+        setTimeout(() => { button.classList.remove("rotate-refresh"); }, 600);
+
+        const tabChildrenArray = Array.from(document.querySelector(tabToDeleteClass).children);
+        for (let i in tabChildrenArray) {
+            if (tabChildrenArray[i] !== null) {
+                tabChildrenArray.remove();
+            }
+        }
+
+        tabGenerationFunction();
+    });
+}
+
+export function forceRefresh(contToDeleteClass, generationFunction, tabCont) {
+    const contToDelete = document.querySelector(contToDeleteClass);
+    if (contToDelete !== null) {
+        contToDelete.remove();
+    }
+
+    resetAllFilterChoices(getFilterOptionsCont(findTabCont(button)));
+    generationFunction(tabCont);
+}
+
+export function forceHardRefresh(tabToDeleteClass, tabGenerationFunction) {
+    const tabChildrenArray = Array.from(document.querySelector("."+tabToDeleteClass).children);
+    for (let i in tabChildrenArray) {
+        if (tabChildrenArray[i] !== null) {
+            tabChildrenArray[i].remove();
+        }
+    }
+
+    tabGenerationFunction();
 }
 
 export function clearTab(tabCont, fetchTasksFunction, fetchArgs = null, noMsgCont, noMsgType) {
