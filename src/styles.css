@@ -25,6 +25,9 @@
     --cancel-gray: #6b6b6b;
     --cancel-gray-low-opacity: rgba(107,107,107,0.75);
 
+    --confirm-green: #39ac78;
+    --confirm-green-low-opacity: rgba(57,172,120,0.75);
+
     --button-hover-background: rgba(107,107,107,0.25);
 }
 
@@ -675,6 +678,32 @@ input[type="checkbox"]:focus {
 
 /*-----------------------------------------------------------------------*/
 
+/* Upcoming Tab Styles */
+
+.upcoming-tab-header {
+    position: relative;
+}
+
+.edit-upcoming-range {
+    position: absolute;
+    cursor: pointer;
+    top: -15%;
+    right: -3.75%;
+    border-radius: 0.3rem;
+}
+
+.edit-upcoming-range:hover {
+    background-color: var(--button-hover-background);
+}
+
+.edit-upcoming-range:active {
+    opacity: 0.85;
+}
+
+/* Upcoming Tab Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Main Content Styles */
 
 
@@ -730,12 +759,12 @@ input[type="checkbox"]:focus {
     margin-top: 1rem;
 }
 
-.deletion-confirmation-button-cont {
+.deletion-confirmation-button-cont, .select-upcoming-range-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
-.deletion-confirmation-button {
+.deletion-confirmation-button, .select-upcoming-range-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -748,7 +777,6 @@ input[type="checkbox"]:focus {
 
 .deletion-confirmation-button:hover {
     transform: translateY(-0.25rem);
-    box-shadow: 0 1.5px 6px 2px #301b44;
 }
 
 .cancel-button {
@@ -844,6 +872,98 @@ input[type="checkbox"]:focus {
 
 
 /* Information Modals Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/*  Selection Modals Styles */
+
+.select-upcoming-range-modal {
+    top: 20%;
+
+    background: rgba(43,43,44,0.55);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(13,13,14,0.25);
+}
+
+.select-upcoming-range-label {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.select-upcoming-range-label::before {
+    content: "Please select a number (integer) between 1 and 4";
+    position: absolute;
+    top: -150%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    color: var(--past-due-color);
+    font-size: 0.875rem;
+    position: absolute;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+}
+
+.select-upcoming-range-label:has( > input:invalid)::before,
+.select-upcoming-range-label:has( > #invalid-range-input)::before {
+    opacity: 1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.select-upcoming-range-input {
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--cancel-gray);
+    background-color: transparent;
+    width: 3.75ch;
+    overflow: hidden;
+    caret-color: var(--primary-text-color);
+}
+
+.select-upcoming-range-input:invalid, #invalid-range-input {
+    border-bottom: 2px solid var(--negative-low-opacity);
+}
+
+.select-upcoming-range-input:valid:not(:placeholder-shown) {
+    border-bottom: 2px solid var(--confirm-green);
+}
+
+.select-upcoming-range-button-cont {
+    gap: 1.5rem;
+}
+
+.select-upcoming-range-button:hover {
+    transform: translateY(-0.25rem);
+}
+
+.select-upcoming-range-button.confirm-button {
+    background-color: var(--confirm-green);
+}
+
+.select-upcoming-range-button.confirm-button:active {
+    background-color: var(--confirm-green-low-opacity);
+}
+
+/* Selection Modals Styles */
 
 /*-----------------------------------------------------------------------*/
 

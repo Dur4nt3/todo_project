@@ -1,6 +1,16 @@
 import { taskCollection } from "./task-utility-functions.js";
 import { getYear, getMonth, getDate, isSameDay, differenceInDays } from "../../node_modules/date-fns";
 
+// Used to determine how many weeks ahead to generate tasks (1 by default, 4 is the maximum)
+// Value can be changed by the user
+let currentUpcomingRange = 1;
+
+export function setUpcomingRange(value) {
+    currentUpcomingRange = value;
+}
+
+export { currentUpcomingRange};
+
 export function getPastDueTasks() {
     let pastDueTasks = [];
 
@@ -108,5 +118,26 @@ export function getAllTasks(includeCompleted = false) {
 }
 
 export function getUpcomingTasks(includeCompleted = false) {
-    
+    let upcomingTasks = [];
+
+    console.log(differenceInDays(new Date('2025-03-25'), new Date()));
+
+    for (let taskType in taskCollection) {
+        // No need to cycle over non-dated tasks
+        if (taskType === "basic" || taskType === "grouped") {
+            continue;
+        }
+
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+
+            if (task.completionStatus === true && !includeCompleted) {
+                continue;
+            }
+
+            
+        }
+    }
+
+    return upcomingTasks;
 }

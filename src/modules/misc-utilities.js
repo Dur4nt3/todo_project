@@ -84,8 +84,13 @@ export function getTaskDateTextFormat(deadline) {
     const taskMonth = getTaskMonth(deadline);
     const taskDay = getTaskDay(deadline);
     const taskYear = ", " + getYear(deadline);
-
-
-
     return taskDay + ", " + taskMonth + " " + taskDate + taskYear;
+}
+
+export function getTaskDateRegular(deadline) {
+    const taskDate = getDate(deadline);
+    const taskMonth = getMonth(deadline) + 1;
+    const taskYear = getYear(deadline);
+
+    return taskDate + "." + taskMonth + "." + taskYear;
 }
