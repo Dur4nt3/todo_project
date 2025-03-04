@@ -1,5 +1,6 @@
 import { taskCollection } from "./task-utility-functions.js";
-import { getYear, getMonth, getDate, isSameDay, differenceInDays } from "../../node_modules/date-fns";
+import { getYear, getMonth, getDate, isSameDay, add as increaseDate, differenceInDays } from "../../node_modules/date-fns";
+import { getDayStart, getDayEnd } from "./misc-utilities.js";
 
 // Used to determine how many weeks ahead to generate tasks (1 by default, 4 is the maximum)
 // Value can be changed by the user
@@ -120,7 +121,8 @@ export function getAllTasks(includeCompleted = false) {
 export function getUpcomingTasks(includeCompleted = false) {
     let upcomingTasks = [];
 
-    console.log(differenceInDays(new Date('2025-03-25'), new Date()));
+    const rangeStart = getDayStart(new Date());
+    const rangeEnd = getDayEnd(increaseDate(new Date(), { "weeks": currentUpcomingRange }));
 
     for (let taskType in taskCollection) {
         // No need to cycle over non-dated tasks
@@ -130,12 +132,16 @@ export function getUpcomingTasks(includeCompleted = false) {
 
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
-
+            
             if (task.completionStatus === true && !includeCompleted) {
                 continue;
             }
 
-            
+            let taskDate = new Date (task.deadline);
+
+            if (taskDate >= rangeStart && taskDate <= rangeEnd) {
+                upcomingTasks.push(task);
+            }
         }
     }
 

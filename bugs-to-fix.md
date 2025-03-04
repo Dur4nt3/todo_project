@@ -16,8 +16,8 @@
 
 - Add Names/ID to checkboxes - *COMPLETE*
 
-- For tabs with dynamic headers (today & upcoming) make sure the refresh utility refreshes the header of the tab
+- For tabs with dynamic headers (today & upcoming) make sure the refresh utility refreshes the header of the tab - *COMPLETE*
 
 - Remove box shadow from deletion modal buttons - *COMPLETE*
 
-- Fix upcoming task fetching (differenceInDays is not reliable due to rounding down) by using min-day and max-day and matching tasks days
+- Fix upcoming task fetching (utilize the ability to compare dates) - *COMPLETE*
