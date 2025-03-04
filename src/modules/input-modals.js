@@ -1,7 +1,10 @@
 import { isInputSingleDigitNumber } from "./number-input-validation.js";
-import { buildElement } from "./dom-manipulator.js";
-import { currentUpcomingRange, setUpcomingRange } from "./fetch-tasks.js";
+import { isValidDate3Inputs } from "./date-input-validation.js";
+import { buildElement, show, hide } from "./dom-manipulator.js";
+import { setUpcomingRange, getTasksAdvanced } from "./fetch-tasks.js";
+import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 import { forceHardRefresh } from "./ui-task-utilities.js";
+import { advancedSearchModal, advancedSearchHandleChooseOneFilters, advancedSearchCheckSubmission, advancedSearchObj } from "./advanced-search-modal.js"
 
 function selectUpcomingRangeModal() {
     const modalCont = buildElement("div", "modal");
@@ -93,6 +96,92 @@ export function selectUpcomingRangeModalInteractivity(tabToDeleteClass, tabGener
         if (e.key === "Escape") {
             selectUpcomingModal.children[0].classList.add("close-modal-animation");
             setTimeout(() => { selectUpcomingModal.remove() }, 300);
+        }
+    });
+}
+
+export function advancedSearchModalInteractivity(tabTasksCreationFunc, tabContClass) {
+    const advancedSearchModalCont = advancedSearchModal();
+
+    document.body.prepend(advancedSearchModalCont);
+    advancedSearchModalCont.focus();
+
+    advancedSearchModalCont.addEventListener("click", (e) => {
+        const target = e.target;
+        const form = advancedSearchModalCont.querySelector(".advanced-search-form");
+
+        if (target.classList.contains("modal")) {
+            advancedSearchModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { advancedSearchModalCont.remove(); }, 300);
+            return;
+        }
+
+        else if (target.classList.contains("cancel-button")) {
+            advancedSearchModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { advancedSearchModalCont.remove(); }, 300);
+            return;
+        }
+
+        if (target.classList.contains("choose-one-filter")) {
+            advancedSearchHandleChooseOneFilters(target);
+        }
+
+        if (target.classList.contains("confirm-button")) {
+            // If this test passes it means that sufficient inputs were entered in order to perform a search
+            // This doesn't mean that the inputs entered for dates are valid
+            if (!advancedSearchCheckSubmission()) {
+                advancedSearchModalCont.children[0].classList.add("close-modal-animation");
+                setTimeout(() => { advancedSearchModalCont.remove() }, 300);
+                return;
+            }
+
+            const searchParameters = new advancedSearchObj(form.querySelector(".search-task-title").value, form.querySelector(".search-task-group").value,
+                form.querySelector(".advanced-search-start-day-input").value, form.querySelector(".advanced-search-start-month-input").value,
+                form.querySelector(".advanced-search-start-year-input").value, form.querySelector(".advanced-search-end-day-input").value,
+                form.querySelector(".advanced-search-end-month-input").value, form.querySelector(".advanced-search-end-year-input").value,
+                form.querySelector(".include-completed-tasks").checked, form.querySelector(".filter-results-priority").checked,
+                form.querySelector(".filter-results-earliest").checked, form.querySelector(".filter-results-latest").checked,
+                form.querySelector(".include-repetitive-tasks").checked, form.querySelector(".only-show-origin").checked);
+
+            if (!isValidDate3Inputs(searchParameters.startDay, searchParameters.startMonth, searchParameters.startYear)) {
+                show(form.querySelector(".start-date-error"));
+                return;
+            }
+            else {
+                hide(form.querySelector(".start-date-error"));
+            }
+            if (!isValidDate3Inputs(searchParameters.endDay, searchParameters.endMonth, searchParameters.endYear)) {
+                show(form.querySelector(".end-date-error"));
+                return;
+            }
+            else {
+                hide(form.querySelector(".end-date-error"));
+            }
+
+            let taskList = getTasksAdvanced(searchParameters);
+
+            if (searchParameters.priority) {
+                taskList = priorityFirst(taskList);
+            }
+            else if (searchParameters.earliest) {
+                taskList = earliestFirst(taskList);
+            }
+            else if (searchParameters.latest) {
+                taskList = latestFirst(taskList);
+            }
+
+            tabTasksCreationFunc(document.querySelector("."+tabContClass), taskList, '');
+            advancedSearchModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { advancedSearchModalCont.remove() }, 300);
+            return;
+        }
+
+    });
+
+    advancedSearchModalCont.addEventListener("keyup", (e) => {
+        if (e.key === "Escape") {
+            advancedSearchModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { advancedSearchModalCont.remove() }, 300);
         }
     });
 }

@@ -7,6 +7,7 @@ import initialLoad from "./modules/initial-load.js";
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
 import * as createTask from "./modules/create-task-objects.js";
+import * as repetitionGenerator from "./modules/repetition-generator.js"
 
 const basicTask = createTask.createBasicTask("testing basic", "basic task");
 const basicTask2 = createTask.createBasicTask("basic 2", "basic task 2", 2);
@@ -30,10 +31,10 @@ const dated3 = createTask.createDatedTask("dated 3", "dated task 3", "2025-02-27
 const dated4 = createTask.createDatedTask("dated 4", "dated task 4", "2025-03-11", true, 2);
 const dated5 = createTask.createDatedTask("dated 5", "dated task 5", "2025-03-09T16:30:00", false, 3);
 const dated6 = createTask.createDatedTask("dated 6", "dated task 6", "2025-03-05", true, 3);
-const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-04", true, 2);
-const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-04T13:45:00", false, 3);
-const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-04T21:22:00", false, 1);
-const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-04", true, 2);
+const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-06", true, 2);
+const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-06T13:45:00", false, 3);
+const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-06T21:22:00", false, 1);
+const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-06", true, 2);
 dated4.complete();
 dated5.complete();
 todayTask4.complete();
@@ -45,6 +46,19 @@ const datedGroupedTask3 = createTask.createDatedGroupedTask("dated & grouped 3",
 const datedGroupedTask4 = createTask.createDatedGroupedTask("dated & grouped 4", "dated & grouped task 4", "group5", "2025-02-03T13:30:00", false, 3);
 datedGroupedTask1.complete();
 datedGroupedTask4.complete();
+
+const repetitiveTask = createTask.createRepetitiveTask("repetitive task", "checking repetition",
+    "2025-03-06T12:30:00", false, "time", {"hours": 1}, true, 2, null
+);
+
+const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
+    "2025-03-11T12:30:00", false, "hybrid-weekly", [[0,2,4], {"weeks": 2}], true, 2, null
+);
+
+repetitionGenerator.generateRepetition(repetitiveTask, true);
+repetitionGenerator.generateRepetition(repetitiveTask2, true);
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {

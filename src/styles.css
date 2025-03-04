@@ -29,6 +29,8 @@
     --confirm-green-low-opacity: rgba(57,172,120,0.75);
 
     --button-hover-background: rgba(107,107,107,0.25);
+
+    --highlight-text-background: rgba(84,43,119,0.75);
 }
 
 body {
@@ -333,7 +335,7 @@ body {
     padding: 2rem 0 0 1.5rem;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"]:not(.toggle-switch-input) {
     appearance: none;
     -webkit-appearance: none;
     background-color: transparent;
@@ -704,6 +706,69 @@ input[type="checkbox"]:focus {
 
 /*-----------------------------------------------------------------------*/
 
+/* Search Tab Styles */
+
+.search-bar-cont {
+    position: relative;
+    max-width: max-content;
+    margin-bottom: 2rem;
+}
+
+.search-tasks-input {
+    height: 2.5rem;
+    width: 40ch;
+
+    outline: none;
+    border-radius: 1.5rem;
+    border: 2px solid var(--button-hover-background);
+    padding: 0.75rem 0.75rem 0.75rem 2rem;
+
+    color: var(--primary-text-color);
+    caret-color: var(--accent-color);
+
+    background-color: transparent;
+}
+
+.search-tasks-input:focus {
+    border: 2.5px solid var(--secondary-color);
+}
+
+.search-tasks-icon {
+    pointer-events: none;
+
+    position: absolute;
+    top: 50%;
+    left: 2.25%;
+    transform: translateY(-50%);
+}
+
+.tune-icon {
+    position: absolute;
+    top: 15%;
+    right: 2.25%;
+
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+}
+
+.tune-icon:hover {
+    background-color: var(--button-hover-background);
+}
+
+.tune-icon:active {
+    background-color: transparent;
+}
+
+.highlight-text {
+    background-color: var(--highlight-text-background);
+    font-weight: 600;
+}
+
+/* Search Tab Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Main Content Styles */
 
 
@@ -759,12 +824,12 @@ input[type="checkbox"]:focus {
     margin-top: 1rem;
 }
 
-.deletion-confirmation-button-cont, .select-upcoming-range-button-cont {
+.deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
-.deletion-confirmation-button, .select-upcoming-range-button {
+.deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -875,7 +940,7 @@ input[type="checkbox"]:focus {
 
 /*-----------------------------------------------------------------------*/
 
-/*  Selection Modals Styles */
+/* Selection Modals Styles */
 
 .select-upcoming-range-modal {
     top: 20%;
@@ -955,15 +1020,142 @@ input[type=number] {
     transform: translateY(-0.25rem);
 }
 
-.select-upcoming-range-button.confirm-button {
+.select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button {
     background-color: var(--confirm-green);
 }
 
-.select-upcoming-range-button.confirm-button:active {
+.select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active {
     background-color: var(--confirm-green-low-opacity);
 }
 
 /* Selection Modals Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Advanced Search Modal Styles */
+
+.advanced-search-modal {
+    top: 45%;
+
+    background: rgba(84,43,119,0.45);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(84,43,119,0.325);
+}
+
+.form-row {
+    margin-bottom: 1.25rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.form-subsection-title {
+    margin-bottom: 0.5rem;
+}
+
+.form-subsection-title:not(:first-child) {
+    margin-top: 1rem;
+}
+
+.advanced-search-label {
+    font-size: 0.875rem;
+    opacity: 0.85;
+}
+
+.advanced-search-input, .advanced-search-date-input {
+    height: 1.75rem;
+    border: none;
+    background-color: var(--button-hover-background);
+    caret-color: var(--accent-color);
+    outline: none;
+}
+
+.advanced-search-input {
+    border-radius: 0.5rem;
+    width: 35ch;
+}
+
+.advanced-search-input:focus, .advanced-search-date-input:focus {
+    border: 2.5px solid var(--secondary-color);
+}
+
+.advanced-search-date-input:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.advanced-search-date-input:last-child {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.date-input-grid {
+    display: grid;
+    grid-template-columns: 4ch 4ch 8ch;
+    gap: 0.15rem;
+}
+
+.filter-options-row {
+    width: 45ch;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.filter-options-row > .form-row {
+    width: 35ch;
+}
+
+.toggle-switch-label {
+    font-size: 1rem;
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.5rem;
+}
+
+.toggle-switch-label > .toggle-switch-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    border: 2px solid #414141;
+    border-radius: 1rem;
+    transition: 0.4s;
+}
+
+.toggle-switch-slider::before {
+    position: absolute;
+    content: "";
+    height: 1rem;
+    width: 1rem;
+    left: 0.15rem;
+    bottom: 0.15rem;
+    background-color: var(--primary-text-color);
+    border-radius: inherit;
+    transition: 0.4s;
+}
+
+.toggle-switch-label .toggle-switch-input:checked + .toggle-switch-slider {
+    background: var(--confirm-green);
+}
+
+.toggle-switch-label .toggle-switch-input:checked + .toggle-switch-slider::before {
+    transform: translateX(1.5rem);
+}
+
+.input-error {
+    font-size: 0.875rem;
+    color: var(--past-due-color);
+}
+
+
+/* Advanced Search Modal Styles */
 
 /*-----------------------------------------------------------------------*/
 
