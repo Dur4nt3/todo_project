@@ -47,4 +47,14 @@ Settings will be saved to the localStorage using a JSON object with settings as 
 
     3) Modal Coloring: Based on priority | light gray regardless of priority
 
-**Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal**
+- Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal
+
+- Search tab:
+
+    1) Fetch all tasks (completed included) & save in an array specifically made for the search tab (array regenerates on tab refresh)
+
+    2) On button press match search value to tasks title, if a task's title contains the search value, display it
+
+    3) Tune: "Advanced Search" option, allow to search tasks in a given date range, allow to search tasks by groups
+
+    4) Filter options: Show Completed | Filter by Priority | Filter by Earliest First | Filter by Latest First

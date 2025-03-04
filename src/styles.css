@@ -704,6 +704,63 @@ input[type="checkbox"]:focus {
 
 /*-----------------------------------------------------------------------*/
 
+/* Search Tab Styles */
+
+.search-bar-cont {
+    position: relative;
+    max-width: max-content;
+}
+
+.search-tasks-input {
+    height: 2.5rem;
+    width: 40ch;
+
+    outline: none;
+    border-radius: 1.5rem;
+    border: 2px solid var(--button-hover-background);
+    padding: 0.75rem 0.75rem 0.75rem 2rem;
+
+    color: var(--primary-text-color);
+    caret-color: var(--accent-color);
+
+    background-color: transparent;
+}
+
+.search-tasks-input:focus {
+    border: 2.5px solid var(--secondary-color);
+}
+
+.search-tasks-icon {
+    pointer-events: none;
+
+    position: absolute;
+    top: 50%;
+    left: 2.25%;
+    transform: translateY(-50%);
+}
+
+.tune-icon {
+    position: absolute;
+    top: 15%;
+    right: 2.25%;
+
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+}
+
+.tune-icon:hover {
+    background-color: var(--button-hover-background);
+}
+
+.tune-icon:active {
+    background-color: transparent;
+}
+
+/* Search Tab Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Main Content Styles */
 
 
@@ -875,7 +932,7 @@ input[type="checkbox"]:focus {
 
 /*-----------------------------------------------------------------------*/
 
-/*  Selection Modals Styles */
+/* Selection Modals Styles */
 
 .select-upcoming-range-modal {
     top: 20%;
