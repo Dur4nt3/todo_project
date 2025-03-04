@@ -86,24 +86,6 @@ function allFilterEvent(filterCont) {
             return;
         }
 
-        // const filterInfoObj = {
-        //     directClick: false,
-        //     filterButton: target,
-        //     tabCont: document.querySelector(".all-tab-cont"),
-        //     tasksCont: document.querySelector(".all-tasks-cont"),
-        //     noMsgCont: document.querySelector(".no-tasks-msg"),
-        //     noMsgType: "all",
-        //     fetchTasksFunc: getAllTasks,
-        //     fetchArgs: null,
-        //     completedActive: target.parentNode.querySelector(".show-completed").classList.contains("active-filter"),
-        //     tabTasksCreationFunc: createAllTabTasks,
-        //     chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-earliest-first"),
-        //         target.parentNode.querySelector(".filter-latest-first")
-        //     ],
-        //     chooseOneFilterFuncs: [filterByPriorityAll, filterByEarliestFirstAll, filterByLatestFirstAll],
-        //     showCompletedFilterFunc: showCompletedTasksAll
-        // }
-
         const filterInfoObj = new filterInfoWithCompleted(target, "all-tab-cont", "all-tasks-cont", "no-tasks-msg",
             "all", getAllTasks, createAllTabTasks, [filterByPriorityAll, filterByEarliestFirstAll, filterByLatestFirstAll],
             showCompletedTasksAll);
@@ -117,29 +99,24 @@ function allFilterEvent(filterCont) {
 
             showCompletedTasksAll(filterInfoCopy);
         }
-        else if (target.classList.contains("filter-priority")) {
+
+        else {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
             filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityAll(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-earliest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = earliestFirst;
-
-            filterByEarliestFirstAll(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-latest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = latestFirst;
-
-            filterByLatestFirstAll(filterInfoCopy);
+            if (target.classList.contains("filter-priority")) {
+                filterInfoCopy.filterFunc = priorityFirst;
+                filterByPriorityAll(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-earliest-first")) {
+                filterInfoCopy.filterFunc = earliestFirst;
+                filterByEarliestFirstAll(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-latest-first")) {
+                filterInfoCopy.filterFunc = latestFirst;
+                filterByLatestFirstAll(filterInfoCopy);
+            }
         }
     });
 }

@@ -60,26 +60,22 @@ function completedFilterEvent(filterCont) {
             return;
         }
 
-        if (target.classList.contains("filter-priority")) {
+        else {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityCompleted(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-earliest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = earliestFirst;
-
-            filterByEarliestFirstCompleted(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-latest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = latestFirst;
-
-            filterByLatestFirstCompleted(filterInfoCopy);
+            if (target.classList.contains("filter-priority")) {
+                filterInfoCopy.filterFunc = priorityFirst;
+                filterByPriorityCompleted(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-earliest-first")) {
+                filterInfoCopy.filterFunc = earliestFirst;
+                filterByEarliestFirstCompleted(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-latest-first")) {
+                filterInfoCopy.filterFunc = latestFirst;
+                filterByLatestFirstCompleted(filterInfoCopy);
+            }
         }
     });
 }

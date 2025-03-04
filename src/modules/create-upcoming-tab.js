@@ -99,29 +99,24 @@ function upcomingFilterEvent(filterCont) {
 
             showCompletedTasksUpcoming(filterInfoCopy);
         }
-        else if (target.classList.contains("filter-priority")) {
+
+        else {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
             filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityUpcoming(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-earliest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = earliestFirst;
-
-            filterByEarliestFirstUpcoming(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-latest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.fetchArgs = (includeCompleted);
-            filterInfoCopy.filterFunc = latestFirst;
-
-            filterByLatestFirstUpcoming(filterInfoCopy);
+            if (target.classList.contains("filter-priority")) {
+                filterInfoCopy.filterFunc = priorityFirst;
+                filterByPriorityUpcoming(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-earliest-first")) {
+                filterInfoCopy.filterFunc = earliestFirst;
+                filterByEarliestFirstUpcoming(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-latest-first")) {
+                filterInfoCopy.filterFunc = latestFirst;
+                filterByLatestFirstUpcoming(filterInfoCopy);
+            }
         }
     });
 }

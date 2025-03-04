@@ -61,26 +61,22 @@ function pastDueFilterEvent(filterCont) {
             return;
         }
 
-        if (target.classList.contains("filter-priority")) {
+        else {
             let filterInfoCopy = filterInfoObj;
             filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = priorityFirst;
 
-            filterByPriorityPastDue(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-earliest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = earliestFirst;
-
-            filterByEarliestFirstPastDue(filterInfoCopy);
-        }
-        else if (target.classList.contains("filter-latest-first")) {
-            let filterInfoCopy = filterInfoObj;
-            filterInfoCopy.directClick = true;
-            filterInfoCopy.filterFunc = latestFirst;
-
-            filterByLatestFirstPastDue(filterInfoCopy);
+            if (target.classList.contains("filter-priority")) {
+                filterInfoCopy.filterFunc = priorityFirst;
+                filterByPriorityPastDue(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-earliest-first")) {
+                filterInfoCopy.filterFunc = earliestFirst;
+                filterByEarliestFirstPastDue(filterInfoCopy);
+            }
+            else if (target.classList.contains("filter-latest-first")) {
+                filterInfoCopy.filterFunc = latestFirst;
+                filterByLatestFirstPastDue(filterInfoCopy);
+            }
         }
     });
 }
