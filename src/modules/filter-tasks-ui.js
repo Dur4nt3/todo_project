@@ -20,12 +20,12 @@ export class filterInfoWithCompleted {
 }
 
 export class filterInfoWithoutCompleted {
-    constructor(filterButton, tabName, taskContClass, noMsgContClass, noMsgType, fetchTasksFunc, tabTasksCreationFunc) {
+    constructor(filterButton, tabClass, taskContClass, noMsgContClass, noMsgType, fetchTasksFunc, tabTasksCreationFunc) {
         this.directClick = false;
         this.filterButton = filterButton;
-        this.tabCont = document.querySelector("." + tabName + "tab-cont");
-        this.taskCont = document.querySelector("." + taskContClass);
-        this.noMsg = document.querySelector("." + noMsgContClass);
+        this.tabCont = document.querySelector("." + tabClass);
+        this.tasksCont = document.querySelector("." + taskContClass);
+        this.noMsgCont = document.querySelector("." + noMsgContClass);
         this.noMsgType = noMsgType;
         this.fetchTasksFunc = fetchTasksFunc;
         this.fetchArgs = null;

@@ -2,7 +2,7 @@ import { getCompletedTasks } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
 import { priorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
-import { filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
+import { filterInfoWithoutCompleted, filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 import { generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
@@ -53,17 +53,8 @@ function completedFilterEvent(filterCont) {
     filterCont.addEventListener("click", (e) => {
         const target = e.target;
 
-        const filterInfoObj = {
-            directClick: false,
-            filterButton: target,
-            tabCont: document.querySelector(".completed-tab-cont"),
-            tasksCont: document.querySelector(".completed-tasks-cont"),
-            noMsgCont: document.querySelector(".no-completed-tasks-msg"),
-            noMsgType: "completed",
-            fetchTasksFunc: getCompletedTasks,
-            fetchArgs: null,
-            tabTasksCreationFunc: createCompletedTabTasks
-        }
+        const filterInfoObj = new filterInfoWithoutCompleted(target, "completed-tab-cont", "completed-tasks-cont", "no-completed-tasks-msg",
+            "completed", getCompletedTasks, createCompletedTabTasks);
 
         if (target.classList.contains("filter-options")) {
             return;

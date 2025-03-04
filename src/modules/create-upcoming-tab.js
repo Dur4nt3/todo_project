@@ -85,25 +85,7 @@ function upcomingFilterEvent(filterCont) {
         if (!(target.parentNode.classList.contains("filter-types"))) {
             return;
         }
-
-        // const filterInfoObj = {
-        //     directClick: false,
-        //     filterButton: target,
-        //     tabCont: document.querySelector(".upcoming-tab-cont"),
-        //     tasksCont: document.querySelector(".upcoming-tasks-cont"),
-        //     noMsgCont: document.querySelector(".no-upcoming-tasks-msg"),
-        //     noMsgType: "upcoming",
-        //     fetchTasksFunc: getUpcomingTasks,
-        //     fetchArgs: null,
-        //     completedActive: target.parentNode.querySelector(".show-completed").classList.contains("active-filter"),
-        //     tabTasksCreationFunc: createUpcomingTabTasks,
-        //     chooseOneFilterButtons: [target.parentNode.querySelector(".filter-priority"), target.parentNode.querySelector(".filter-earliest-first"),
-        //         target.parentNode.querySelector(".filter-latest-first")
-        //     ],
-        //     chooseOneFilterFuncs: [filterByPriorityUpcoming, filterByEarliestFirstUpcoming, filterByLatestFirstUpcoming],
-        //     showCompletedFilterFunc: showCompletedTasksUpcoming
-        // }
-
+        
         const filterInfoObj = new filterInfoWithCompleted(target, "upcoming-tab-cont", "upcoming-tasks-cont", "no-upcoming-tasks-msg",
             "upcoming", getUpcomingTasks, createUpcomingTabTasks, [filterByPriorityUpcoming, filterByEarliestFirstUpcoming, filterByLatestFirstUpcoming],
             showCompletedTasksUpcoming);
