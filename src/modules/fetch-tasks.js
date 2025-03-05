@@ -147,3 +147,19 @@ export function getUpcomingTasks(includeCompleted = false) {
 
     return upcomingTasks;
 }
+
+export function getTasksByTitle(title) {
+    let matchingTasks = [];
+
+    for (let taskType in taskCollection) {
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+            
+            if (task.title.includes(title)) {
+                matchingTasks.push(task);
+            }
+        }
+    }
+
+    return matchingTasks;
+}

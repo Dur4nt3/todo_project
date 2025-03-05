@@ -29,6 +29,8 @@
     --confirm-green-low-opacity: rgba(57,172,120,0.75);
 
     --button-hover-background: rgba(107,107,107,0.25);
+
+    --highlight-text-background: rgba(175,175,175,0.35);
 }
 
 body {
@@ -709,6 +711,7 @@ input[type="checkbox"]:focus {
 .search-bar-cont {
     position: relative;
     max-width: max-content;
+    margin-bottom: 2rem;
 }
 
 .search-tasks-input {
@@ -755,6 +758,11 @@ input[type="checkbox"]:focus {
 
 .tune-icon:active {
     background-color: transparent;
+}
+
+.highlight-text {
+    background-color: var(--highlight-text-background);
+    font-weight: 600;
 }
 
 /* Search Tab Styles */

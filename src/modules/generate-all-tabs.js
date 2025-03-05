@@ -3,6 +3,7 @@ import { createPastDueTab } from "./create-past-due-tab.js";
 import { createCompletedTab } from "./create-completed-tab.js";
 import { createAllTab } from "./create-all-tab.js";
 import { createUpcomingTab } from "./create-upcoming-tab.js";
+import { createSearchTab } from "./create-search-tab.js";
 
 export default function generateAllTabs() {
     createTodayTab();
@@ -10,4 +11,5 @@ export default function generateAllTabs() {
     createCompletedTab();
     createAllTab();
     createUpcomingTab();
+    createSearchTab();
 }

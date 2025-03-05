@@ -61,6 +61,11 @@ export function createNoScheduledTasksMsg(tabCont, msgType) {
             msgCont.classList.add("no-tasks-msg");
             msgCont.textContent = "No tasks";
             break;
+
+        case "search":
+            msgCont.classList.add("no-found-tasks-msg");
+            msgCont.textContent = "No tasks found";
+            break;
         
         default:
             msgCont.classList.add("no-tasks-msg");
@@ -181,7 +186,7 @@ export function resetAllFilterChoices(filterCont) {
     })
 }
 
-export function refreshTabEvent(button, contToDeleteClass, generationFunction, tabCont) {
+export function refreshTabEvent(button, contToDeleteClass, generationFunction, tabCont, noMsgType = null) {
     button.addEventListener("click", () => {
         button.classList.add("rotate-refresh");
         setTimeout(() => { button.classList.remove("rotate-refresh"); }, 600);
@@ -192,6 +197,12 @@ export function refreshTabEvent(button, contToDeleteClass, generationFunction, t
         }
 
         resetAllFilterChoices(getFilterOptionsCont(findTabCont(button)));
+
+        if (generationFunction === null) {
+            createNoScheduledTasksMsg(tabCont, noMsgType);
+            return;
+        }
+
         generationFunction(tabCont);
     });
 }
@@ -204,7 +215,7 @@ export function hardRefreshTabEvent(button, tabToDeleteClass, tabGenerationFunct
         const tabChildrenArray = Array.from(document.querySelector(tabToDeleteClass).children);
         for (let i in tabChildrenArray) {
             if (tabChildrenArray[i] !== null) {
-                tabChildrenArray.remove();
+                tabChildrenArray[i].remove();
             }
         }
 
