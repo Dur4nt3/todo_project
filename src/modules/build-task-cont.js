@@ -145,3 +145,20 @@ export function todayTaskCont(task) {
 
     return taskCont;
 }
+
+export function searchTaskCont(task, keyword) {
+    const taskCont = generalTaskCont(task);
+
+    const taskTitle = taskCont.querySelector(".task-title");
+
+    console.log(keyword);
+    const regex = new RegExp(keyword, 'gi');
+
+    let currentText = taskTitle.innerHTML;
+    currentText = currentText.replace(/(<span class="highlight-text">|<\/span>)/gim, '');
+
+    const newText = currentText.replace(regex, '<span class="highlight-text">$&</span>');
+    taskTitle.innerHTML = newText;
+
+    return taskCont;
+}

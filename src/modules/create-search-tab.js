@@ -1,9 +1,9 @@
 import { getTasksByTitle } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
-import { generalTaskCont } from "./build-task-cont.js";
+import { searchTaskCont, generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
 import { searchBar } from "./build-misc.js";
-import { advancedSearchModalInteractivity } from "./input-modals.js";
+import { advancedSearchModalInteractivity } from "./advanced-search-modal.js";
 import { taskContEventListeners, createNoScheduledTasksMsg, hardRefreshTabEvent } from "./ui-task-utilities.js";
 
 function createSearchTabHeader(tabCont) {
@@ -34,7 +34,7 @@ function searchBarEvent(searchBar, tabCont) {
 
         const taskList = getTasksByTitle(searchValue);
 
-        createSearchTabTasks(tabCont, taskList);
+        createSearchTabTasks(tabCont, taskList, searchValue);
     });
 
 
@@ -54,7 +54,7 @@ function searchBarEvent(searchBar, tabCont) {
 
             const taskList = getTasksByTitle(searchValue);
 
-            createSearchTabTasks(tabCont, taskList);
+            createSearchTabTasks(tabCont, taskList, searchValue);
         }
     });
 }
@@ -67,7 +67,7 @@ function createSearchTabSearchBar(tabCont) {
     tabCont.appendChild(searchBarCont);
 }
 
-function createSearchTabTasks(tabCont, filter = false) {
+function createSearchTabTasks(tabCont, filter = false, keyword = '') {
     // Preemptively Remove the task container
     if (tabCont.querySelector(".searched-tasks-cont") !== null) {
         tabCont.querySelector(".searched-tasks-cont").remove();
@@ -101,8 +101,15 @@ function createSearchTabTasks(tabCont, filter = false) {
 
     for (let taskIndex in foundTasks) {
         let task = foundTasks[taskIndex];
+        let taskCont;
 
-        let taskCont = generalTaskCont(task);
+        if (keyword === '') {
+            taskCont = generalTaskCont(task);
+        }
+        else {
+            taskCont = searchTaskCont(task, keyword);
+        }
+
         taskContEventListeners(taskCont);
 
         searchedTasksCont.appendChild(taskCont);

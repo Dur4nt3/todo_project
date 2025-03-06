@@ -21,3 +21,5 @@
 - Remove box shadow from deletion modal buttons - *COMPLETE*
 
 - Fix upcoming task fetching (utilize the ability to compare dates) - *COMPLETE*
+
+- Ensure originTasks are skipped in all fetching functions

@@ -28,6 +28,10 @@ export function getPastDueTasks() {
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
 
+            if (task.origin === true) {
+                continue;
+            }
+
             let taskYear = getYear(task.deadline);
             let taskMonth = getMonth(task.deadline);
             let taskDate = getDate(task.deadline);
@@ -71,6 +75,10 @@ export function getTodayTasks(includeCompleted = false) {
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
 
+            if (task.origin === true) {
+                continue;
+            }
+
             if (task.completionStatus === true && !includeCompleted) {
                 continue;
             }
@@ -91,6 +99,10 @@ export function getCompletedTasks() {
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
 
+            if (task.origin === true) {
+                continue;
+            }
+
             if (task.completionStatus === true) {
                 completedTasks.push(task);
             }
@@ -106,6 +118,10 @@ export function getAllTasks(includeCompleted = false) {
     for (let taskType in taskCollection) {
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
+
+            if (task.origin === true) {
+                continue;
+            }
 
             if (task.completionStatus === true && !includeCompleted) {
                 continue;
@@ -132,6 +148,10 @@ export function getUpcomingTasks(includeCompleted = false) {
 
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
+
+            if (task.origin === true) {
+                continue;
+            }
             
             if (task.completionStatus === true && !includeCompleted) {
                 continue;
@@ -154,6 +174,10 @@ export function getTasksByTitle(title) {
     for (let taskType in taskCollection) {
         for (let taskIndex in taskCollection[taskType]) {
             let task = taskCollection[taskType][taskIndex];
+
+            if (task.origin === true) {
+                continue;
+            }
             
             if (task.title.includes(title)) {
                 matchingTasks.push(task);
@@ -162,4 +186,8 @@ export function getTasksByTitle(title) {
     }
 
     return matchingTasks;
+}
+
+export function getTasksAdvanced(advancedSearchObj) {
+
 }

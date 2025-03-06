@@ -7,6 +7,112 @@
     <title>Task Ticker</title>
 </head>
 <body>
+    <div class="modal">
+        <div class="modal-cont advanced-search-modal">
+            <h3 class="advanced-search-title">Advanced Task Search</h3>
+
+            <form action="" class="advanced-search-form">
+                <h4 class="form-subsection-title">Main Details</h4>
+                <div class="form-row">
+                    <label for="search-task-title" class="task-title-label advanced-search-label">Task Title</label>
+                    <input type="text" class="search-task-title advanced-search-input" name="search-task-title" id="search-task-title" placeholder="Task Title*" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="search-task-group" class="task-group-label advanced-search-label">Task Group</label>
+                    <input type="text" class="search-task-group advanced-search-input" name="search-task-group" id="search-task-group" placeholder="Task Group (Optional)">
+                </div>
+
+                <h4 class="form-subsection-title">Deadline Details</h4>
+
+                <div class="form-row">
+                    <span class="task-start-date-label advanced-search-label">From</span>
+                    <div class="start-date-input-grid date-input-grid">
+                        <input type="text" class="advanced-search-start-day-input advanced-search-date-input" name="advanced-search-start-day-input" placeholder="DD" maxlength="2">
+                        <input type="text" class="advanced-search-start-month-input advanced-search-date-input" name="advanced-search-start-month-input" placeholder="MM" maxlength="2">
+                        <input type="text" class="advanced-search-start-year-input advanced-search-date-input" name="advanced-search-start-year-input" placeholder="YYYY" maxlength="4">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <span class="task-end-date-label advanced-search-label">To</span>
+                    <div class="end-date-input-grid date-input-grid">
+                        <input type="text" class="advanced-search-end-day-input advanced-search-date-input" name="advanced-search-end-day-input" placeholder="DD" maxlength="2">
+                        <input type="text" class="advanced-search-end-month-input advanced-search-date-input" name="advanced-search-end-day-input" placeholder="MM" maxlength="2">
+                        <input type="text" class="advanced-search-end-year-input advanced-search-date-input" name="advanced-search-end-day-input" placeholder="YYYY" maxlength="4">
+                    </div>
+                </div>
+
+                <h4 class="form-subsection-title">Filter Options</h4>
+
+                <div class="filter-options-row">
+                    
+                    <div class="form-row">
+                        <label for="include-completed-tasks" class="include-completed-label advanced-search-label">Include Completed</label>
+                        <label class="toggle-switch-label">
+                            <input type="checkbox" class="toggle-switch-input include-completed-tasks" name="include-completed-tasks" id="include-completed-tasks">
+                            <span class="toggle-switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="filter-results-priority" class="filter-results-priority-label advanced-search-label">Filter Results by Priority</label>
+                        <label class="toggle-switch-label">
+                            <input type="checkbox" class="toggle-switch-input filter-results-priority choose-one-filter" name="filter-results-priority" id="filter-results-priority">
+                            <span class="toggle-switch-slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="filter-options-row general-filters-cont">
+                    
+                    <div class="form-row">
+                        <label for="filter-results-earliest" class="filter-results-priority-label advanced-search-label">Filter Results by Earliest First</label>
+                        <label class="toggle-switch-label">
+                            <input type="checkbox" class="toggle-switch-input filter-results-earliest choose-one-filter" name="filter-results-earliest" id="filter-results-earliest">
+                            <span class="toggle-switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="filter-results-latest" class="filter-results-latest-label advanced-search-label">Filter Results by Latest First</label>
+                        <label class="toggle-switch-label">
+                            <input type="checkbox" class="toggle-switch-input filter-results-latest choose-one-filter" name="filter-results-latest" id="filter-results-latest">
+                            <span class="toggle-switch-slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="filter-options-row repetitive-tasks-filters-cont">
+                    
+                    <div class="form-row">
+                        <label for="include-repetitive-tasks" class="include-repetitive-tasks-label advanced-search-label">Include Reoccurring Tasks</label>
+                        <label class="toggle-switch-label">
+                            <input type="checkbox" class="toggle-switch-input include-repetitive-tasks" name="include-repetitive-tasks" id="include-repetitive-tasks">
+                            <span class="toggle-switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="only-show-origin" class="only-show-origin-label advanced-search-label">Hide Non-Origin Tasks</label>
+                        <label class="toggle-switch-label">
+                            <input type="checkbox" class="toggle-switch-input only-show-origin" name="only-show-origin" id="only-show-origin">
+                            <span class="toggle-switch-slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+            </form>
+
+            <div class="advanced-search-button-cont">
+                <button class="advanced-search-button cancel-button">Cancel</button>
+                <button class="advanced-search-button confirm-button">Search</button>
+            </div>
+
+        </div>
+    </div>
 
     <div class="page-grid">
         <div class="sidebar-cont">
