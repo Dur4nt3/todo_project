@@ -1129,7 +1129,7 @@ input[type=number] {
     transition: 0.4s;
 }
 
-.toggle-switch-slider:before {
+.toggle-switch-slider::before {
     position: absolute;
     content: "";
     height: 1rem;
@@ -1145,8 +1145,13 @@ input[type=number] {
     background: var(--confirm-green);
 }
 
-.toggle-switch-label .toggle-switch-input:checked + .toggle-switch-slider:before {
+.toggle-switch-label .toggle-switch-input:checked + .toggle-switch-slider::before {
     transform: translateX(1.5rem);
+}
+
+.input-error {
+    font-size: 0.875rem;
+    color: var(--past-due-color);
 }
 
 

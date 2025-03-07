@@ -2,6 +2,7 @@ import { isInputSingleDigitNumber } from "./number-input-validation.js";
 import { buildElement } from "./dom-manipulator.js";
 import { setUpcomingRange } from "./fetch-tasks.js";
 import { forceHardRefresh } from "./ui-task-utilities.js";
+import { advancedSearchModal } from "./advanced-search-modal.js"
 
 function selectUpcomingRangeModal() {
     const modalCont = buildElement("div", "modal");
@@ -95,4 +96,11 @@ export function selectUpcomingRangeModalInteractivity(tabToDeleteClass, tabGener
             setTimeout(() => { selectUpcomingModal.remove() }, 300);
         }
     });
+}
+
+export function advancedSearchModalInteractivity(tabTasksCreationFunc, taskContClass) {
+    const advancedSearchModalCont = advancedSearchModal();
+
+    document.body.prepend(advancedSearchModalCont);
+    advancedSearchModalCont.focus();
 }

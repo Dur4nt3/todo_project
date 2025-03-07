@@ -3,7 +3,7 @@ import { buildElement } from "./dom-manipulator.js";
 import { searchTaskCont, generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
 import { searchBar } from "./build-misc.js";
-import { advancedSearchModalInteractivity } from "./advanced-search-modal.js";
+import { advancedSearchModalInteractivity } from "./input-modals.js";
 import { taskContEventListeners, createNoScheduledTasksMsg, hardRefreshTabEvent } from "./ui-task-utilities.js";
 
 function createSearchTabHeader(tabCont) {
