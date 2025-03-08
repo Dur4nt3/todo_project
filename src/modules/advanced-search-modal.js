@@ -1,5 +1,25 @@
 import { buildElement } from "./dom-manipulator.js";
 
+export class advancedSearchObj {
+    constructor(title, group, startDay, startMonth, startYear, endDay, endMonth, endYear, includeCompleted,
+    priority, earliest, latest, includeRepetitive, hideNonOrigin) {
+        this.title = title;
+        this.group = group;
+        this.startDay = startDay;
+        this.startMonth = startMonth;
+        this.startYear = startYear;
+        this.endDay = endDay;
+        this.endMonth = endMonth;
+        this.endYear = endYear;
+        this.includeCompleted = includeCompleted;
+        this.priority = priority;
+        this.earliest = earliest;
+        this.latest = latest;
+        this.includeRepetitive = includeRepetitive;
+        this.hideNonOrigin = hideNonOrigin;
+    }
+}
+
 function advancedSearchMainDetails() {
     let mainDetailsSection = {};
 
@@ -322,4 +342,46 @@ export function advancedSearchModal() {
     modalCont.appendChild(advancedSearchModalCont);
 
     return modalCont;
+}
+
+export function advancedSearchHandleChooseOneFilters(clickedFilter) {
+    const allChooseOneFilters = Array.from(document.querySelectorAll(".choose-one-filter"));
+
+    for (let i in allChooseOneFilters) {
+        if (allChooseOneFilters[i] !== clickedFilter) {
+            allChooseOneFilters[i].checked = false;
+        } 
+    }
+}
+
+export function advancedSearchCheckSubmission() {
+    const advancedSearchForm = document.querySelector(".advanced-search-form");
+
+    const taskTitle = advancedSearchForm.querySelector(".search-task-title").value;
+    const taskGroup = advancedSearchForm.querySelector(".search-task-group").value;
+
+    const startDateInputs = Array.from(advancedSearchForm.querySelector(".start-date-input-grid").children);
+    let startDateInputsEmpty = false;
+
+    for (let i in startDateInputs) {
+        if (startDateInputs[i].value === "") {
+            startDateInputsEmpty = true;
+        }
+    }
+
+    const endDateInputs = Array.from(advancedSearchForm.querySelector(".end-date-input-grid").children);
+    let endDateInputsEmpty = false;
+
+    for (let i in endDateInputs) {
+        if (endDateInputs[i].value === "") {
+            endDateInputsEmpty = true;
+        }
+    }
+
+    // If both the task title field and start and end date fields are empty => return false to indicate that you should exit the modal if attempting to submit
+    if (taskTitle === "" && (startDateInputsEmpty && endDateInputsEmpty) && taskGroup === "") {
+        return false;
+    }
+
+    return true;
 }

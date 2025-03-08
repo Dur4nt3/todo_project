@@ -19,7 +19,7 @@ function searchBarEvent(searchBar, tabCont) {
         const target = e.target;
 
         if (target.classList.contains("tune-icon")) {
-            advancedSearchModalInteractivity(createSearchTabTasks, "searched-tasks-cont");
+            advancedSearchModalInteractivity(createSearchTabTasks, "search-tab-cont");
         }
     });
 

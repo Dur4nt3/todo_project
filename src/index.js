@@ -47,16 +47,16 @@ const datedGroupedTask4 = createTask.createDatedGroupedTask("dated & grouped 4",
 datedGroupedTask1.complete();
 datedGroupedTask4.complete();
 
-// const repetitiveTask = createTask.createRepetitiveTask("repetitive task", "checking repetition",
-//     "2025-03-06T12:30:00", false, "time", {"hours": 1}, true, 2, null
-// );
+const repetitiveTask = createTask.createRepetitiveTask("repetitive task", "checking repetition",
+    "2025-03-06T12:30:00", false, "time", {"hours": 1}, true, 2, null
+);
 
-// const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
-//     "2025-03-11T12:30:00", false, "hybrid-weekly", [[0,2,4], {"weeks": 2}], true, 2, null
-// );
+const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
+    "2025-03-11T12:30:00", false, "hybrid-weekly", [[0,2,4], {"weeks": 2}], true, 2, null
+);
 
-// repetitionGenerator.generateRepetition(repetitiveTask, true);
-// repetitionGenerator.generateRepetition(repetitiveTask2, true);
+repetitionGenerator.generateRepetition(repetitiveTask, true);
+repetitionGenerator.generateRepetition(repetitiveTask2, true);
 
 
 

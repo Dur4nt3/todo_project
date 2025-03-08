@@ -1035,7 +1035,7 @@ input[type=number] {
 /* Advanced Search Modal Styles */
 
 .advanced-search-modal {
-    top: 40%;
+    top: 45%;
 
     background: rgba(84,43,119,0.45);
     -webkit-backdrop-filter: blur(10px);
