@@ -3,6 +3,7 @@ import "./stylesheets/reset.css";
 
 import * as changeTabs from "./modules/change-tabs.js";
 import initialLoad from "./modules/initial-load.js";
+import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
 
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
@@ -20,6 +21,9 @@ const groupedTask2 = createTask.createGroupedTask("more groups", "grouped task 2
 const groupedTask3 = createTask.createGroupedTask("grouped 3", "grouped task 3", "group3", 2);
 const groupedTask4 = createTask.createGroupedTask("grouped 4", "grouped task 4", "group1", 3);
 const groupedTask5 = createTask.createGroupedTask("grouped 5", "grouped task 5", "group6", 2);
+const groupedTask6 = createTask.createGroupedTask("grouped 6", "grouped task 6", "group1", 3);
+const groupedTask7 = createTask.createGroupedTask("grouped 7", "grouped task 7", "group1", 2);
+const groupedTask8 = createTask.createGroupedTask("grouped 8", "grouped task 8", "group1", 3);
 groupedTask1.complete();
 
 
@@ -44,6 +48,9 @@ const datedGroupedTask1 = createTask.createDatedGroupedTask("dated & grouped", "
 const datedGroupedTask2 = createTask.createDatedGroupedTask("dated & grouped 2", "all-day grouped", "group3", "2025-02-03", true, 2);
 const datedGroupedTask3 = createTask.createDatedGroupedTask("dated & grouped 3", "dated & grouped task 3", "group4", "2025-03-26", true, 2);
 const datedGroupedTask4 = createTask.createDatedGroupedTask("dated & grouped 4", "dated & grouped task 4", "group5", "2025-02-03T13:30:00", false, 3);
+const datedGroupedTask5 = createTask.createDatedGroupedTask("dated & grouped 5", "dated & grouped task 5", "group2", "2025-02-03T13:30:00", false, 3);
+const datedGroupedTask6 = createTask.createDatedGroupedTask("dated & grouped 6", "dated & grouped task 6", "group2", "2025-02-03T14:30:00", false, 3);
+const datedGroupedTask7 = createTask.createDatedGroupedTask("dated & grouped 7", "dated & grouped task 7", "group2", "2025-02-03T16:30:00", false, 3);
 datedGroupedTask1.complete();
 datedGroupedTask4.complete();
 
@@ -101,6 +108,6 @@ groupListCont.addEventListener("click", (e) => {
         changeTabs.changeGroupTab(target.parentNode);
     }
     else {
-        console.log("trying to view more groups");
+        moreGroupsModalInteractivity();
     }
 });

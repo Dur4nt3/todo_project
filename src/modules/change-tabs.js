@@ -119,14 +119,23 @@ function clearPreviousContent() {
     }
 }
 
-export function changeGroupTab(groupCont) {
+export function changeGroupTab(groupCont, modal = false) {
     if (groupCont.classList.contains("active-group-tab")) {
         return;
     }
 
     deactivateMainLabels();
     clearPreviousContent();
-    makeGroupTabActive(groupCont);
     showGroupTab();
-    createGroupTab(groupCont.id);
+
+    if (modal === true) {
+        deactivateGroupLabels();
+        createGroupTab(groupCont);
+    }
+
+    else if (!modal) {
+        makeGroupTabActive(groupCont);
+        createGroupTab(groupCont.id);
+    }
+
 }

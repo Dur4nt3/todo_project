@@ -198,3 +198,15 @@ export function getGroupCount() {
     }
     return groupsArray.length;
 }
+
+export function getGroupList() {
+    const groupsArray = Object.keys(taskGroups);
+
+    for (let i in groupsArray) {
+        if (reservedGroups.includes(groupsArray[i])) {
+            groupsArray.splice(i, 1);
+        }
+    }
+
+    return groupsArray;
+}

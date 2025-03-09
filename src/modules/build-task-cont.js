@@ -151,7 +151,6 @@ export function searchTaskCont(task, keyword) {
 
     const taskTitle = taskCont.querySelector(".task-title");
 
-    console.log(keyword);
     const regex = new RegExp(keyword, 'gi');
 
     let currentText = taskTitle.innerHTML;

@@ -22,4 +22,6 @@
 
 - Fix upcoming task fetching (utilize the ability to compare dates) - *COMPLETE*
 
-- Ensure originTasks are skipped in all fetching functions
+- Ensure originTasks are skipped in all fetching functions - *COMPLETE*
+
+- Remove console logs from "index.js"

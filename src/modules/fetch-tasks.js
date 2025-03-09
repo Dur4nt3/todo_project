@@ -237,7 +237,6 @@ export function getTasksAdvanced(advancedSearchObj) {
                 continue;
             }
             if (advancedSearchObj.includeRepetitive === false && (determineTaskType(task) === "repetitive" || determineTaskType(task) === "repetitiveGrouped")) {
-                console.log("skipped", task.title);
                 continue;
             }
             if (advancedSearchObj.hideNonOrigin === true && task.origin === false) {
@@ -267,7 +266,7 @@ export function getTaskByGroup(group, includeCompleted = false) {
                 continue;
             }
             
-            if (task.group = group) {
+            if (task.group === group) {
                 matchingTasks.push(task);
             }
         }

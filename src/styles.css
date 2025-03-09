@@ -14,6 +14,8 @@
     --secondary-color: #542b77;
     --accent-color: #9757ea;
 
+    --palette-gradient: radial-gradient( circle farthest-corner at 10% 20%,  rgba(178,0,184,1) 0%, rgba(71,0,159,1) 90% );
+
     --secondary-contrast-border: #40215a;
 
     --due-color: #04ec00;
@@ -942,7 +944,7 @@ input[type="checkbox"]:focus {
 
 /* Selection Modals Styles */
 
-.select-upcoming-range-modal {
+.select-upcoming-range-modal, .more-groups-modal {
     top: 20%;
 
     background: rgba(43,43,44,0.55);
@@ -1156,6 +1158,71 @@ input[type=number] {
 
 
 /* Advanced Search Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* More Groups Modal Styles */
+
+.more-groups-modal {
+    top: 45%;
+    min-width: 30svw;
+    max-width: 45svw;
+    max-height: 80svh;
+}
+
+.groups-grid {
+    width: 100%;
+    max-height: 100%;
+    padding: 0.5rem;
+    overflow: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.more-groups-group-cont {
+    min-width: min-content;
+    padding: 0.5rem;
+    flex-grow: 1;
+    position: relative;
+    
+    font-size: 1.25rem;
+    text-align: center;
+
+    box-shadow: 0 0px 1.85px 1px rgba(5, 5, 5, 0.6);
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.more-groups-group-cont:hover {
+    transform: translateY(-0.15rem);
+}
+
+.more-groups-group-cont::before, .more-groups-group-cont::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    transform: scale(0);
+    height: 2.5px;
+    background-image: var(--palette-gradient);
+    transform-origin: center;
+    transition: 0.3s;
+}
+
+.more-groups-group-cont::after {
+    top: 0;
+}
+
+.more-groups-group-cont:hover::before, .more-groups-group-cont:hover::after {
+    transform: scale(1);
+}
+
+
+/* More Groups Modal Styles */
 
 /*-----------------------------------------------------------------------*/
 
