@@ -14,6 +14,8 @@
     --secondary-color: #542b77;
     --accent-color: #9757ea;
 
+    --palette-gradient: radial-gradient( circle farthest-corner at 10% 20%,  rgba(178,0,184,1) 0%, rgba(71,0,159,1) 90% );
+
     --secondary-contrast-border: #40215a;
 
     --due-color: #04ec00;
@@ -50,6 +52,20 @@ body {
 
     display: grid;
     grid-template-columns: 1fr 4.25fr;
+}
+
+/* Scrollbar styling are used to ensure the chrome scrollbar isn't as obtrusive */
+::-webkit-scrollbar {
+    width: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0.5rem;
+    background-color: var(--cancel-gray);
 }
 
 /* Initial Styles */
@@ -824,12 +840,14 @@ input[type="checkbox"]:focus {
     margin-top: 1rem;
 }
 
-.deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont {
+.deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont,
+.edit-groups-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
-.deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button {
+.deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button,
+.edit-groups-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -942,7 +960,7 @@ input[type="checkbox"]:focus {
 
 /* Selection Modals Styles */
 
-.select-upcoming-range-modal {
+.select-upcoming-range-modal, .more-groups-modal {
     top: 20%;
 
     background: rgba(43,43,44,0.55);
@@ -1020,11 +1038,13 @@ input[type=number] {
     transform: translateY(-0.25rem);
 }
 
-.select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button {
+.select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button,
+.edit-groups-button.confirm-button {
     background-color: var(--confirm-green);
 }
 
-.select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active {
+.select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active,
+.edit-groups-button.confirm-button:active {
     background-color: var(--confirm-green-low-opacity);
 }
 
@@ -1034,13 +1054,18 @@ input[type=number] {
 
 /* Advanced Search Modal Styles */
 
-.advanced-search-modal {
+.advanced-search-modal, .edit-groups-modal {
     top: 45%;
 
     background: rgba(84,43,119,0.45);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(84,43,119,0.325);
+}
+
+.advanced-search-form {
+    max-height: 72.5svh;
+    overflow: auto;
 }
 
 .form-row {
@@ -1159,4 +1184,323 @@ input[type=number] {
 
 /*-----------------------------------------------------------------------*/
 
+/* More Groups Modal Styles */
+
+.more-groups-modal {
+    top: 45%;
+    max-width: 40svw;
+    max-height: 80svh;
+}
+
+.groups-grid {
+    width: 100%;
+    max-height: 100%;
+    padding: 0.5rem;
+    overflow: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.more-groups-group-cont {
+    min-width: min-content;
+    padding: 0.5rem;
+    flex-grow: 1;
+    position: relative;
+    
+    font-size: 1.25rem;
+    text-align: center;
+
+    box-shadow: 0 0px 1.85px 1px rgba(5, 5, 5, 0.6);
+
+    cursor: pointer;
+    user-select: none;
+    transition: 0.3s;
+}
+
+.more-groups-group-cont:hover {
+    transform: translateY(-0.25rem);
+}
+
+.more-groups-group-cont:active {
+    opacity: 0.65;
+}
+
+.more-groups-group-cont::before, .more-groups-group-cont::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    transform: scale(0);
+    height: 2.5px;
+    background-image: var(--palette-gradient);
+    transform-origin: center;
+    transition: 0.3s;
+}
+
+.more-groups-group-cont::after {
+    top: 0;
+}
+
+.more-groups-group-cont:hover::before, .more-groups-group-cont:hover::after {
+    transform: scale(1);
+}
+
+
+/* More Groups Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Edit Groups Modal Styles */
+
+.edit-groups-modal {
+    max-height: 75svh;
+    overflow: hidden;
+}
+
+.group-list-overflow-cont {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+}
+
+.edit-groups-group-list {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    
+    max-width: 85svw;
+}
+
+.edit-groups-group-cont {
+    padding: 0.5rem;
+    z-index: 1;
+    
+    flex-grow: 1;
+    overflow: auto;
+
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-groups-error-cont {
+    max-width: 100%;
+    overflow: auto;
+
+    font-size: 0.875rem;
+    color: var(--past-due-color);
+}
+
+.edit-groups-group-main-details {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    box-shadow: 0 0 2.75px 1.15px rgba(20, 11, 29, 0.6);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    
+}
+
+.new-valid {
+    color: var(--confirm-green);
+}
+
+.new-invalid {
+    color: var(--past-due-color);
+}
+
+.edit-groups-group-cont * {
+    white-space: nowrap;
+}
+
+.edit-groups-group-name {
+    font-style: italic;
+}
+
+.edit-groups-group-name, .current-group-order {
+    font-size: 1.15rem;
+}
+
+.modify-group-options {
+    padding: 0.35rem;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modify-group-button {
+    outline: none;
+    border: none;
+    padding: 0.35rem;
+    border-radius: 0.5rem;
+    background-color: var(--button-hover-background);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modify-group-button:hover {
+    transform: translateY(-0.25rem);
+}
+
+.modify-group-button:active {
+    opacity: 0.85;
+}
+
+.fade-out {
+    animation: fade-out 0.3s steps(20, end) forwards;
+}
+
+@keyframes fade-out {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+.fade-in {
+    animation: fade-in 0.3s steps(20, end) forwards;
+}
+
+@keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.modify-group-input {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--primary-text-color);
+    width: 32.5ch;
+    opacity: 0;
+}
+
+.invalid-input {
+    border-bottom: 2px solid var(--past-due-color);
+    opacity: 1;
+}
+
+.submit-changes-icon {
+    padding: 0.15rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.submit-changes-icon:hover {
+    background-color: var(--button-hover-background);
+}
+
+.submit-changes-icon:active {
+    background-color: transparent;
+}
+
+.modify-group-options:has(.change-group-name-input.invalid-input)::before {
+    content: "This name either conflicts with another, exceeds 30 characters, or includes prohibited characters";
+    position: absolute;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    top: -47.5%;
+    transform: translate(-50%);
+    padding: 0.15rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+    color: var(--past-due-color);
+}
+
+.modify-group-options:has(.change-group-name-input.invalid-input:hover)::before {
+    opacity: 1;
+}
+
+.modify-group-options:has(.change-list-order-input.invalid-input)::before {
+    content: "Invalid value. Select a number between 1 and 5 or leave blank.";
+    position: absolute;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    top: -47.5%;
+    transform: translate(-50%);
+    padding: 0.15rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+    color: var(--past-due-color);
+}
+
+.modify-group-options:has(.change-list-order-input.invalid-input:hover)::before {
+    opacity: 1;
+}
+
+.modify-group-input.invalid-animation {
+    animation: invalid-shake 0.4s;   
+}
+
+@keyframes invalid-shake {
+    0% { transform: translateX(0.5rem); }
+    12.5% { transform: translateX(-0.5rem); }
+    25% { transform: translateX(0.5rem); }
+    37.5% { transform: translateX(-0.5rem); }
+    50% { transform: translateX(0.5rem); }
+    62.5% { transform: translateX(-0.5rem); }
+    75% { transform: translateX(0.5rem); }
+    87.5% { transform: translateX(-0.5rem); }
+    100% { transform: translateX(0); }
+}
+
+.change-label-color-input-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.change-label-color-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+input[type="color"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+}
+
+.modal-catastrophic-error {
+    font-size: 1rem;
+    color: var(--past-due-color);
+    font-weight: bold;
+}
+
+/* Edit Groups Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* General Styles - Use to override above rules */
+
+.hide {
+    display: none;
+}
+
+/* General Styles - Use to override above rules */
+
+/*-----------------------------------------------------------------------*/

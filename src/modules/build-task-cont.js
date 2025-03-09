@@ -6,6 +6,9 @@ import clockSvg from "../images/Clock.svg";
 import editSvg from "../images/Edit.svg";
 import deleteSvg from "../images/Delete.svg";
 
+// This module is used to build a variety of task containers
+// This containers are the tasks the user views in each tabs
+// *This module is not to be confused with the "task-modal.js" module*
 
 function checkDueStatus(deadline) {
 
@@ -151,7 +154,6 @@ export function searchTaskCont(task, keyword) {
 
     const taskTitle = taskCont.querySelector(".task-title");
 
-    console.log(keyword);
     const regex = new RegExp(keyword, 'gi');
 
     let currentText = taskTitle.innerHTML;

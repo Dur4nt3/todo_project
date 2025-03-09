@@ -36,7 +36,7 @@
 
 - Settings:
 
-**Create a settings tab that includes the following options:**
+**Create a settings modal that includes the following options:**
 
 Settings will be saved to the localStorage using a JSON object with settings as properties
 
@@ -51,10 +51,37 @@ Settings will be saved to the localStorage using a JSON object with settings as 
 
 - Search tab:
 
-    1) Fetch all tasks (completed included) & save in an array specifically made for the search tab (array regenerates on tab refresh)
+    1) Fetch all tasks (completed included) & save in an array specifically made for the search tab (array regenerates on tab refresh) - *COMPLETE*
 
-    2) On button press match search value to tasks title, if a task's title contains the search value, display it
+    2) On button press match search value to tasks title, if a task's title contains the search value, display it - *COMPLETE*
 
-    3) Tune: "Advanced Search" option, allow to search tasks in a given date range, allow to search tasks by groups
+    3) Tune: "Advanced Search" option, allow to search tasks in a given date range, allow to search tasks by groups - *COMPLETE*
 
-    4) Filter options: Show Completed | Filter by Priority | Filter by Earliest First | Filter by Latest First
+- Edit Groups: the initial color of the input label "change-label-color-label" will match the group's color label - *COMPLETE*
+ 
+- Edit Groups: when a user picks a new color via the input the label will change color accordingly - *COMPLETE*
+
+- Custom Scroll-bars - *COMPLETE*
+
+- Edit Groups: Submission: 
+    1) execute the process function => if false => raise error => if true continue
+
+    2) Exit the modal
+
+    3) Clear the group list container
+
+    4) Re-generate the group list container
+
+- Help:
+
+    1) A modal with multiple pages that can be scrolled through both via left and right arrow icons and indicators in the middle that represent the page number
+    *Page indicators should be rectangles that are enlarged and have a white background when you're on their respective page*
+    *Concept - Image Carousel like design*
+
+    2) Information in the modal:
+
+        - Information about groups, listing positions, unlisted groups
+
+        - Information about the filters earliest first and latest first and their interaction with an all-day task
+
+        - Information about repetitive tasks

@@ -2,6 +2,8 @@ import { determineTaskType } from "./task-utility-functions.js";
 import * as removeTask from "./task-removal.js";
 import { buildElement } from "./dom-manipulator.js";
 
+// This module is used to create both the markup and the UI for the task deletion modals
+
 function deletionConfirmationModal(taskTitle) {
     const modalCont = buildElement("div", "modal");
     modalCont.tabIndex = 0;

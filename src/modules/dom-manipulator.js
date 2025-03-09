@@ -1,3 +1,5 @@
+// This module is used to perform various manipulations on DOM elements
+
 export function hide(element) {
     element.classList.add("hide");
 }

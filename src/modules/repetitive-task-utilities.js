@@ -2,6 +2,8 @@ import { createRepetitiveTask, createRepetitiveGroupedTask } from "./create-task
 import { taskCollection } from "./task-utility-functions.js";
 import { add as increaseDate, sub as decreaseDate, getDay, startOfMonth, endOfMonth } from "../../node_modules/date-fns";
 
+// This module includes various utilities used in repetitive task related logic
+
 // Used to find the origin task of an ungrouped repetitive task cluster
 function findOriginUngrouped(clusterID) {
     for (let index in taskCollection.repetitive) {

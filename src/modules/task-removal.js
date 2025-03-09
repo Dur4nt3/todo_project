@@ -1,5 +1,7 @@
 import { taskCollection, taskGroups } from "./task-utility-functions.js";
 
+// This module handles the logic behind task removal
+
 function removeFromTaskGroups(taskID, groupName) {
     for (let index in taskGroups[groupName]) {
         let task = taskGroups[groupName][index];

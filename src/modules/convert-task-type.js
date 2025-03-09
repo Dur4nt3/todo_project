@@ -1,6 +1,8 @@
 import * as taskRemoval from "./task-removal.js";
 import * as createTask from "./create-task-objects.js";
 
+// This module is used to convert a specific task into a different task type
+
 // Convert a basic task to a dated one (with a deadline)
 export function basicToDated(basicTask, deadline, allDay) {
     taskRemoval.removeFromTaskCollection(basicTask.id, "basic");

@@ -2,6 +2,8 @@ import { taskCollection, determineTaskType } from "./task-utility-functions.js";
 import { getYear, getMonth, getDate, isSameDay, add as increaseDate } from "../../node_modules/date-fns";
 import { getDayStart, getDayEnd } from "./misc-utilities.js";
 
+// This module provides various methods to fetch tasks from the task collection
+
 // Used to determine how many weeks ahead to generate tasks (1 by default, 4 is the maximum)
 // Value can be changed by the user
 let currentUpcomingRange = 1;
@@ -195,10 +197,10 @@ export function getTasksAdvanced(advancedSearchObj) {
     let endDate;
     // If either day/month/year isn't empty it means a date was specified
     if (advancedSearchObj.startDay !== "") {
-        startDate = advancedSearchObj.startYear + "-" + advancedSearchObj.startMonth + "-" + advancedSearchObj.startDay;
+        startDate = advancedSearchObj.startYear + "-" + advancedSearchObj.startMonth + "-" + advancedSearchObj.startDay + "T00:00:00";
     }
     if (advancedSearchObj.endDay !== "") {
-        endDate = advancedSearchObj.endYear + "-" + advancedSearchObj.endMonth + "-" + advancedSearchObj.endDay;
+        endDate = advancedSearchObj.endYear + "-" + advancedSearchObj.endMonth + "-" + advancedSearchObj.endDay + "T23:59:59";
     }
 
     for (let taskType in taskCollection) {
@@ -237,7 +239,6 @@ export function getTasksAdvanced(advancedSearchObj) {
                 continue;
             }
             if (advancedSearchObj.includeRepetitive === false && (determineTaskType(task) === "repetitive" || determineTaskType(task) === "repetitiveGrouped")) {
-                console.log("skipped", task.title);
                 continue;
             }
             if (advancedSearchObj.hideNonOrigin === true && task.origin === false) {
@@ -245,6 +246,31 @@ export function getTasksAdvanced(advancedSearchObj) {
             }
 
             matchingTasks.push(task);
+        }
+    }
+
+    return matchingTasks;
+}
+
+
+export function getTaskByGroup(group, includeCompleted = false) {
+    let matchingTasks = [];
+
+    for (let taskType in taskCollection) {
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+
+            if (task.origin === true) {
+                continue;
+            }
+
+            if (task.completionStatus === true && includeCompleted === false) {
+                continue;
+            }
+            
+            if (task.group === group) {
+                matchingTasks.push(task);
+            }
         }
     }
 

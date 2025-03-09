@@ -1,21 +1,47 @@
 import { hide, show } from "./dom-manipulator.js";
+import { createGroupTab } from "./create-group-tab.js";
 
-// Apply CSS styling to indicate the active tab
-export function makeActive(tab) {
-    const functionalitiesCont = tab.parentNode;
-    const functionalitiesChildrenArray = Array.from(functionalitiesCont.children);
+// This module is used to change between tabs available in the sidebar
 
-    // Remove the "active-tab" class from the currently active tab
-    for (let index in functionalitiesChildrenArray) {
-        let functionalityCont = functionalitiesChildrenArray[index];
+function hideAllTabs() {
+    const tabArray = Array.from(document.querySelector(".main-cont").children);
+
+    for (let i in tabArray) {
+        if (!(tabArray[i].classList.contains("groups-tab-cont"))) {
+            hide(tabArray[i]);
+        }
+    }
+}
+
+function deactivateMainLabels() {
+    const sidebarFunctionalitiesLabels = Array.from(document.querySelector(".sidebar-functionalities-cont").children);
+
+    for (let i in sidebarFunctionalitiesLabels) {
+        let functionalityCont = sidebarFunctionalitiesLabels[i];
         if (functionalityCont.classList.contains("active-tab")) {
             functionalityCont.classList.remove("active-tab");
         }
     }
+}
 
+function deactivateGroupLabels() {
+    const groupListCont = Array.from(document.querySelector(".group-list-cont").children);
+
+    for (let i in groupListCont) {
+        let groupLabel = groupListCont[i];
+        if (groupLabel.classList.contains("active-group-tab")) {
+            groupLabel.classList.remove("active-group-tab");
+        }
+    }
+}
+
+// Apply CSS styling to indicate the active tab
+export function makeActive(tab) {
+    deactivateMainLabels();
     tab.classList.add("active-tab");
 }
 
+// Locates the tab matching to the clicked label
 function locateTabCont(tab) {
     const tabClassList = Array.from(tab.classList);
     let targetID;
@@ -36,6 +62,7 @@ function locateTabCont(tab) {
     return targetTab;
 }
 
+// Makes all main tabs apart from the selected tab hidden
 function showTabCont(tab) {
 
     const tabToActivate = locateTabCont(tab);
@@ -60,6 +87,7 @@ export function changeTab(tab) {
         return;
     }
 
+    deactivateGroupLabels();
     makeActive(tab);
     showTabCont(tab);
 }
@@ -78,6 +106,38 @@ function makeGroupTabActive(groupCont) {
     groupCont.classList.add("active-group-tab");
 }
 
-export function changeGroupTab(groupCont) {
-    makeGroupTabActive(groupCont);
+function showGroupTab() {
+    hideAllTabs();
+    show(document.querySelector(".groups-tab-cont"));
+}
+
+function clearPreviousContent() {
+    const previousContent = Array.from(document.querySelector(".groups-tab-cont").children);
+
+    for (let i in previousContent) {
+        if (previousContent[i] !== null) {
+            previousContent[i].remove();
+        }
+    }
+}
+
+export function changeGroupTab(groupCont, modal = false) {
+    if (modal === false && groupCont.classList.contains("active-group-tab")) {
+        return;
+    }
+
+    deactivateMainLabels();
+    clearPreviousContent();
+    showGroupTab();
+
+    if (modal === true) {
+        deactivateGroupLabels();
+        createGroupTab(groupCont);
+    }
+
+    else if (!modal) {
+        makeGroupTabActive(groupCont);
+        createGroupTab(groupCont.id);
+    }
+
 }

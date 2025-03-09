@@ -1,9 +1,14 @@
 import { add as increaseDate, getYear, getMonth, getDate, isSameDay } from "../../node_modules/date-fns";
 
+// This module includes various utilities that can be used by tasks
+// This module doesn't handle UI-related tasks
+// For UI-related task utilities, check the "ui-task-utilities.js" module
+
 // stores information about tasks and tasks groups
 const taskCollection = {};
 const taskGroups = {};
 
+const listedGroups = new Array(5);
 const groupsColorLabels = {}
 const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
     "#E15554", "#E1BC29", "#3BB273", "#7768AE", "#CF5C36", "#DC136C",
@@ -12,9 +17,10 @@ const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
     "#DDDBF1", "#F18805", "#A1EF8B", "#772D8B", "#92D5E6", "#FF7F11",
     "#FF1B1C", "#6FFFE9", "#FF6978", "#F65BE3", "#8E0045", "#16DB65"];
 
-export { taskCollection, taskGroups, groupsColorLabels };
-
 const reservedGroups = ["__unlisted__"];
+
+export { taskCollection, taskGroups, groupsColorLabels, listedGroups, reservedGroups };
+
 
 // General Utility Functions:
 export function deepClone(...objects) {
@@ -37,6 +43,15 @@ export function updateTaskCollection(taskObj, taskType) {
     else {
         taskCollection[taskType].push(taskObj);
     }
+}
+
+export function appendToListed(groupName, listNumber) {
+    if (listNumber > 4 || listNumber < 0) {
+        return false;
+    }
+
+    listedGroups[listNumber] = groupName;
+    return true;
 }
 
 export function generateGroupColorLabels(groupName) {
@@ -148,6 +163,7 @@ export function formateToDeadlineValue(date, time) {
 }
 
 // Task-Specific Utility Functions (Grouped Tasks):
+
 export function updateGroups(groupName, obj, oldGroup = null) {
 
     // If changing the group of a task, ensure to remove it from its previous group
@@ -158,6 +174,7 @@ export function updateGroups(groupName, obj, oldGroup = null) {
         if (taskGroups[oldGroup].length === 0) {
             delete taskGroups[oldGroup];
             delete groupsColorLabels[oldGroup];
+            listedGroups[listedGroups.indexOf(oldGroup)] = undefined;
         }
     }
 
@@ -175,7 +192,7 @@ export function validateGroup(groupName) {
         return true;
     }
 
-    else if (groupName === "" || groupName.length > 25 || reservedGroups.includes(groupName)) {
+    else if (groupName === "" || groupName.length > 30 || reservedGroups.includes(groupName)) {
         return false;
     }
     return true;
@@ -197,4 +214,35 @@ export function getGroupCount() {
         return groupsArray.length - 1;
     }
     return groupsArray.length;
+}
+
+export function getGroupList() {
+    const groupsArray = Object.keys(taskGroups);
+
+    for (let i in groupsArray) {
+        if (reservedGroups.includes(groupsArray[i])) {
+            groupsArray.splice(i, 1);
+        }
+    }
+
+    return groupsArray;
+}
+
+export function changeGroupName(newName, currentName) {
+    if (Object.hasOwn(taskGroups, newName)) {
+        return false;
+    }
+
+    let newGroupArray = [];
+
+
+    for (let i in taskGroups[currentName]) {
+        newGroupArray.push(taskGroups[currentName][i]);
+    }
+
+    taskGroups[newName] = newGroupArray;
+
+    delete taskGroups[currentName];
+
+    return true;
 }

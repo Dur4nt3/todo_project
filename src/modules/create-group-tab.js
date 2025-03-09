@@ -1,16 +1,16 @@
-import { getUpcomingTasks } from "./fetch-tasks.js";
+import { getTaskByGroup } from "./fetch-tasks.js";
 import { buildElement } from "./dom-manipulator.js";
 import { completedPriorityAndTimeFilterCont } from "./build-filter-cont.js";
 import { generalTaskCont } from "./build-task-cont.js";
-import { upcomingTabHeader } from "./build-tab-header.js";
+import { generalTabHeader } from "./build-tab-header.js";
 import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-utilities.js";
 import { filterInfoWithCompleted, filterInitialCheck, deactivateCompletedFilter, deactivateChooseOneFilterWithCompleted,
     activateShowCompletedFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
-// This module is used to create the "Upcoming" tab
+// This module is used to create individual group tabs
 
-function showCompletedTasksUpcoming(filterInfoObj) {
+function showCompletedTasksGroup(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 
     // Disables the filter when the users directly press on it
@@ -23,7 +23,7 @@ function showCompletedTasksUpcoming(filterInfoObj) {
     return;
 }
 
-function filterByPriorityUpcoming(filterInfoObj) {
+function filterByPriorityGroup(filterInfoObj) {
     let filterInfoCopy = filterInfoObj;
     filterInfoCopy.fetchArgs = true;
 
@@ -36,13 +36,13 @@ function filterByPriorityUpcoming(filterInfoObj) {
     }
     
     const includeCompleted = filterInfoObj.filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
-    const taskList = priorityFirst(getUpcomingTasks(includeCompleted));
+    const taskList = priorityFirst(getTaskByGroup(filterInfoObj.secondaryArgs, includeCompleted));
 
     activateChooseOneFilter(filterInfoObj, taskList);
     return;
 }
 
-function filterByEarliestFirstUpcoming(filterInfoObj) {
+function filterByEarliestFirstGroup(filterInfoObj) {
     let filterInfoCopy = filterInfoObj;
     filterInfoCopy.fetchArgs = true;
 
@@ -55,13 +55,13 @@ function filterByEarliestFirstUpcoming(filterInfoObj) {
     }
     
     const includeCompleted = filterInfoObj.filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
-    const taskList = earliestFirst(getUpcomingTasks(includeCompleted));
+    const taskList = earliestFirst(getTaskByGroup(filterInfoObj.secondaryArgs, includeCompleted));
     
     activateChooseOneFilter(filterInfoObj, taskList);
     return;
 }
 
-function filterByLatestFirstUpcoming(filterInfoObj) {
+function filterByLatestFirstGroup(filterInfoObj) {
     let filterInfoCopy = filterInfoObj;
     filterInfoCopy.fetchArgs = true;
 
@@ -74,23 +74,25 @@ function filterByLatestFirstUpcoming(filterInfoObj) {
     }
     
     const includeCompleted = filterInfoObj.filterButton.parentNode.querySelector(".show-completed").classList.contains("active-filter");
-    const taskList = latestFirst(getUpcomingTasks(includeCompleted));
+    const taskList = latestFirst(getTaskByGroup(filterInfoObj.secondaryArgs, includeCompleted));
     
     activateChooseOneFilter(filterInfoObj, taskList);
     return;
 }
 
-function upcomingFilterEvent(filterCont) {
+function groupFilterEvent(filterCont, groupName) {
     filterCont.addEventListener("click", (e) => {
         const target = e.target;
 
         if (!(target.parentNode.classList.contains("filter-types"))) {
             return;
         }
-        
-        const filterInfoObj = new filterInfoWithCompleted(target, "upcoming-tab-cont", "upcoming-tasks-cont", "no-upcoming-tasks-msg",
-            "upcoming", getUpcomingTasks, createUpcomingTabTasks, [filterByPriorityUpcoming, filterByEarliestFirstUpcoming, filterByLatestFirstUpcoming],
-            showCompletedTasksUpcoming);
+
+        const filterInfoObj = new filterInfoWithCompleted(target, "groups-tab-cont", "group-tasks-cont", "no-group-tasks-msg",
+            "group", getTaskByGroup, createGroupTabTasks, [filterByPriorityGroup, filterByEarliestFirstGroup, filterByLatestFirstGroup],
+            showCompletedTasksGroup);
+
+        filterInfoObj.secondaryArgs = groupName;
 
         const includeCompleted = target.parentNode.querySelector(".show-completed").classList.contains("active-filter");
 
@@ -99,7 +101,7 @@ function upcomingFilterEvent(filterCont) {
             filterInfoCopy.directClick = true;
             filterInfoCopy.fetchArgs = true;
 
-            showCompletedTasksUpcoming(filterInfoCopy);
+            showCompletedTasksGroup(filterInfoCopy);
         }
 
         else {
@@ -109,53 +111,53 @@ function upcomingFilterEvent(filterCont) {
 
             if (target.classList.contains("filter-priority")) {
                 filterInfoCopy.filterFunc = priorityFirst;
-                filterByPriorityUpcoming(filterInfoCopy);
+                filterByPriorityGroup(filterInfoCopy);
             }
             else if (target.classList.contains("filter-earliest-first")) {
                 filterInfoCopy.filterFunc = earliestFirst;
-                filterByEarliestFirstUpcoming(filterInfoCopy);
+                filterByEarliestFirstGroup(filterInfoCopy);
             }
             else if (target.classList.contains("filter-latest-first")) {
                 filterInfoCopy.filterFunc = latestFirst;
-                filterByLatestFirstUpcoming(filterInfoCopy);
+                filterByLatestFirstGroup(filterInfoCopy);
             }
         }
     });
 }
 
-function createUpcomingFilterOptions(tabCont) {
-    if (getUpcomingTasks(true).length === 0) {
+function createGroupFilterOptions(tabCont, groupName) {
+    if (getTaskByGroup(groupName, true).length === 0) {
         return;
     }
 
     const filterOptionsCont = completedPriorityAndTimeFilterCont();
 
-    upcomingFilterEvent(filterOptionsCont);
+    groupFilterEvent(filterOptionsCont, groupName);
 
     tabCont.appendChild(filterOptionsCont);
 }
 
-function createUpcomingTabHeader(tabCont) {
-    const tabHeaderCont = upcomingTabHeader("upcoming-tab-cont", createUpcomingTab);
-
-    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".upcoming-tasks-cont", createUpcomingTabTasks, tabCont);
-
+function createGroupTabHeader(tabCont, groupName) {
+    const tabHeaderCont = generalTabHeader("groups-tab", groupName);
+    
+    refreshTabEvent(tabHeaderCont.querySelector(".refresh-icon"), ".group-tasks-cont", createGroupTabTasks, tabCont, "group", groupName);
+    
     tabCont.appendChild(tabHeaderCont);
 }
 
-function createUpcomingTabTasks(tabCont, filter = false) {
-const noMsg = document.querySelector(".no-upcoming-tasks-msg");
+function createGroupTabTasks(tabCont, groupName, filter = false) {
+    const noMsg = document.querySelector(".no-group-tasks-msg");
 
-    let upcomingTasks;
+    let groupTasks;
     if (!filter) {
-        upcomingTasks = getUpcomingTasks();
+        groupTasks = getTaskByGroup(groupName);
     }
     else {
-        upcomingTasks = filter;
+        groupTasks = filter;
     }
 
-    if (upcomingTasks.length === 0) {
-        clearTab(tabCont, getUpcomingTasks, true, noMsg, "upcoming");
+    if (groupTasks.length === 0) {
+        clearTab(tabCont, getTaskByGroup, [groupName, true], noMsg, "group");
         return;
     }
     else {
@@ -164,28 +166,28 @@ const noMsg = document.querySelector(".no-upcoming-tasks-msg");
         }
 
         if (tabCont.querySelector(".filter-options") === null) {
-            createUpcomingFilterOptions(tabCont);
+            createGroupFilterOptions(tabCont, groupName);
         }
     }
 
-    const upcomingTasksCont = buildElement("div", "upcoming-tasks-cont");
+    const groupTasksCont = buildElement("div", "group-tasks-cont");
 
-    for (let taskIndex in upcomingTasks) {
-        let task = upcomingTasks[taskIndex];
+    for (let taskIndex in groupTasks) {
+        let task = groupTasks[taskIndex];
 
         let taskCont = generalTaskCont(task);
         taskContEventListeners(taskCont);
 
-        upcomingTasksCont.appendChild(taskCont);
+        groupTasksCont.appendChild(taskCont);
     }
 
-    tabCont.appendChild(upcomingTasksCont);
+    tabCont.appendChild(groupTasksCont);
 }
 
-export function createUpcomingTab() {
-    const upcomingTabCont = document.querySelector(".upcoming-tab-cont");
+export function createGroupTab(group) {
+    const groupTabCont = document.querySelector(".groups-tab-cont");
 
-    createUpcomingTabHeader(upcomingTabCont);
-    createUpcomingFilterOptions(upcomingTabCont);
-    createUpcomingTabTasks(upcomingTabCont);
+    createGroupTabHeader(groupTabCont, group);
+    createGroupFilterOptions(groupTabCont, group);
+    createGroupTabTasks(groupTabCont, group);
 }

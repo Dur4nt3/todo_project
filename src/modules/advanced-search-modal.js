@@ -1,5 +1,8 @@
 import { buildElement } from "./dom-manipulator.js";
 
+// This module lays the foundation for the "advanced search" modal
+// The interactivity logic for the modal is available in the "input-modal.js" file
+
 export class advancedSearchObj {
     constructor(title, group, startDay, startMonth, startYear, endDay, endMonth, endYear, includeCompleted,
     priority, earliest, latest, includeRepetitive, hideNonOrigin) {

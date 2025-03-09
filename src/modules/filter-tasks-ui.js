@@ -1,5 +1,8 @@
 import { resetChooseOneFilterSelection, createNoScheduledTasksMsg } from "./ui-task-utilities.js"
 
+// This module manages the UI portion for task filtering
+// Specifically it manages how individual tabs react when selecting and unselecting various filters
+
 export class filterInfoWithCompleted {
     constructor(filterButton, tabClass, taskContClass, noMsgContClass, noMsgType, fetchTasksFunc, tabTasksCreationFunc, chooseOneFilterFuncs, showCompletedFilterFunc) {
         this.directClick = false;
@@ -38,7 +41,18 @@ export function filterInitialCheck(filterInfoObj) {
     if (filterInfoObj.tasksCont === null) {
         // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
         if (filterInfoObj.fetchArgs === null) {
-            if (filterInfoObj.fetchTasksFunc().length === 0 ) {
+
+            if (filterInfoObj.secondaryArgs !== undefined) {
+                if (filterInfoObj.fetchTasksFunc(filterInfoObj.secondaryArgs).length === 0 ) {
+                    filterInfoObj.filterButton.parentNode.remove();
+                    if (filterInfoObj.noMsg === null) {
+                        createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
+                    }
+                    return;
+                }
+            }
+
+            else if (filterInfoObj.fetchTasksFunc().length === 0 ) {
                 filterInfoObj.filterButton.parentNode.remove();
                 if (filterInfoObj.noMsg === null) {
                     createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
@@ -48,12 +62,24 @@ export function filterInitialCheck(filterInfoObj) {
         }
 
         // If there are truly no tasks scheduled for today (even completed ones) remove the filter container and display the "no tasks ..." message
-        else if (filterInfoObj.fetchTasksFunc(filterInfoObj.fetchArgs).length === 0) {
-            filterInfoObj.filterButton.parentNode.remove();
-            if (filterInfoObj.noMsgCont === null) {
-                createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
+        else {
+            if (filterInfoObj.secondaryArgs !== undefined) {
+                if (filterInfoObj.fetchTasksFunc(filterInfoObj.secondaryArgs, filterInfoObj.fetchArgs).length === 0) {
+                    filterInfoObj.filterButton.parentNode.remove();
+                    if (filterInfoObj.noMsgCont === null) {
+                        createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
+                    }
+                    return;
+                }
             }
-            return;
+
+            else if (filterInfoObj.fetchTasksFunc(filterInfoObj.fetchArgs).length === 0) {
+                filterInfoObj.filterButton.parentNode.remove();
+                if (filterInfoObj.noMsgCont === null) {
+                    createNoScheduledTasksMsg(filterInfoObj.tabCont, filterInfoObj.noMsgType);
+                }
+                return;
+            }
         }
 
         // If there are tasks scheduled for today (even completed ones) remove the "no tasks ..." message
@@ -88,6 +114,11 @@ export function deactivateCompletedFilter(filterInfoObj) {
         }
     }
 
+    if (filterInfoObj.secondaryArgs !== undefined) {
+        filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont, filterInfoObj.secondaryArgs);
+        return;
+    }
+
     filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont);
     return;
 }
@@ -102,6 +133,11 @@ export function deactivateChooseOneFilterWithCompleted(filterInfoObj) {
         filterInfoCopy.filterButton = filterInfoObj.filterButton.parentNode.querySelector(".show-completed");
 
         filterInfoObj.showCompletedFilterFunc(filterInfoCopy);
+        return;
+    }
+
+    if (filterInfoObj.secondaryArgs !== undefined) {
+        filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont, filterInfoObj.secondaryArgs);
         return;
     }
 
@@ -121,10 +157,20 @@ export function activateShowCompletedFilter(filterInfoObj) {
 
     let taskList;
     if (filterInfoObj.fetchArgs === null) {
-        taskList = filterInfoObj.fetchTasksFunc();
+        if (filterInfoObj.secondaryArgs !== undefined) {
+            taskList = filterInfoObj.fetchTasksFunc(filterInfoObj.secondaryArgs);
+        }
+        else {
+            taskList = filterInfoObj.fetchTasksFunc();
+        }
     }
     else {
-        taskList = filterInfoObj.fetchTasksFunc(filterInfoObj.fetchArgs);
+        if (filterInfoObj.secondaryArgs !== undefined) {
+            taskList = filterInfoObj.fetchTasksFunc(filterInfoObj.secondaryArgs, filterInfoObj.fetchArgs);
+        }
+        else {
+            taskList = filterInfoObj.fetchTasksFunc(filterInfoObj.fetchArgs);
+        }
     }
 
     for (let i in filterInfoObj.chooseOneFilterButtons) {
@@ -142,6 +188,11 @@ export function activateShowCompletedFilter(filterInfoObj) {
         }
     }
 
+    if (filterInfoObj.secondaryArgs !== undefined) {
+        filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont, filterInfoObj.secondaryArgs, taskList);
+        return;
+    }
+
     filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont, taskList);
     return;
 }
@@ -150,6 +201,11 @@ export function activateChooseOneFilter(filterInfoObj, taskList) {
     resetChooseOneFilterSelection(filterInfoObj.filterButton.parentNode);
 
     filterInfoObj.filterButton.classList.add("active-filter");
+
+    if (filterInfoObj.secondaryArgs !== undefined) {
+        filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont, filterInfoObj.secondaryArgs, taskList);
+        return;
+    }
 
     filterInfoObj.tabTasksCreationFunc(filterInfoObj.tabCont, taskList);
 }

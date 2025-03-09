@@ -3,6 +3,9 @@ import { buildElement } from "./dom-manipulator.js";
 import search2Svg from "../images/Search-type2.svg";
 import tuneSvg from "../images/Tune.svg";
 
+// This module is used to build misc components
+// Mainly use this module when you want to separate the component building logic from a certain module
+
 export function searchBar() {
     const searchBarCont = buildElement("div", "search-bar-cont");
 

@@ -1,5 +1,6 @@
+// This module is used to validate number inputs/inputs that should be numbers
+
 export function isSingleDigitNumber(value) {
-    console.log(value.length);
     if (value.length > 1) {
         return false;
     }

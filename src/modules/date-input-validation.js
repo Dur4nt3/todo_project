@@ -1,5 +1,7 @@
 import { isValid, getYear } from "../../node_modules/date-fns";
 
+// This module is used to validate date inputs
+
 // Validator for three different inputs: day, month, year
 export function isValidDate3Inputs(day, month, year) {
     if (day === "" && month === "" && year === "") {

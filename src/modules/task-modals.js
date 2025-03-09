@@ -4,6 +4,9 @@ import { getTaskDateTextFormat, getTaskTime } from "./misc-utilities.js"
 import closeSvg from "../images/Close.svg";
 import clockSvg from "../images/Clock.svg";
 
+// This module both builds and includes the interactivity logic for task modals
+// *This is in-fact the module that is used for the modals that pop-up when clicking tasks*
+
 function taskInformationModal(task) {
     const modalCont = buildElement("div", "modal");
     modalCont.tabIndex = 0;

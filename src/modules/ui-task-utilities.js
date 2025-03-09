@@ -3,6 +3,9 @@ import { buildElement } from "./dom-manipulator.js";
 import { deletionConfirmationModalInteractivity } from "./confirmation-modals.js";
 import { taskInformationModalInteractivity } from "./task-modals.js";
 
+// This module includes various UI-related task utilities
+// It mainly manages general logic for tabs and the tasks within them
+
 // Finds the tab container of a given element within the tab
 function findTabCont(element) {
     let count = 0;
@@ -66,6 +69,11 @@ export function createNoScheduledTasksMsg(tabCont, msgType) {
             msgCont.classList.add("no-found-tasks-msg");
             msgCont.textContent = "No tasks found";
             break;
+
+        case "group":
+            msgCont.classList.add("no-group-tasks-msg");
+            msgCont.textContent = "No tasks in this group";
+            break;
         
         default:
             msgCont.classList.add("no-tasks-msg");
@@ -90,7 +98,12 @@ function completeTaskUI(task, taskCont) {
     }
     
     let includeCompleted = false
-    if ((getFilterOptionsCont(findTabCont(taskCont))).querySelector(".show-completed") !== null) {
+    // For tabs with no filter container
+    if (getFilterOptionsCont(findTabCont(taskCont)) === null) {
+        includeCompleted = false;
+    }
+    // For tabs with a filter container
+    else if ((getFilterOptionsCont(findTabCont(taskCont))).querySelector(".show-completed") !== null) {
         includeCompleted = (getFilterOptionsCont(findTabCont(taskCont))).querySelector(".show-completed").classList.contains("active-filter");
     }
 
@@ -186,7 +199,8 @@ export function resetAllFilterChoices(filterCont) {
     })
 }
 
-export function refreshTabEvent(button, contToDeleteClass, generationFunction, tabCont, noMsgType = null) {
+// Refresh only the task container
+export function refreshTabEvent(button, contToDeleteClass, generationFunction, tabCont, noMsgType = null, secondaryArgs) {
     button.addEventListener("click", () => {
         button.classList.add("rotate-refresh");
         setTimeout(() => { button.classList.remove("rotate-refresh"); }, 600);
@@ -203,10 +217,16 @@ export function refreshTabEvent(button, contToDeleteClass, generationFunction, t
             return;
         }
 
+        if (secondaryArgs !== undefined) {
+            generationFunction(tabCont, secondaryArgs);
+            return;
+        }
+
         generationFunction(tabCont);
     });
 }
 
+// Refresh the entire tab
 export function hardRefreshTabEvent(button, tabToDeleteClass, tabGenerationFunction) {
     button.addEventListener("click", () => {
         button.classList.add("rotate-refresh");
@@ -251,7 +271,12 @@ export function clearTab(tabCont, fetchTasksFunction, fetchArgs = null, noMsgCon
         taskList = fetchTasksFunction();
     }
     else {
-        taskList = fetchTasksFunction(fetchArgs);
+        if (Array.isArray(fetchArgs)) {
+            taskList = fetchTasksFunction(...fetchArgs);
+        }
+        else {
+            taskList = fetchTasksFunction(fetchArgs);
+        }
     }
 
 
