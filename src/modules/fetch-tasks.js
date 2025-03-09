@@ -195,10 +195,10 @@ export function getTasksAdvanced(advancedSearchObj) {
     let endDate;
     // If either day/month/year isn't empty it means a date was specified
     if (advancedSearchObj.startDay !== "") {
-        startDate = advancedSearchObj.startYear + "-" + advancedSearchObj.startMonth + "-" + advancedSearchObj.startDay;
+        startDate = advancedSearchObj.startYear + "-" + advancedSearchObj.startMonth + "-" + advancedSearchObj.startDay + "T00:00:00";
     }
     if (advancedSearchObj.endDay !== "") {
-        endDate = advancedSearchObj.endYear + "-" + advancedSearchObj.endMonth + "-" + advancedSearchObj.endDay;
+        endDate = advancedSearchObj.endYear + "-" + advancedSearchObj.endMonth + "-" + advancedSearchObj.endDay + "T23:59:59";
     }
 
     for (let taskType in taskCollection) {
@@ -245,6 +245,31 @@ export function getTasksAdvanced(advancedSearchObj) {
             }
 
             matchingTasks.push(task);
+        }
+    }
+
+    return matchingTasks;
+}
+
+
+export function getTaskByGroup(group, includeCompleted = false) {
+    let matchingTasks = [];
+
+    for (let taskType in taskCollection) {
+        for (let taskIndex in taskCollection[taskType]) {
+            let task = taskCollection[taskType][taskIndex];
+
+            if (task.origin === true) {
+                continue;
+            }
+
+            if (task.completionStatus === true && includeCompleted === false) {
+                continue;
+            }
+            
+            if (task.group = group) {
+                matchingTasks.push(task);
+            }
         }
     }
 
