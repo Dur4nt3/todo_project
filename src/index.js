@@ -24,6 +24,9 @@ const groupedTask5 = createTask.createGroupedTask("grouped 5", "grouped task 5",
 const groupedTask6 = createTask.createGroupedTask("grouped 6", "grouped task 6", "group1", 3);
 const groupedTask7 = createTask.createGroupedTask("grouped 7", "grouped task 7", "group1", 2);
 const groupedTask8 = createTask.createGroupedTask("grouped 8", "grouped task 8", "group1", 3);
+const groupedTask9 = createTask.createGroupedTask("grouped 9", "grouped task 9", "group7", 3);
+const groupedTask10 = createTask.createGroupedTask("grouped 10", "grouped task 10", "group5", 3);
+const groupedTask11 = createTask.createGroupedTask("grouped 11", "grouped task 11", "group5", 3);
 groupedTask1.complete();
 
 
@@ -35,10 +38,10 @@ const dated3 = createTask.createDatedTask("dated 3", "dated task 3", "2025-02-27
 const dated4 = createTask.createDatedTask("dated 4", "dated task 4", "2025-03-11", true, 2);
 const dated5 = createTask.createDatedTask("dated 5", "dated task 5", "2025-03-09T16:30:00", false, 3);
 const dated6 = createTask.createDatedTask("dated 6", "dated task 6", "2025-03-05", true, 3);
-const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-09", true, 2);
-const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-09T13:45:00", false, 3);
-const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-09T21:22:00", false, 1);
-const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-09", true, 2);
+const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-10", true, 2);
+const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-10T13:45:00", false, 3);
+const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-10T21:22:00", false, 1);
+const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-10", true, 2);
 dated4.complete();
 dated5.complete();
 todayTask4.complete();

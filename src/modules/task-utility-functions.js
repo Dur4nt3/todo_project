@@ -4,6 +4,7 @@ import { add as increaseDate, getYear, getMonth, getDate, isSameDay } from "../.
 const taskCollection = {};
 const taskGroups = {};
 
+const ListedGroups = new Array(5);
 const groupsColorLabels = {}
 const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
     "#E15554", "#E1BC29", "#3BB273", "#7768AE", "#CF5C36", "#DC136C",
@@ -37,6 +38,15 @@ export function updateTaskCollection(taskObj, taskType) {
     else {
         taskCollection[taskType].push(taskObj);
     }
+}
+
+export function appendToListed(groupName, listNumber) {
+    if (listNumber > 4) {
+        return false;
+    }
+
+    ListedGroups[listNumber] = groupName;
+    return true;
 }
 
 export function generateGroupColorLabels(groupName) {
@@ -209,4 +219,22 @@ export function getGroupList() {
     }
 
     return groupsArray;
+}
+
+export function changeGroupName(currentName, newName) {
+    if (Object.hasOwn(taskGroups, newName)) {
+        return false;
+    }
+
+    let newGroupArray = [];
+
+    for (let i in taskGroups[currentName]) {
+        newGroupArray.push(taskGroups[currentName][i]);
+    }
+
+    taskGroups[newName] = newGroupArray;
+
+    delete taskGroups[currentName];
+
+    return true;
 }

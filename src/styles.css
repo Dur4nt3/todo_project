@@ -1036,7 +1036,7 @@ input[type=number] {
 
 /* Advanced Search Modal Styles */
 
-.advanced-search-modal {
+.advanced-search-modal, .edit-groups-modal {
     top: 45%;
 
     background: rgba(84,43,119,0.45);
@@ -1165,8 +1165,7 @@ input[type=number] {
 
 .more-groups-modal {
     top: 45%;
-    min-width: 30svw;
-    max-width: 45svw;
+    max-width: 40svw;
     max-height: 80svh;
 }
 
@@ -1193,11 +1192,16 @@ input[type=number] {
     box-shadow: 0 0px 1.85px 1px rgba(5, 5, 5, 0.6);
 
     cursor: pointer;
+    user-select: none;
     transition: 0.3s;
 }
 
 .more-groups-group-cont:hover {
-    transform: translateY(-0.15rem);
+    transform: translateY(-0.25rem);
+}
+
+.more-groups-group-cont:active {
+    opacity: 0.65;
 }
 
 .more-groups-group-cont::before, .more-groups-group-cont::after {
@@ -1223,6 +1227,96 @@ input[type=number] {
 
 
 /* More Groups Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Edit Groups Modal Styles */
+
+.edit-groups-group-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    max-width: 80svw;
+}
+
+.edit-groups-group-cont {
+    padding: 0.5rem;
+    
+    flex-grow: 1;
+    overflow: auto;
+
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-groups-error-cont {
+    max-width: 100%;
+    overflow: auto;
+
+    font-size: 0.875rem;
+    color: var(--past-due-color);
+}
+
+.edit-groups-group-main-details {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 2.75px 1.15px rgba(20, 11, 29, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.edit-groups-group-cont * {
+    white-space: nowrap;
+}
+
+.edit-groups-group-name {
+    font-style: italic;
+}
+
+.edit-groups-group-name, .current-group-order {
+    font-size: 1.15rem;
+}
+
+.current-group-order-number.new-valid {
+    color: var(--due-color);
+}
+
+.current-group-order-number.new-invalid {
+    color: var(--past-due-color);
+}
+
+.modify-group-options {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.modify-group-button {
+    outline: none;
+    border: none;
+    padding: 0.35rem;
+    border-radius: 0.5rem;
+    background-color: var(--button-hover-background);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.modify-group-button:hover {
+    transform: translateY(-0.25rem);
+}
+
+.modify-group-button:active {
+    opacity: 0.85;
+}
+
+
+
+/* Edit Groups Modal Styles */
 
 /*-----------------------------------------------------------------------*/
 

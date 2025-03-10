@@ -120,7 +120,7 @@ function clearPreviousContent() {
 }
 
 export function changeGroupTab(groupCont, modal = false) {
-    if (groupCont.classList.contains("active-group-tab")) {
+    if (modal === false && groupCont.classList.contains("active-group-tab")) {
         return;
     }
 

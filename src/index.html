@@ -7,15 +7,40 @@
     <title>Task Ticker</title>
 </head>
 <body>
-    
     <div class="modal">
-        <div class="modal-cont more-groups-modal">
-            <img src="./images/Close.svg" alt="Close Modal" class="close-modal-icon">
-            <h2 class="more-groups-title">Select a Group to View:</h2>
-            <div class="groups-grid">
-                <div class="more-groups-group-cont" id="groupName">
-                    <p class="more-groups-group-name"><span class="group-label">~</span> group 1</p>
+        <div class="modal-cont edit-groups-modal">
+            <h2 class="edit-groups-title">Modify Groups:</h2>
+            <div class="edit-groups-group-list">
+
+                <div class="edit-groups-group-cont">
+
+                    <div class="edit-groups-group-main-details">
+                        <p class="edit-groups-group-name">
+                            <span class="group-label">~ </span>
+                            <span class="group-text">group 1</span>
+                        </p>
+                        <div class="edit-groups-group-order">
+                            <p class="current-group-order">
+                                List Order:
+                                <span class="current-group-order-number">1</span>
+                            </p>
+                        </div>
+                        <div class="modify-group-options">
+                            <button class="edit-group-name modify-group-button">Change Name</button>
+                            <button class="change-label-color modify-group-button">Change Color</button>
+                            <button class="change-list-order modify-group-button">Change Order</button>
+                        </div>
+                    </div>
+
+                    <div class="edit-groups-error-cont">
+                        <span class="name-error-conflict hide">The new name chosen is conflicting with another group name. Please choose a unique name.</span>
+                        <span class="name-error-length hide">The new name chosen must be between 1 and 30 characters. Please choose a valid name.</span>
+                        <span class="order-error-conflict hide">The new list order value chosen is conflicting with another group. Please a valid number.</span>
+                        <span class="order-error-value hide">The new list order value chosen is invalid. Please choose a number between 1 and 5 or leave blank (unlisted).</span>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>
