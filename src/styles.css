@@ -826,12 +826,14 @@ input[type="checkbox"]:focus {
     margin-top: 1rem;
 }
 
-.deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont {
+.deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont,
+.edit-groups-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
-.deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button {
+.deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button,
+.edit-groups-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -1022,11 +1024,13 @@ input[type=number] {
     transform: translateY(-0.25rem);
 }
 
-.select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button {
+.select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button,
+.edit-groups-button.confirm-button {
     background-color: var(--confirm-green);
 }
 
-.select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active {
+.select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active,
+.edit-groups-button.confirm-button:active {
     background-color: var(--confirm-green-low-opacity);
 }
 
@@ -1232,16 +1236,22 @@ input[type=number] {
 
 /* Edit Groups Modal Styles */
 
+.edit-groups-modal {
+    max-height: 75svh;
+    overflow: auto;
+}
+
 .edit-groups-group-list {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-
+    
     max-width: 80svw;
 }
 
 .edit-groups-group-cont {
     padding: 0.5rem;
+    z-index: 1;
     
     flex-grow: 1;
     overflow: auto;
@@ -1264,11 +1274,22 @@ input[type=number] {
 .edit-groups-group-main-details {
     padding: 1rem;
     border-radius: 0.5rem;
+
     box-shadow: 0 0 2.75px 1.15px rgba(20, 11, 29, 0.6);
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
+    
+}
+
+.new-valid {
+    color: var(--due-color);
+}
+
+.new-invalid {
+    color: var(--past-due-color);
 }
 
 .edit-groups-group-cont * {
@@ -1292,7 +1313,10 @@ input[type=number] {
 }
 
 .modify-group-options {
+    padding: 0.35rem;
+
     display: flex;
+    align-items: center;
     gap: 0.75rem;
 }
 
@@ -1303,7 +1327,7 @@ input[type=number] {
     border-radius: 0.5rem;
     background-color: var(--button-hover-background);
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .modify-group-button:hover {
@@ -1314,10 +1338,78 @@ input[type=number] {
     opacity: 0.85;
 }
 
+.fade-out {
+    animation: fade-out 0.3s steps(20, end) forwards;
+}
 
+@keyframes fade-out {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+.fade-in {
+    animation: fade-in 0.3s steps(20, end) forwards;
+}
+
+@keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.modify-group-input {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--primary-text-color);
+    width: 32.5ch;
+    opacity: 0;
+}
+
+.change-label-color-input-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.change-label-color-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+input[type="color"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.submit-changes-icon {
+    padding: 0.15rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.submit-changes-icon:hover {
+    background-color: var(--button-hover-background);
+}
+
+.submit-changes-icon:active {
+    background-color: transparent;
+}
 
 /* Edit Groups Modal Styles */
 
 /*-----------------------------------------------------------------------*/
 
 /* Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* General Styles - Use to override above rules */
+
+.hide {
+    display: none;
+}
+
+/* General Styles - Use to override above rules */
+
+/*-----------------------------------------------------------------------*/
