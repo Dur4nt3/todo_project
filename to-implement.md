@@ -36,7 +36,7 @@
 
 - Settings:
 
-**Create a settings tab that includes the following options:**
+**Create a settings modal that includes the following options:**
 
 Settings will be saved to the localStorage using a JSON object with settings as properties
 
@@ -60,3 +60,17 @@ Settings will be saved to the localStorage using a JSON object with settings as 
 - Edit Groups: the initial color of the input label "change-label-color-label" will match the group's color label
 
 - Edit Groups: when a user picks a new color via the input the label will change color accordingly
+
+- Help:
+
+    1) A modal with multiple pages that can be scrolled through both via left and right arrow icons and indicators in the middle that represent the page number
+    *Page indicators should be rectangles that are enlarged and have a white background when you're on their respective page*
+    *Concept - Image Carousel like design*
+
+    2) Information in the modal:
+
+        - Information about groups, listing positions, unlisted groups
+
+        - Information about the filters earliest first and latest first and their interaction with an all-day task
+
+        - Information about repetitive tasks

@@ -1238,6 +1238,10 @@ input[type=number] {
 
 .edit-groups-modal {
     max-height: 75svh;
+    overflow: hidden;
+}
+
+.group-list-overflow-cont {
     overflow: auto;
 }
 

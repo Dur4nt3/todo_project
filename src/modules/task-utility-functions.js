@@ -4,7 +4,7 @@ import { add as increaseDate, getYear, getMonth, getDate, isSameDay } from "../.
 const taskCollection = {};
 const taskGroups = {};
 
-const ListedGroups = new Array(5);
+const listedGroups = new Array(5);
 const groupsColorLabels = {}
 const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
     "#E15554", "#E1BC29", "#3BB273", "#7768AE", "#CF5C36", "#DC136C",
@@ -13,7 +13,7 @@ const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
     "#DDDBF1", "#F18805", "#A1EF8B", "#772D8B", "#92D5E6", "#FF7F11",
     "#FF1B1C", "#6FFFE9", "#FF6978", "#F65BE3", "#8E0045", "#16DB65"];
 
-export { taskCollection, taskGroups, groupsColorLabels };
+export { taskCollection, taskGroups, groupsColorLabels, listedGroups };
 
 const reservedGroups = ["__unlisted__"];
 
@@ -45,7 +45,7 @@ export function appendToListed(groupName, listNumber) {
         return false;
     }
 
-    ListedGroups[listNumber] = groupName;
+    listedGroups[listNumber] = groupName;
     return true;
 }
 

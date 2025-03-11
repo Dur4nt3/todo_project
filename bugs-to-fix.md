@@ -25,3 +25,5 @@
 - Ensure originTasks are skipped in all fetching functions - *COMPLETE*
 
 - Remove console logs from "index.js"
+
+- For all containers with an overflow (with a parent with rounded borders) ensure that the scroll doesn't escape the border radius

@@ -1,16 +1,56 @@
-import { taskGroups, getGroupCount, generateGroupColorLabels } from "./task-utility-functions.js";
+import { getGroupCount, generateGroupColorLabels, listedGroups, appendToListed, getGroupList } from "./task-utility-functions.js";
 import * as domManipulator from "./dom-manipulator.js";
+
+function createGroupCont(groupName) {
+    let groupCont = domManipulator.buildElement("div", "group-cont");
+    groupCont.id = groupName;
+
+    let groupSymbol = domManipulator.buildElement("span", "group-symbol");
+    groupSymbol.textContent = "~";
+    let groupLabelColor = generateGroupColorLabels(groupName);
+    groupSymbol.style.color = groupLabelColor;
+
+    let groupInfo = domManipulator.buildElement("p", "group-name");
+    groupInfo.textContent = groupName;
+
+    groupCont.appendChild(groupSymbol);
+    groupCont.appendChild(groupInfo);
+
+    return groupCont;
+}
 
 function populateGroupListCont() {
     const groupListCont = document.querySelector(".group-list-cont");
-    const groupList = Object.keys(taskGroups);
+    const groupList = getGroupList();
+
+    let alreadyListed = [];
+    let insertionCount = 0;
 
     for (let index in groupList) {
+
+        for (let i in listedGroups) {
+            if (listedGroups[i] !== undefined) {
+                if (alreadyListed.includes(listedGroups[i])) {
+                    continue;
+                }
+
+                let groupCont = createGroupCont(listedGroups[i]);
+                groupListCont.appendChild(groupCont);
+                alreadyListed.push(groupName);
+                insertionCount++;
+                continue;
+            }
+        }
+
         let groupName = groupList[index];
+
+        if (alreadyListed.includes(groupName)) {
+            continue;
+        }
 
         // If there are more than 5 groups, after the fifth create the "More Groups" container
         // Said container can be clicked to open a modal with all the groups
-        if (index >= 5) {
+        if (index >= 5 || insertionCount >= 5) {
             let viewMore = domManipulator.buildElement("div", "view-more-groups");
             viewMore.textContent = "More Groups";
 
@@ -18,21 +58,14 @@ function populateGroupListCont() {
             break;
         }
 
-        let groupCont = domManipulator.buildElement("div", "group-cont");
-        groupCont.id = groupName;
-
-        let groupSymbol = domManipulator.buildElement("span", "group-symbol");
-        groupSymbol.textContent = "~";
-        let groupLabelColor = generateGroupColorLabels(groupName);
-        groupSymbol.style.color = groupLabelColor;
-
-        let groupInfo = domManipulator.buildElement("p", "group-name");
-        groupInfo.textContent = groupName;
-
-        groupCont.appendChild(groupSymbol);
-        groupCont.appendChild(groupInfo);
+        let groupCont = createGroupCont(groupName);
 
         groupListCont.appendChild(groupCont);
+
+        appendToListed(groupName, index);
+
+        alreadyListed.push(groupName);
+        insertionCount++;
     }
 }
 
@@ -63,4 +96,3 @@ export function generateGroupList() {
     groupListCont.appendChild(listContents);
 
 }
-

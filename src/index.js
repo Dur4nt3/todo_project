@@ -4,6 +4,7 @@ import "./stylesheets/reset.css";
 import * as changeTabs from "./modules/change-tabs.js";
 import initialLoad from "./modules/initial-load.js";
 import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
+import { editGroupsModalInteractivity } from "./modules/edit-groups-modal.js";
 
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
@@ -76,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const sidebarFunctionalities = document.querySelector(".sidebar-functionalities-cont");
-const groupListCont = document.querySelector(".group-list-cont");
+const groupListCont = document.querySelector(".sidebar-groups-cont");
 
 // Event listener for sidebar
 sidebarFunctionalities.addEventListener("click", (e) => {
@@ -103,14 +104,17 @@ groupListCont.addEventListener("click", (e) => {
     // Exit if not clicking icon/label/more groups
     let target = e.target;
 
-    if (!(target.classList[0] === "group-symbol" || target.classList[0] === "group-name" || target.classList[0] === "view-more-groups")) {
+    if (target.classList.contains("edit-groups-icon")) {
+        editGroupsModalInteractivity();
         return;
     }
 
-    if (target.classList[0] === "group-symbol" || target.classList[0] === "group-name" ) {
+    else if (target.classList[0] === "group-symbol" || target.classList[0] === "group-name" ) {
         changeTabs.changeGroupTab(target.parentNode);
+        return;
     }
-    else {
+    else if (target.classList.contains("view-more-groups")) {
         moreGroupsModalInteractivity();
+        return;
     }
 });
