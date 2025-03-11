@@ -1,5 +1,7 @@
 import * as taskUtil from "./task-utility-functions.js";
 
+// This module is used to create the objects of different types of tasks
+
 function handleTaskBasics(title, description, priority) {
     let completionStatus = false;
     let taskID = taskUtil.generateID();

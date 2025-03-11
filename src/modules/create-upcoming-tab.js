@@ -8,6 +8,8 @@ import { filterInfoWithCompleted, filterInitialCheck, deactivateCompletedFilter,
     activateShowCompletedFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
+// This module is used to create the "Upcoming" tab
+
 function showCompletedTasksUpcoming(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 

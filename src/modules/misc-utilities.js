@@ -1,5 +1,7 @@
 import { getMonth, getDate, getDay, getYear } from "../../node_modules/date-fns";
 
+// This module includes various utilities that aren't categorized under a specific category
+
 // Get specific time of the task (only relevant for not all-day tasks)
 export function getTaskTime(task) {
     if (task.allDay) {

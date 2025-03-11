@@ -7,6 +7,7 @@ import { selectUpcomingRangeModalInteractivity } from "./input-modals.js";
 import refreshSvg from "../images/Refresh.svg";
 import editSmallSvg from "../images/Edit-small.svg";
 
+// This module is used to build various tab headers
 
 export function todayTabHeader() {
     const todayDate = getTaskDateTextFormat(new Date());

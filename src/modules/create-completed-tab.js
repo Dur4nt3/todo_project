@@ -7,6 +7,8 @@ import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 import { generalTaskCont } from "./build-task-cont.js";
 import { generalTabHeader } from "./build-tab-header.js";
 
+// This module is used to create the "Completed" tab
+
 function filterByPriorityCompleted(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 

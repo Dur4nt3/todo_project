@@ -6,6 +6,8 @@ import { searchBar } from "./build-misc.js";
 import { advancedSearchModalInteractivity } from "./input-modals.js";
 import { taskContEventListeners, createNoScheduledTasksMsg, hardRefreshTabEvent } from "./ui-task-utilities.js";
 
+// This module is used to create the "Search" tab
+
 function createSearchTabHeader(tabCont) {
     const tabHeaderCont = generalTabHeader("search-tab", "Search Tasks");
 

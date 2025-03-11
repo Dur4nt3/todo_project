@@ -3,6 +3,8 @@ import generateAllTabs from "./generate-all-tabs.js";
 import { hide } from "./dom-manipulator.js";
 import { makeActive } from "./change-tabs.js";
 
+// This module is used to accumulate all of the functions that should execute on the initial load of the page
+
 function hideNonDefaultTabs(defaultTabContClass) {
     const mainCont = document.querySelector(".main-cont");
     const tabContList = Array.from(mainCont.children);

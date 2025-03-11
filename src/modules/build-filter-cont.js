@@ -3,6 +3,8 @@ import { buildElement, hide, show } from "./dom-manipulator.js";
 import filterSvg from "../images/Filter.svg";
 import filterOffSvg from "../images/Filter-off.svg";
 
+// This module builds the filter container in eligible tabs
+
 function addShowFiltersEvent(showIcon, hideIcon) {
     showIcon.addEventListener("click", () => {
         hide(showIcon);

@@ -3,6 +3,9 @@ import { buildElement } from "./dom-manipulator.js";
 import { deletionConfirmationModalInteractivity } from "./confirmation-modals.js";
 import { taskInformationModalInteractivity } from "./task-modals.js";
 
+// This module includes various UI-related task utilities
+// It mainly manages general logic for tabs and the tasks within them
+
 // Finds the tab container of a given element within the tab
 function findTabCont(element) {
     let count = 0;

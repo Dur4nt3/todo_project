@@ -61,6 +61,8 @@ Settings will be saved to the localStorage using a JSON object with settings as 
 
 - Edit Groups: when a user picks a new color via the input the label will change color accordingly
 
+- Custom Scroll-bars - *COMPLETE*
+
 - Help:
 
     1) A modal with multiple pages that can be scrolled through both via left and right arrow icons and indicators in the middle that represent the page number

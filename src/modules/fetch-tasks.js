@@ -2,6 +2,8 @@ import { taskCollection, determineTaskType } from "./task-utility-functions.js";
 import { getYear, getMonth, getDate, isSameDay, add as increaseDate } from "../../node_modules/date-fns";
 import { getDayStart, getDayEnd } from "./misc-utilities.js";
 
+// This module provides various methods to fetch tasks from the task collection
+
 // Used to determine how many weeks ahead to generate tasks (1 by default, 4 is the maximum)
 // Value can be changed by the user
 let currentUpcomingRange = 1;

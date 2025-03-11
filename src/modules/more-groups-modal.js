@@ -4,6 +4,8 @@ import { changeGroupTab } from "./change-tabs.js";
 
 import closeSvg from "../images/Close.svg";
 
+// This module both builds and includes the interactivity logic for the "More Groups" modal
+
 function buildMoreGroupsGroupCont(groupName) {
     const groupCont = buildElement("div", "more-groups-group-cont");
     groupCont.id = groupName;

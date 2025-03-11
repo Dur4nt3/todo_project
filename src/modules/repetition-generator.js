@@ -3,6 +3,8 @@ import * as repTaskUtil from "./repetitive-task-utilities.js";
 import { add as increaseDate, differenceInHours, format as formatDate, endOfMonth } from "../../node_modules/date-fns";
 import * as taskScheduling from "./repetitive-task-scheduling.js";
 
+// This module is used to generate repetitive tasks based on an origin task
+
 // Generation algorithm for repetitive tasks with the repetition pattern "time"
 function generateTimeRepetition(task, latestAppearance, schedulingLimit) {
     let newestLatest = latestAppearance;

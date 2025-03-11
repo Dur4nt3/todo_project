@@ -1,3 +1,5 @@
+// This module manages how long into the future repetitive tasks should be scheduled
+
 // Used to determine how long ahead to schedule tasks (for tasks with "time" repetition pattern)
 function getCumulativeHoursTimePattern(patternValue) {
     let cumulativeHours = 0;

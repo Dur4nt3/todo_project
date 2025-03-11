@@ -5,6 +5,9 @@ import { createAllTab } from "./create-all-tab.js";
 import { createUpcomingTab } from "./create-upcoming-tab.js";
 import { createSearchTab } from "./create-search-tab.js";
 
+// This module executes all tab generation functions
+// This is mainly used on the initial page load to ensure all tabs are populated with content
+
 export default function generateAllTabs() {
     createTodayTab();
     createPastDueTab();

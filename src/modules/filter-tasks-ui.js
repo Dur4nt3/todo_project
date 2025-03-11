@@ -1,5 +1,8 @@
 import { resetChooseOneFilterSelection, createNoScheduledTasksMsg } from "./ui-task-utilities.js"
 
+// This module manages the UI portion for task filtering
+// Specifically it manages how individual tabs react when selecting and unselecting various filters
+
 export class filterInfoWithCompleted {
     constructor(filterButton, tabClass, taskContClass, noMsgContClass, noMsgType, fetchTasksFunc, tabTasksCreationFunc, chooseOneFilterFuncs, showCompletedFilterFunc) {
         this.directClick = false;

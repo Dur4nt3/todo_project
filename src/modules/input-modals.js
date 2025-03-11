@@ -6,6 +6,9 @@ import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 import { forceHardRefresh } from "./ui-task-utilities.js";
 import { advancedSearchModal, advancedSearchHandleChooseOneFilters, advancedSearchCheckSubmission, advancedSearchObj } from "./advanced-search-modal.js"
 
+// This module includes the interactivity logic for modals that are used to gather user input
+// This module doesn't include all modals that are used to gather user input
+
 function selectUpcomingRangeModal() {
     const modalCont = buildElement("div", "modal");
     modalCont.tabIndex = 0;

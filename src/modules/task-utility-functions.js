@@ -1,5 +1,9 @@
 import { add as increaseDate, getYear, getMonth, getDate, isSameDay } from "../../node_modules/date-fns";
 
+// This module includes various utilities that can be used by tasks
+// This module doesn't handle UI-related tasks
+// For UI-related task utilities, check the "ui-task-utilities.js" module
+
 // stores information about tasks and tasks groups
 const taskCollection = {};
 const taskGroups = {};

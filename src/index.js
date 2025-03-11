@@ -4,7 +4,7 @@ import "./stylesheets/reset.css";
 import * as changeTabs from "./modules/change-tabs.js";
 import initialLoad from "./modules/initial-load.js";
 import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
-import { editGroupsModalInteractivity } from "./modules/edit-groups-modal.js";
+import { editGroupsModalInteractivity } from "./modules/misc-modals.js";
 
 
 import { taskCollection  } from "./modules/task-utility-functions.js";

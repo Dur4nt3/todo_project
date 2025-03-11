@@ -1,6 +1,8 @@
 import { hide, show } from "./dom-manipulator.js";
 import { createGroupTab } from "./create-group-tab.js";
 
+// This module is used to change between tabs available in the sidebar
+
 function hideAllTabs() {
     const tabArray = Array.from(document.querySelector(".main-cont").children);
 

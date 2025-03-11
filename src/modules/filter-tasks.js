@@ -1,5 +1,7 @@
 import { isSameDay } from "../../node_modules/date-fns";
 
+// This module is used to filter tasks by a certain criteria
+
 export function priorityFirst(taskList) {
     return taskList.sort((a, b) => { return (b.priority - a.priority) });
 }

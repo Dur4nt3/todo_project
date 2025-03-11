@@ -7,6 +7,8 @@ import { taskContEventListeners, refreshTabEvent, clearTab } from "./ui-task-uti
 import { filterInfoWithoutCompleted, filterInitialCheck, deactivateChooseOneFilter, activateChooseOneFilter } from "./filter-tasks-ui.js";
 import { priorityFirst, earliestFirst, latestFirst } from "./filter-tasks.js";
 
+// This module is used to create the "Past Due" tab
+
 function filterByPriorityPastDue(filterInfoObj) {
     filterInitialCheck(filterInfoObj);
 

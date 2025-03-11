@@ -54,6 +54,20 @@ body {
     grid-template-columns: 1fr 4.25fr;
 }
 
+/* Scrollbar styling are used to ensure the chrome scrollbar isn't as obtrusive */
+::-webkit-scrollbar {
+    width: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0.5rem;
+    background-color: var(--cancel-gray);
+}
+
 /* Initial Styles */
 
 /* Sidebar Styles */
@@ -1049,6 +1063,11 @@ input[type=number] {
     border: 1px solid rgba(84,43,119,0.325);
 }
 
+.advanced-search-form {
+    max-height: 72.5svh;
+    overflow: auto;
+}
+
 .form-row {
     margin-bottom: 1.25rem;
 
@@ -1243,14 +1262,16 @@ input[type=number] {
 
 .group-list-overflow-cont {
     overflow: auto;
+    scroll-snap-type: y mandatory;
 }
 
 .edit-groups-group-list {
+    padding: 0.325rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.75rem;
     
-    max-width: 80svw;
+    max-width: 85svw;
 }
 
 .edit-groups-group-cont {
@@ -1276,6 +1297,7 @@ input[type=number] {
 }
 
 .edit-groups-group-main-details {
+    width: 100%;
     padding: 1rem;
     border-radius: 0.5rem;
 

@@ -1,6 +1,8 @@
 import { getGroupCount, generateGroupColorLabels, listedGroups, appendToListed, getGroupList } from "./task-utility-functions.js";
 import * as domManipulator from "./dom-manipulator.js";
 
+// This module is used to build the group listing container in the sidebar
+
 function createGroupCont(groupName) {
     let groupCont = domManipulator.buildElement("div", "group-cont");
     groupCont.id = groupName;
