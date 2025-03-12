@@ -5,6 +5,18 @@ import submitSvg from "../images/Submit.svg";
 
 // This module is used to build the "Edit Groups" modal
 
+export class groupChangeLog {
+    constructor(currentNames, currentListings, currentColors, newNames, newListings, newColors) {
+        this.currentNames = currentNames;
+        this.currentListings = currentListings;
+        this.currentColors = currentColors;
+
+        this.newNames = newNames;
+        this.newListings = newListings;
+        this.newColors = newColors;
+    }
+}
+
 function groupCurrentOrderInfoCont(groupName) {
     // Group isn't listed if the conditional is true
     if (listedGroups.indexOf(groupName) === -1) {
@@ -33,6 +45,7 @@ function modifyGroupOptionsCont(groupName) {
     const changeNameInput = buildElement("input", "hide", "modify-group-input", "change-group-name-input");
     changeNameInput.maxLength = 30;
     changeNameInput.placeholder = "Enter a new group name";
+    changeNameInput.value = groupName;
 
     modifyGroup.appendChild(changeNameButton);
     modifyGroup.appendChild(changeNameInput);
@@ -44,6 +57,10 @@ function modifyGroupOptionsCont(groupName) {
     changeOrderInput.min = 1;
     changeOrderInput.max = 5;
     changeOrderInput.placeholder = "Enter a new listing position";
+
+    if (listedGroups.indexOf(groupName) !== -1) {
+        changeOrderInput.value = listedGroups.indexOf(groupName) + 1;
+    }
 
     modifyGroup.appendChild(changeOrderButton);
     modifyGroup.appendChild(changeOrderInput);
@@ -58,7 +75,7 @@ function modifyGroupOptionsCont(groupName) {
     colorInputLabel.htmlFor = "change-label-color-input";
     colorInputLabel.textContent = "~";
     colorInputLabel.style.color = groupsColorLabels[groupName];
-    const changeColorInput = buildElement("input", "change-label-color-input", "show");
+    const changeColorInput = buildElement("input", "change-label-color-input");
     changeColorInput.value = groupsColorLabels[groupName];
     changeColorInput.type = "color";
     changeColorInput.id = "change-label-color-input";
@@ -199,11 +216,12 @@ export function fadeOutButtons(targetButton) {
     const modifyOptions = targetButton.parentNode;
 
     const buttonsArray = Array.from(modifyOptions.querySelectorAll(".modify-group-button"));
-    const submitIcon = modifyOptions.querySelector(".submit-changes-icon")
+    const submitIcon = modifyOptions.querySelector(".submit-changes-icon");
 
     const inputToShow = matchButtonToInput(targetButton);
 
     for (let i in buttonsArray) {
+        buttonsArray[i].classList.remove("fade-in");
         buttonsArray[i].classList.add("fade-out");
     }
 
@@ -214,9 +232,53 @@ export function fadeOutButtons(targetButton) {
 
         show(inputToShow);
         show(submitIcon)
+        inputToShow.classList.remove("fade-out");
         inputToShow.classList.add("fade-in");
+        submitIcon.classList.remove("fade-out");
         submitIcon.classList.add("fade-in");
     }, 350);
 
     return;
+}
+
+export function fadeOutInputs(submitButton) {
+    const modifyOptions = submitButton.parentNode;
+
+    const buttonsArray = Array.from(modifyOptions.querySelectorAll(".modify-group-button"));
+    const inputToHide = locateActiveInput(submitButton);
+
+    submitButton.classList.remove("fade-in");
+    inputToHide.classList.remove("fade-in");
+    submitButton.classList.add("fade-out");
+    inputToHide.classList.add("fade-out");
+
+    setTimeout(() => {
+        hide(inputToHide);
+        hide(submitButton)
+
+        for (let i in buttonsArray) {
+            show(buttonsArray[i]);
+            buttonsArray[i].classList.remove("fade-out");
+            buttonsArray[i].classList.add("fade-in");
+        }
+    }, 350);
+
+    return;
+}
+
+// Returns the input element that the user tried to submit
+export function locateActiveInput(submitButton) {
+    const modifyOptionsChildren = Array.from(submitButton.parentNode.children);
+
+    for (let i in modifyOptionsChildren) {
+        if (modifyOptionsChildren[i].classList.contains("change-label-color-input-cont") && !(modifyOptionsChildren[i].classList.contains("hide"))) {
+            return modifyOptionsChildren[i].querySelector(".change-label-color-input");
+        }
+
+        if (modifyOptionsChildren[i].tagName.toLowerCase() === "input") {
+            if (!(modifyOptionsChildren[i].classList.contains("hide"))) {
+                return modifyOptionsChildren[i];
+            }
+        }
+    }
 }

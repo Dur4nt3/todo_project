@@ -17,9 +17,10 @@ const colorPool = ["#D90429", "#A11692", "#FF4F79", "#4D9DE0",
     "#DDDBF1", "#F18805", "#A1EF8B", "#772D8B", "#92D5E6", "#FF7F11",
     "#FF1B1C", "#6FFFE9", "#FF6978", "#F65BE3", "#8E0045", "#16DB65"];
 
-export { taskCollection, taskGroups, groupsColorLabels, listedGroups };
-
 const reservedGroups = ["__unlisted__"];
+
+export { taskCollection, taskGroups, groupsColorLabels, listedGroups, reservedGroups };
+
 
 // General Utility Functions:
 export function deepClone(...objects) {

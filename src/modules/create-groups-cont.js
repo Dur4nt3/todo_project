@@ -28,6 +28,8 @@ function populateGroupListCont() {
     let alreadyListed = [];
     let insertionCount = 0;
 
+    let viewMoreBuilt = false;
+
     for (let index in groupList) {
 
         for (let i in listedGroups) {
@@ -53,11 +55,17 @@ function populateGroupListCont() {
         // If there are more than 5 groups, after the fifth create the "More Groups" container
         // Said container can be clicked to open a modal with all the groups
         if (index >= 5 || insertionCount >= 5) {
-            let viewMore = domManipulator.buildElement("div", "view-more-groups");
-            viewMore.textContent = "More Groups";
 
-            groupListCont.appendChild(viewMore);
-            break;
+            generateGroupColorLabels(groupName);
+
+            if (viewMoreBuilt === false) {
+                let viewMore = domManipulator.buildElement("div", "view-more-groups");
+                viewMore.textContent = "More Groups";
+                groupListCont.appendChild(viewMore);
+                viewMoreBuilt = true;
+            }
+
+            continue;;
         }
 
         let groupCont = createGroupCont(groupName);

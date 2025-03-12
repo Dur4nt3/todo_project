@@ -1266,7 +1266,7 @@ input[type=number] {
 }
 
 .edit-groups-group-list {
-    padding: 0.325rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -1340,6 +1340,7 @@ input[type=number] {
 
 .modify-group-options {
     padding: 0.35rem;
+    position: relative;
 
     display: flex;
     align-items: center;
@@ -1391,21 +1392,9 @@ input[type=number] {
     opacity: 0;
 }
 
-.change-label-color-input-cont {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.change-label-color-label {
-    cursor: pointer;
-    font-size: 1.5rem;
-}
-
-input[type="color"] {
-    opacity: 0;
-    width: 0;
-    height: 0;
+.invalid-input {
+    border-bottom: 2px solid var(--past-due-color);
+    opacity: 1;
 }
 
 .submit-changes-icon {
@@ -1422,6 +1411,64 @@ input[type="color"] {
     background-color: transparent;
 }
 
+.modify-group-options:has(.change-group-name-input.invalid-input)::before {
+    content: "This name either conflicts with another or exceeds 30 characters";
+    position: absolute;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    top: -47.5%;
+    transform: translate(-50%);
+    padding: 0.15rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+    color: var(--past-due-color);
+}
+
+.modify-group-options:has(.change-group-name-input.invalid-input:hover)::before {
+    opacity: 1;
+}
+
+.modify-group-input.invalid-animation {
+    animation: invalid-shake 0.4s;   
+}
+
+@keyframes invalid-shake {
+    0% { transform: translateX(0.5rem); }
+    12.5% { transform: translateX(-0.5rem); }
+    25% { transform: translateX(0.5rem); }
+    37.5% { transform: translateX(-0.5rem); }
+    50% { transform: translateX(0.5rem); }
+    62.5% { transform: translateX(-0.5rem); }
+    75% { transform: translateX(0.5rem); }
+    87.5% { transform: translateX(-0.5rem); }
+    100% { transform: translateX(0); }
+}
+
+.change-label-color-input-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.change-label-color-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+input[type="color"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+}
+
 /* Edit Groups Modal Styles */
 
 /*-----------------------------------------------------------------------*/
@@ -1434,10 +1481,6 @@ input[type="color"] {
 
 .hide {
     display: none;
-}
-
-.show {
-    display: static;
 }
 
 /* General Styles - Use to override above rules */
