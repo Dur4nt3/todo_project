@@ -55,9 +55,11 @@ function modifyGroupOptionsCont(groupName) {
     const labelSelectionInfo = buildElement("p", "label-selection-info");
     labelSelectionInfo.textContent = "Select a new label color: ";
     const colorInputLabel = buildElement("label", "change-label-color-label");
-    colorInputLabel.for = "change-label-color-input";
+    colorInputLabel.htmlFor = "change-label-color-input";
     colorInputLabel.textContent = "~";
-    const changeColorInput = buildElement("input", "change-label-color-input");
+    colorInputLabel.style.color = groupsColorLabels[groupName];
+    const changeColorInput = buildElement("input", "change-label-color-input", "show");
+    changeColorInput.value = groupsColorLabels[groupName];
     changeColorInput.type = "color";
     changeColorInput.id = "change-label-color-input";
 
@@ -179,4 +181,42 @@ export function editGroupsModal() {
     modalCont.appendChild(editGroupsModalCont);
 
     return modalCont;
+}
+
+function matchButtonToInput(button) {
+    if (button.classList.contains("change-group-name")) {
+        return button.parentNode.querySelector(".change-group-name-input");
+    }
+    else if (button.classList.contains("change-list-order")) {
+        return button.parentNode.querySelector(".change-list-order-input");
+    }
+    else if (button.classList.contains("change-label-color")) {
+        return button.parentNode.querySelector(".change-label-color-input-cont");
+    }
+}
+
+export function fadeOutButtons(targetButton) {
+    const modifyOptions = targetButton.parentNode;
+
+    const buttonsArray = Array.from(modifyOptions.querySelectorAll(".modify-group-button"));
+    const submitIcon = modifyOptions.querySelector(".submit-changes-icon")
+
+    const inputToShow = matchButtonToInput(targetButton);
+
+    for (let i in buttonsArray) {
+        buttonsArray[i].classList.add("fade-out");
+    }
+
+    setTimeout(() => {
+        for (let i in buttonsArray) {
+            hide(buttonsArray[i]);
+        }
+
+        show(inputToShow);
+        show(submitIcon)
+        inputToShow.classList.add("fade-in");
+        submitIcon.classList.add("fade-in");
+    }, 350);
+
+    return;
 }
