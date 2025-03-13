@@ -186,7 +186,7 @@ export function editGroupsModal() {
     const cancelButton = buildElement("button", "edit-groups-button", "cancel-button");
     const confirmButton = buildElement("button", "edit-groups-button", "confirm-button");
     cancelButton.textContent = "Cancel";
-    confirmButton.textContent = "Submit";
+    confirmButton.textContent = "Confirm";
 
     buttonCont.appendChild(cancelButton);
     buttonCont.appendChild(confirmButton);
@@ -245,7 +245,12 @@ export function fadeOutInputs(submitButton) {
     const modifyOptions = submitButton.parentNode;
 
     const buttonsArray = Array.from(modifyOptions.querySelectorAll(".modify-group-button"));
-    const inputToHide = locateActiveInput(submitButton);
+    let inputToHide = locateActiveInput(submitButton);
+
+    // Target the correct elements when handling the color input
+    if (inputToHide.id === "change-label-color-input") {
+        inputToHide = inputToHide.parentNode;
+    }
 
     submitButton.classList.remove("fade-in");
     inputToHide.classList.remove("fade-in");
@@ -280,5 +285,42 @@ export function locateActiveInput(submitButton) {
                 return modifyOptionsChildren[i];
             }
         }
+    }
+}
+
+export function SubstituteListingValues(originCont, originalListing, targetCont, targetListing) {
+    // The origin is unlisted, the target is listed
+    if (originalListing === "") {
+        // If the target container was previously listed targetCont will be null
+        if (targetCont !== null) {
+            const targetGroupOrder = targetCont.querySelector(".current-group-order");
+            targetGroupOrder.lastChild.remove();
+            targetGroupOrder.textContent = "Currently Unlisted";
+            targetGroupOrder.classList.add("new-valid");
+        }
+        
+
+        const originGroupOrder = originCont.querySelector(".current-group-order");
+        originGroupOrder.textContent = "List Order: ";
+        originGroupOrder.classList.add("new-valid");
+        const spanGroupOrder = buildElement("span", "current-group-order-number");
+        spanGroupOrder.textContent = targetListing + 1;
+        originGroupOrder.appendChild(spanGroupOrder);
+
+        return;
+    }
+
+    // Both the origin and the target are listed
+    else {
+        const targetGroupOrder = targetCont.querySelector(".current-group-order");
+        targetGroupOrder.querySelector(".current-group-order-number").textContent = originalListing + 1;
+        targetGroupOrder.classList.add("new-valid");
+
+
+        const originGroupOrder = originCont.querySelector(".current-group-order");
+        originGroupOrder.querySelector(".current-group-order-number").textContent = targetListing + 1;
+        originGroupOrder.classList.add("new-valid");
+
+        return;
     }
 }

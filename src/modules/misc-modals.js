@@ -1,5 +1,8 @@
-import { editGroupsModal, fadeOutButtons, groupChangeLog, locateActiveInput, fadeOutInputs } from "./edit-groups-modal.js";
+import { editGroupsModal, fadeOutButtons, groupChangeLog, locateActiveInput, fadeOutInputs, SubstituteListingValues } from "./edit-groups-modal.js";
 import { getGroupList, listedGroups, groupsColorLabels, taskGroups, reservedGroups } from "./task-utility-functions.js";
+import { isInputSingleDigitNumber } from "./number-input-validation.js";
+import { generateGroupList } from "./create-groups-cont.js";
+import { processGroupChanges } from "./process-task-changes.js";
 
 // This module includes the interactivity logic of various modals
 // This module isn't centered around a specific category of modals
@@ -18,7 +21,8 @@ function createGroupChangeLog() {
             currentListings.push("");
         }
         else {
-            currentListings.push(listedGroups.indexOf(groupList[i]) + 1);
+            // Saving the index not the numerical position
+            currentListings.push(listedGroups.indexOf(groupList[i]));
         }
 
         currentColors.push(groupsColorLabels[groupList[i]]);
@@ -31,9 +35,16 @@ function createGroupChangeLog() {
     return new groupChangeLog(currentNames, currentListings, currentColors, newNames, newListings, newColors);
 }
 
-function validateGroupName(newName) {
+function validateGroupName(newName, newNamesArray = []) {
     if (Object.hasOwn(taskGroups, newName) || reservedGroups.includes(newName)) {
         return false;
+    }
+
+    // For newly changed names => check if another group is already attempting to change into the selected name
+    for (let i in newNamesArray) {
+        if (newNamesArray[i] === newName) {
+            return false;
+        }
     }
 
     return true;
@@ -53,13 +64,8 @@ export function editGroupsModalInteractivity() {
     editGroupsModalCont.addEventListener("click", (e) => {
         const target = e.target;
 
-        if (target.classList.contains("modal")) {
-            editGroupsModalCont.children[0].classList.add("close-modal-animation");
-            setTimeout(() => { editGroupsModalCont.remove(); }, 300);
-            return;
-        }
-
-        else if (target.classList.contains("cancel-button")) {
+        // Clicking outside the modal to exit it is disable due to it being inconvenient for this modal
+        if (target.classList.contains("cancel-button")) {
             editGroupsModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { editGroupsModalCont.remove(); }, 300);
             return;
@@ -69,14 +75,18 @@ export function editGroupsModalInteractivity() {
             fadeOutButtons(target);
         }
 
+        // Logic for when an input is submitted
         else if (target.classList.contains("submit-changes-icon")) {
+            const groupID = target.parentNode.id;
             const targetInput = locateActiveInput(target);
             const changeLogIndex = editsChangeLog.currentNames.indexOf(target.parentNode.id);
 
             // Logic for submitting a new group name
             if (targetInput.classList.contains("change-group-name-input")) {
+
                 // If the name isn't valid and isn't in fact just the current name display an error
-                if ((!(validateGroupName(targetInput.value)) && !(targetInput.value === editsChangeLog.currentNames[changeLogIndex])) || targetInput.value.length > 30) {
+                if ((!(validateGroupName(targetInput.value, editsChangeLog.newNames)) && 
+                !(targetInput.value === editsChangeLog.currentNames[changeLogIndex])) || targetInput.value.length > 30) {
                     if (!(targetInput.classList.contains("invalid-input"))) {
                         targetInput.classList.add("invalid-input");
                     }
@@ -84,16 +94,18 @@ export function editGroupsModalInteractivity() {
                     setTimeout(() => {targetInput.classList.remove("invalid-animation");}, 450);
                     return;
                 }
+
                 // If the new group name is the same as the current one
                 else if (targetInput.value === editsChangeLog.currentNames[changeLogIndex]) {
                     editsChangeLog.newNames[changeLogIndex] = targetInput.value;
-                    let groupNameSpan = document.querySelector(".edit-groups-group-name"+"#"+target.parentNode.id).querySelector(".group-text");
+                    let groupNameSpan = document.querySelector(".edit-groups-group-name"+"#"+groupID).querySelector(".group-text");
                     groupNameSpan.textContent = targetInput.value;
                     groupNameSpan.classList.remove("new-valid");
                     targetInput.classList.remove("invalid-input");
                     fadeOutInputs(target);
                     return;
                 }
+
                 // Else the new group name is valid but different
                 else {
                     editsChangeLog.newNames[changeLogIndex] = targetInput.value;
@@ -107,12 +119,71 @@ export function editGroupsModalInteractivity() {
             }
 
             // Logic for submitting a new listing order
+            else if (targetInput.classList.contains("change-list-order-input")) {
+                const groupOrderCont = document.querySelector(".edit-groups-group-order"+"#"+groupID);
+                const currentGroupOrder = groupOrderCont.querySelector(".current-group-order");
+                // If its blank => unlisted
+                if (targetInput.value === "") {
+                    editsChangeLog.newListings[changeLogIndex] = "";
+                    if (!(currentGroupOrder.textContent === "Currently Unlisted")) {
+                        currentGroupOrder.lastChild.remove();
+                        currentGroupOrder.textContent = "Currently Unlisted";
+                        currentGroupOrder.classList.add("new-valid");
+                    }
 
-            // Logic for submitting a new color
+                    fadeOutInputs(target);
+                    return;
+                }
+
+                // Handles invalid values
+                else if (!isInputSingleDigitNumber(targetInput, 1, 5)) {
+                    if (!(targetInput.classList.contains("invalid-input"))) {
+                        targetInput.classList.add("invalid-input");
+                    }
+                    targetInput.classList.add("invalid-animation");
+                    setTimeout(() => {targetInput.classList.remove("invalid-animation");}, 450);
+                    return; 
+                }
+
+                // If its not blank or invalid => a listing position was chosen
+                else {
+                    const originalListingPosition = editsChangeLog.currentListings[changeLogIndex];
+                    const currentListingPosition = editsChangeLog.newListings[changeLogIndex];
+
+                    // No change was made to the listing position => simply fade out the inputs
+                    if (Number(targetInput.value) === originalListingPosition + 1 && Number(targetInput.value) === currentListingPosition + 1) {
+                        editsChangeLog.newListings[changeLogIndex] = originalListingPosition;
+                        fadeOutInputs(target);
+                        return;
+                    }
+
+                    const indexOfNewListing = editsChangeLog.newListings.indexOf(Number(targetInput.value) - 1);
+                    // Substitute the listings if the other exists
+                    if (!(indexOfNewListing === -1)) {
+                        editsChangeLog.newListings[indexOfNewListing] = currentListingPosition;
+                    }
+                    editsChangeLog.newListings[changeLogIndex] = Number(targetInput.value) - 1;
+                    SubstituteListingValues(groupOrderCont, currentListingPosition, 
+                    document.querySelector(".edit-groups-group-order"+"#"+editsChangeLog.currentNames[indexOfNewListing]), (Number(targetInput.value) - 1));
+                    fadeOutInputs(target);
+                    return;
+                }
+            }
+
+            // Logic for submitting a new label color
+            else {
+                const labelCont = document.querySelector(".edit-groups-group-name"+"#"+groupID);
+                labelCont.querySelector(".group-label").style.color = targetInput.value;
+                editsChangeLog.newColors[changeLogIndex] = targetInput.value;
+                fadeOutInputs(target);
+                return;
+            }
             
         }
 
-        // Insert all edits submission logic (validating all inputs)
+        else if (target.classList.contains("confirm-button")) {
+            processGroupChanges(editsChangeLog);
+        }
     });
 
     // Syncs the preview label with the selected color

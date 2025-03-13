@@ -1311,7 +1311,7 @@ input[type=number] {
 }
 
 .new-valid {
-    color: var(--due-color);
+    color: var(--confirm-green);
 }
 
 .new-invalid {
@@ -1328,14 +1328,6 @@ input[type=number] {
 
 .edit-groups-group-name, .current-group-order {
     font-size: 1.15rem;
-}
-
-.current-group-order-number.new-valid {
-    color: var(--due-color);
-}
-
-.current-group-order-number.new-invalid {
-    color: var(--past-due-color);
 }
 
 .modify-group-options {
@@ -1428,6 +1420,26 @@ input[type=number] {
 }
 
 .modify-group-options:has(.change-group-name-input.invalid-input:hover)::before {
+    opacity: 1;
+}
+
+.modify-group-options:has(.change-list-order-input.invalid-input)::before {
+    content: "Invalid value. Select a number between 1 and 5 or leave blank.";
+    position: absolute;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    top: -47.5%;
+    transform: translate(-50%);
+    padding: 0.15rem;
+    border-radius: 0.7rem;
+    background-color: var(--button-hover-background);
+    color: var(--past-due-color);
+}
+
+.modify-group-options:has(.change-list-order-input.invalid-input:hover)::before {
     opacity: 1;
 }
 
