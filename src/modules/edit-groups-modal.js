@@ -1,5 +1,5 @@
 import { buildElement, hide, show } from "./dom-manipulator.js";
-import { getGroupList, groupsColorLabels, listedGroups } from "./task-utility-functions.js";
+import { getGroupList, groupsColorLabels, listedGroups, taskGroups } from "./task-utility-functions.js";
 
 import submitSvg from "../images/Submit.svg";
 
@@ -15,6 +15,18 @@ export class groupChangeLog {
         this.newListings = newListings;
         this.newColors = newColors;
     }
+}
+
+function groupNameToID(groupName) {
+    return groupName.replace(/\s+/g, '-')
+}
+
+export function idToGroupName(id) {
+    // This is true if the id matches the group
+    if (Object.hasOwn(taskGroups, id)) {
+        return id;
+    }
+    return id.replace(/-/g, ' ');
 }
 
 function groupCurrentOrderInfoCont(groupName) {
@@ -38,7 +50,7 @@ function groupCurrentOrderInfoCont(groupName) {
 
 function modifyGroupOptionsCont(groupName) {
     const modifyGroup = buildElement("div", "modify-group-options");
-    modifyGroup.id = groupName;
+    modifyGroup.id = groupNameToID(groupName);
 
     const changeNameButton = buildElement("button", "modify-group-button", "change-group-name");
     changeNameButton.textContent = "Change Name";
@@ -96,40 +108,15 @@ function modifyGroupOptionsCont(groupName) {
     return modifyGroup;
 }
 
-function modificationErrorCont(groupName) {
-    const modificationErrors = buildElement("div", "edit-groups-error-cont");
-    modificationErrors.id = groupName;
-
-    const nameConflict = buildElement("span", "hide", "name-error-conflict");
-    nameConflict.textContent = "The chosen name is the same as an already created group. Please choose a unique name";
-    
-    const nameLength = buildElement("span", "hide", "name-error-length");
-    nameLength.textContent = "The chosen name exceeds the max length. Please choose a unique name between 1-30 characters";
-
-    const orderConflict = buildElement("span", "hide", "order-error-conflict");
-    orderConflict.textContent = "The chosen listing order is already taken. Please choose a different number.";
-
-    
-    const orderValue = buildElement("span", "hide", "order-error-value");
-    orderValue.textContent = "The chosen listing order is invalid. Please choose a number between 1 and 5 or leave blank (unlisted).";
-
-    modificationErrors.appendChild(nameConflict);
-    modificationErrors.appendChild(nameLength);
-    modificationErrors.appendChild(orderConflict);
-    modificationErrors.appendChild(orderValue);
-
-    return modificationErrors;
-}
-
 function editGroupsGroupCont(groupName) {
     const groupCont = buildElement("div", "edit-groups-group-cont");
-    groupCont.id = groupName;
+    groupCont.id = groupNameToID(groupName);
 
     const mainDetailsCont = buildElement("div", "edit-groups-group-main-details");
-    mainDetailsCont.id = groupName;
+    mainDetailsCont.id = groupNameToID(groupName);
 
     const nameCont = buildElement("p", "edit-groups-group-name");
-    nameCont.id = groupName;
+    nameCont.id = groupNameToID(groupName);
 
     const labelSpan = buildElement("span", "group-label");
     labelSpan.textContent = "~ ";
@@ -142,7 +129,7 @@ function editGroupsGroupCont(groupName) {
     nameCont.appendChild(nameSpan);
 
     const groupOrder = buildElement("div", "edit-groups-group-order");
-    groupOrder.id = groupName;
+    groupOrder.id = groupNameToID(groupName);
     groupOrder.appendChild(groupCurrentOrderInfoCont(groupName));
 
     const modifyGroup = modifyGroupOptionsCont(groupName);
@@ -151,10 +138,7 @@ function editGroupsGroupCont(groupName) {
     mainDetailsCont.appendChild(groupOrder);
     mainDetailsCont.appendChild(modifyGroup);
 
-    const modificationErrors = modificationErrorCont(groupName);
-
     groupCont.appendChild(mainDetailsCont);
-    groupCont.appendChild(modificationErrors);
 
     return groupCont;
 }
@@ -191,8 +175,12 @@ export function editGroupsModal() {
     buttonCont.appendChild(cancelButton);
     buttonCont.appendChild(confirmButton);
 
+    const modalError = buildElement("div", "modal-catastrophic-error", "hide");
+    modalError.textContent = "There has been a catastrophic error. Some of your changes weren't saved. Please reload the page and try again.";
+
     editGroupsModalCont.appendChild(modalTitle);
     editGroupsModalCont.appendChild(overflowCont);
+    editGroupsModalCont.appendChild(modalError);
     editGroupsModalCont.appendChild(buttonCont);
 
     modalCont.appendChild(editGroupsModalCont);
@@ -289,7 +277,7 @@ export function locateActiveInput(submitButton) {
 }
 
 export function SubstituteListingValues(originCont, originalListing, targetCont, targetListing) {
-    // The origin is unlisted, the target is listed
+    // The origin is unlisted
     if (originalListing === "") {
         // If the target container was previously listed targetCont will be null
         if (targetCont !== null) {
@@ -310,12 +298,14 @@ export function SubstituteListingValues(originCont, originalListing, targetCont,
         return;
     }
 
-    // Both the origin and the target are listed
+    // The origin is listed
     else {
-        const targetGroupOrder = targetCont.querySelector(".current-group-order");
-        targetGroupOrder.querySelector(".current-group-order-number").textContent = originalListing + 1;
-        targetGroupOrder.classList.add("new-valid");
-
+        // If the target container was previously listed targetCont will be null
+        if (targetCont !== null) {
+            const targetGroupOrder = targetCont.querySelector(".current-group-order");
+            targetGroupOrder.querySelector(".current-group-order-number").textContent = originalListing + 1;
+            targetGroupOrder.classList.add("new-valid");
+        }
 
         const originGroupOrder = originCont.querySelector(".current-group-order");
         originGroupOrder.querySelector(".current-group-order-number").textContent = targetListing + 1;

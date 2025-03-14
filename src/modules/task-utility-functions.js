@@ -46,7 +46,7 @@ export function updateTaskCollection(taskObj, taskType) {
 }
 
 export function appendToListed(groupName, listNumber) {
-    if (listNumber > 4) {
+    if (listNumber > 4 || listNumber < 0) {
         return false;
     }
 
@@ -163,6 +163,7 @@ export function formateToDeadlineValue(date, time) {
 }
 
 // Task-Specific Utility Functions (Grouped Tasks):
+
 export function updateGroups(groupName, obj, oldGroup = null) {
 
     // If changing the group of a task, ensure to remove it from its previous group
@@ -173,6 +174,7 @@ export function updateGroups(groupName, obj, oldGroup = null) {
         if (taskGroups[oldGroup].length === 0) {
             delete taskGroups[oldGroup];
             delete groupsColorLabels[oldGroup];
+            listedGroups[listedGroups.indexOf(oldGroup)] = undefined;
         }
     }
 
@@ -190,7 +192,7 @@ export function validateGroup(groupName) {
         return true;
     }
 
-    else if (groupName === "" || groupName.length > 25 || reservedGroups.includes(groupName)) {
+    else if (groupName === "" || groupName.length > 30 || reservedGroups.includes(groupName)) {
         return false;
     }
     return true;
@@ -226,12 +228,13 @@ export function getGroupList() {
     return groupsArray;
 }
 
-export function changeGroupName(currentName, newName) {
+export function changeGroupName(newName, currentName) {
     if (Object.hasOwn(taskGroups, newName)) {
         return false;
     }
 
     let newGroupArray = [];
+
 
     for (let i in taskGroups[currentName]) {
         newGroupArray.push(taskGroups[currentName][i]);

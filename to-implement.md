@@ -57,11 +57,20 @@ Settings will be saved to the localStorage using a JSON object with settings as 
 
     3) Tune: "Advanced Search" option, allow to search tasks in a given date range, allow to search tasks by groups - *COMPLETE*
 
-- Edit Groups: the initial color of the input label "change-label-color-label" will match the group's color label
-
-- Edit Groups: when a user picks a new color via the input the label will change color accordingly
+- Edit Groups: the initial color of the input label "change-label-color-label" will match the group's color label - *COMPLETE*
+ 
+- Edit Groups: when a user picks a new color via the input the label will change color accordingly - *COMPLETE*
 
 - Custom Scroll-bars - *COMPLETE*
+
+- Edit Groups: Submission: 
+    1) execute the process function => if false => raise error => if true continue
+
+    2) Exit the modal
+
+    3) Clear the group list container
+
+    4) Re-generate the group list container
 
 - Help:
 

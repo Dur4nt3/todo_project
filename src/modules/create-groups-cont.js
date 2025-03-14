@@ -31,21 +31,21 @@ function populateGroupListCont() {
     let viewMoreBuilt = false;
 
     for (let index in groupList) {
-
+        
         for (let i in listedGroups) {
             if (listedGroups[i] !== undefined) {
                 if (alreadyListed.includes(listedGroups[i])) {
                     continue;
                 }
-
+                
                 let groupCont = createGroupCont(listedGroups[i]);
                 groupListCont.appendChild(groupCont);
-                alreadyListed.push(groupName);
+                alreadyListed.push(listedGroups[i]);
                 insertionCount++;
                 continue;
             }
         }
-
+        
         let groupName = groupList[index];
 
         if (alreadyListed.includes(groupName)) {

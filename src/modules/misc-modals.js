@@ -1,6 +1,7 @@
-import { editGroupsModal, fadeOutButtons, groupChangeLog, locateActiveInput, fadeOutInputs, SubstituteListingValues } from "./edit-groups-modal.js";
+import { editGroupsModal, fadeOutButtons, groupChangeLog, locateActiveInput, fadeOutInputs, SubstituteListingValues, idToGroupName } from "./edit-groups-modal.js";
 import { getGroupList, listedGroups, groupsColorLabels, taskGroups, reservedGroups } from "./task-utility-functions.js";
 import { isInputSingleDigitNumber } from "./number-input-validation.js";
+import { whiteSpacesAndDashesOnly } from "./text-input-validation.js";
 import { generateGroupList } from "./create-groups-cont.js";
 import { processGroupChanges } from "./process-task-changes.js";
 
@@ -36,7 +37,7 @@ function createGroupChangeLog() {
 }
 
 function validateGroupName(newName, newNamesArray = []) {
-    if (Object.hasOwn(taskGroups, newName) || reservedGroups.includes(newName)) {
+    if (Object.hasOwn(taskGroups, newName) || reservedGroups.includes(newName) || !(whiteSpacesAndDashesOnly(newName))) {
         return false;
     }
 
@@ -79,7 +80,7 @@ export function editGroupsModalInteractivity() {
         else if (target.classList.contains("submit-changes-icon")) {
             const groupID = target.parentNode.id;
             const targetInput = locateActiveInput(target);
-            const changeLogIndex = editsChangeLog.currentNames.indexOf(target.parentNode.id);
+            const changeLogIndex = editsChangeLog.currentNames.indexOf(idToGroupName(groupID));
 
             // Logic for submitting a new group name
             if (targetInput.classList.contains("change-group-name-input")) {
@@ -109,7 +110,7 @@ export function editGroupsModalInteractivity() {
                 // Else the new group name is valid but different
                 else {
                     editsChangeLog.newNames[changeLogIndex] = targetInput.value;
-                    let groupNameSpan = document.querySelector(".edit-groups-group-name"+"#"+target.parentNode.id).querySelector(".group-text");
+                    let groupNameSpan = document.querySelector(".edit-groups-group-name"+"#"+groupID).querySelector(".group-text");
                     groupNameSpan.textContent = targetInput.value;
                     groupNameSpan.classList.add("new-valid");
                     targetInput.classList.remove("invalid-input");
@@ -182,7 +183,27 @@ export function editGroupsModalInteractivity() {
         }
 
         else if (target.classList.contains("confirm-button")) {
-            processGroupChanges(editsChangeLog);
+            if (!processGroupChanges(editsChangeLog)) {
+                // This is a fallback, as by the time a user submits the modal, there should be any errors 
+                document.querySelector(".modal-catastrophic-error").classList.remove("hide");
+                return;
+            }
+            else {
+                // Recreate the group list container on the sidebar and exit the modal
+                const sidebarGroupList = document.querySelector(".group-list-cont");
+                while (sidebarGroupList.lastChild !== null) {
+                    if (sidebarGroupList === null) {
+                        break;
+                    }
+                    sidebarGroupList.lastChild.remove();
+                }
+
+                generateGroupList();
+
+                editGroupsModalCont.children[0].classList.add("close-modal-animation");
+                setTimeout(() => { editGroupsModalCont.remove() }, 300);
+            }
+
         }
     });
 

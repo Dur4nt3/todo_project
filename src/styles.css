@@ -1404,7 +1404,7 @@ input[type=number] {
 }
 
 .modify-group-options:has(.change-group-name-input.invalid-input)::before {
-    content: "This name either conflicts with another or exceeds 30 characters";
+    content: "This name either conflicts with another, exceeds 30 characters, or includes prohibited characters";
     position: absolute;
     transition: 0.3s;
     pointer-events: none;
@@ -1479,6 +1479,12 @@ input[type="color"] {
     cursor: pointer;
     position: absolute;
     z-index: 1;
+}
+
+.modal-catastrophic-error {
+    font-size: 1rem;
+    color: var(--past-due-color);
+    font-weight: bold;
 }
 
 /* Edit Groups Modal Styles */
