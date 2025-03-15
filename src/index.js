@@ -5,6 +5,7 @@ import * as changeTabs from "./modules/change-tabs.js";
 import initialLoad from "./modules/initial-load.js";
 import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
 import { editGroupsModalInteractivity } from "./modules/misc-modals.js";
+import { helpModalInteractivity } from "./modules/help-modal.js";
 
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
@@ -78,6 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const sidebarFunctionalities = document.querySelector(".sidebar-functionalities-cont");
 const groupListCont = document.querySelector(".sidebar-groups-cont");
+const settingsCont = document.querySelector(".sidebar-settings-cont");
+
 
 // Event listener for sidebar
 sidebarFunctionalities.addEventListener("click", (e) => {
@@ -118,3 +121,15 @@ groupListCont.addEventListener("click", (e) => {
         return;
     }
 });
+
+// Event listener for settings and help
+settingsCont.addEventListener("click", (e) => {
+    const target = e.target;
+
+    if (target.classList.contains("settings-icon") || target.classList.contains("settings-label")) {
+        console.log("trying to open settings");
+    }
+    if (target.classList.contains("help-icon") || target.classList.contains("help-label")) {
+        helpModalInteractivity();
+    }
+})
