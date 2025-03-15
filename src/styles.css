@@ -1491,6 +1491,150 @@ input[type="color"] {
 
 /*-----------------------------------------------------------------------*/
 
+/* Help Modal Styles */
+
+.help-modal {
+    top: 45%;
+    max-width: 65ch;
+    max-height: 75svh;
+
+    padding: 1rem;
+}
+
+.help-modal > .close-modal-icon {
+    top: 0.5%;
+}
+
+.help-page-main-content {
+    overflow: auto;
+}
+
+.help-page-details {
+    padding: 0.5rem;
+}
+
+.help-page-title {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.help-page-section {
+    margin-bottom: 0.75rem;
+}
+
+.help-paragraph {
+    margin-bottom: 0.5rem;
+}
+
+.help-unordered-list {
+    list-style-image: url(./images/Completed-list-marker.svg);
+}
+
+.information-list-item {
+    list-style-image: url(./images/Information-item.svg);
+}
+
+.invalid-list-item {
+    list-style-image: url(./images/Invalid-item.svg);
+}
+
+.enlarge-text {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.help-page-navigator {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.move-page-icon {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.15rem;
+}
+
+.move-page-icon:hover {
+    background-color: var(--button-hover-background);
+}
+
+.move-page-icon:active {
+    background-color: transparent;
+}
+
+.help-page-selection {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.help-page-selector {
+    padding: 0.1rem;
+    cursor: pointer;
+    display: block;
+    height: 0.15rem;
+    width: 5ch;
+    background-color: var(--cancel-gray);
+    position: relative;
+}
+
+.help-page-selector.active-page {
+    background-color: var(--primary-text-color);
+    height: 0.3rem;
+    box-shadow: 0 0 3px 0.35px #f1f8ff;
+}
+
+.help-page-selector::before {
+    position: absolute;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    top: -2rem;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 0.15rem;
+    border-radius: 0.7rem;
+    background-color: var(--cancel-gray);
+    color: var(--background-color);
+}
+
+.help-page-selector.active-page::before {
+    background-color: var(--primary-text-color);
+}
+
+.help-page-selector#page-1::before {
+    content: "Introduction";    
+}
+
+.help-page-selector#page-2::before {
+    content: "Filters";    
+}
+
+.help-page-selector#page-3::before {
+    content: "Groups";    
+}
+
+.help-page-selector#page-4::before {
+    content: "Repetitive";    
+}
+
+.help-page-selector:hover::before {
+    opacity: 1;
+}
+
+.demo-filter {
+    display: inline;
+    height: 22px;
+    width: 22px;
+    vertical-align: middle;
+}
+
+/* Help Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Modal Styles */
 
 /*-----------------------------------------------------------------------*/

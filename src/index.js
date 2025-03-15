@@ -5,6 +5,7 @@ import * as changeTabs from "./modules/change-tabs.js";
 import initialLoad from "./modules/initial-load.js";
 import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
 import { editGroupsModalInteractivity } from "./modules/misc-modals.js";
+import { helpModalInteractivity } from "./modules/help-modal.js";
 
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
@@ -29,6 +30,7 @@ const groupedTask9 = createTask.createGroupedTask("grouped 9", "grouped task 9",
 const groupedTask10 = createTask.createGroupedTask("grouped 10", "grouped task 10", "group5", 3);
 const groupedTask11 = createTask.createGroupedTask("grouped 11", "grouped task 11", "group5", 3);
 groupedTask1.complete();
+groupedTask9.removeListing();
 
 
 const originallyAllDay = createTask.createDatedTask("testing all day", "all day task", "2024-03-21T12:30:00", false, 3);
@@ -39,10 +41,10 @@ const dated3 = createTask.createDatedTask("dated 3", "dated task 3", "2025-02-27
 const dated4 = createTask.createDatedTask("dated 4", "dated task 4", "2025-03-11", true, 2);
 const dated5 = createTask.createDatedTask("dated 5", "dated task 5", "2025-03-09T16:30:00", false, 3);
 const dated6 = createTask.createDatedTask("dated 6", "dated task 6", "2025-03-05", true, 3);
-const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-14", true, 2);
-const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-14T13:45:00", false, 3);
-const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-14T21:22:00", false, 1);
-const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-14", true, 2);
+const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-17", true, 2);
+const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-17T13:45:00", false, 3);
+const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-17T21:22:00", false, 1);
+const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-17", true, 2);
 dated4.complete();
 dated5.complete();
 todayTask4.complete();
@@ -78,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const sidebarFunctionalities = document.querySelector(".sidebar-functionalities-cont");
 const groupListCont = document.querySelector(".sidebar-groups-cont");
+const settingsCont = document.querySelector(".sidebar-settings-cont");
+
 
 // Event listener for sidebar
 sidebarFunctionalities.addEventListener("click", (e) => {
@@ -118,3 +122,15 @@ groupListCont.addEventListener("click", (e) => {
         return;
     }
 });
+
+// Event listener for settings and help
+settingsCont.addEventListener("click", (e) => {
+    const target = e.target;
+
+    if (target.classList.contains("settings-icon") || target.classList.contains("settings-label")) {
+        console.log("trying to open settings");
+    }
+    if (target.classList.contains("help-icon") || target.classList.contains("help-label")) {
+        helpModalInteractivity();
+    }
+})
