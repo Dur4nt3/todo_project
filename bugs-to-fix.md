@@ -26,9 +26,8 @@
 
 - For all containers with an overflow (with a parent with rounded borders) ensure that the scroll doesn't escape the border radius - *COMPLETE*
 
-- Remove console logs from "index.js"
-
 - Fix color labels not generating for groups that aren't initially listed (instead of breaking, generate label colors and continue) - *COMPLETE*
 
-- Fix the option to name different groups the same new name, i.e., a name that doesn't exist in taskGroups (do that by checking against the newNames array)
+- Fix the option to name different groups the same new name, i.e., a name that doesn't exist in taskGroups - *COMPLETE*
 
+- Remove console logs from "index.js"

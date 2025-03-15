@@ -1491,6 +1491,86 @@ input[type="color"] {
 
 /*-----------------------------------------------------------------------*/
 
+/* Help Modal Styles */
+
+.help-modal {
+    top: 45%;
+    max-width: 60ch;
+    max-height: 75svh;
+
+    padding: 1rem;
+}
+
+.help-page-overflow-cont {
+    overflow: auto;
+}
+
+.help-page-title {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.help-page-section {
+    margin-bottom: 0.75rem;
+}
+
+.help-paragraph {
+    margin-bottom: 0.5rem;
+}
+
+.help-unordered-list {
+    list-style-image: url(./images/Completed-list-marker.svg);
+}
+
+.enlarge-text {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.help-page-navigator {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.move-page-icon {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.15rem;
+}
+
+.move-page-icon:hover {
+    background-color: var(--button-hover-background);
+}
+
+.move-page-icon:active {
+    background-color: transparent;
+}
+
+.help-page-selection {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.help-page-selector {
+    padding: 0.1rem;
+    cursor: pointer;
+    display: block;
+    height: 0.15rem;
+    width: 5ch;
+    background-color: var(--cancel-gray);
+}
+
+.help-page-selector.active-page {
+    background-color: var(--primary-text-color);
+    height: 0.3rem;
+    box-shadow: 0 0 3px 0.35px #f1f8ff;
+}
+
+/* Help Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
 /* Modal Styles */
 
 /*-----------------------------------------------------------------------*/
