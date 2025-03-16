@@ -43,7 +43,7 @@ function helpModal() {
         const pageSelector = buildElement("span", "help-page-selector");
         pageSelector.id = pageId;
 
-        if (i !== 0) {
+        if (count !== 1) {
             hide(page);
         }
         else {
@@ -52,12 +52,15 @@ function helpModal() {
 
         contentCont.appendChild(page);
         pageSelection.appendChild(pageSelector);
+
+        count++;
     }
 
     pageNavigator.appendChild(moveLeft);
     pageNavigator.appendChild(pageSelection);
     pageNavigator.appendChild(moveRight);
 
+    helpModalCont.appendChild(closeIcon);
     helpModalCont.appendChild(pageHeader);
     helpModalCont.appendChild(contentCont);
     helpModalCont.appendChild(pageNavigator);
@@ -68,5 +71,30 @@ function helpModal() {
 }
 
 export function helpModalInteractivity() {
-    console.log("help modal");
+    const helpModalCont = helpModal();
+
+    document.body.prepend(helpModalCont);
+    helpModalCont.focus();
+
+    helpModalCont.addEventListener("click", (e) => {
+        const target = e.target;
+
+        if (target.classList.contains("modal")) {
+            helpModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { helpModalCont.remove() }, 300);
+        }
+
+        else if (target.classList.contains("close-modal-icon")) {
+            helpModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { helpModalCont.remove() }, 300);
+        }
+
+    });
+
+    helpModalCont.addEventListener("keyup", (e) => {
+        if (e.key === "Escape") {
+            helpModalCont.children[0].classList.add("close-modal-animation");
+            setTimeout(() => { helpModalCont.remove() }, 300);
+        }
+    });
 }

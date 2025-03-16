@@ -1,4 +1,4 @@
-import { buildElement } from "./dom-manipulator.js";
+import { generateWelcomePage } from "./help-modal-welcome-page.js";
 
 export function getHelpPageHeader(id) {
     switch (id) {
@@ -24,10 +24,10 @@ function generateGroupHelpPage() {
 
 }
 
-function generateWelcomePage() {
 
-}
 
 export function generateAllHelpPages() {
+    return [generateWelcomePage()];
 
+    // return [ generateWelcomePage(), generateGroupHelpPage(), generateRepetitiveHelpPage() ];
 }

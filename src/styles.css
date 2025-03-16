@@ -1495,10 +1495,14 @@ input[type="color"] {
 
 .help-modal {
     top: 45%;
-    max-width: 60ch;
+    max-width: 65ch;
     max-height: 75svh;
 
     padding: 1rem;
+}
+
+.help-modal > .close-modal-icon {
+    top: 0.5%;
 }
 
 .help-page-main-content {
@@ -1524,6 +1528,14 @@ input[type="color"] {
 
 .help-unordered-list {
     list-style-image: url(./images/Completed-list-marker.svg);
+}
+
+.information-list-item {
+    list-style-image: url(./images/Information-item.svg);
+}
+
+.invalid-list-item {
+    list-style-image: url(./images/Invalid-item.svg);
 }
 
 .enlarge-text {

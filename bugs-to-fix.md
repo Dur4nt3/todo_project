@@ -30,4 +30,6 @@
 
 - Fix the option to name different groups the same new name, i.e., a name that doesn't exist in taskGroups - *COMPLETE*
 
+- Ensure "__unlisted__" tasks are working properly with "My Groups" (listing when there are only unlisted tasks, listing when there are more than 5 tasks, appearance in "More Groups", appearance in "Edit Groups", finding the tasks via the search function)
+
 - Remove console logs from "index.js"
