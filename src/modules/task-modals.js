@@ -1,5 +1,6 @@
 import { buildElement } from "./dom-manipulator.js";
-import { getTaskDateTextFormat, getTaskTime } from "./misc-utilities.js"
+import { getTaskDateTextFormat, getTaskTime } from "./misc-utilities.js";
+import { taskGroups } from "./task-utility-functions.js";
 
 import closeSvg from "../images/Close.svg";
 import clockSvg from "../images/Clock.svg";
@@ -35,7 +36,13 @@ function taskInformationModal(task) {
 
     if (task.group !== undefined) {
         const taskInfoGroup = buildElement("p", "task-info-group");
-        taskInfoGroup.textContent = "~ " + task.group;
+
+        if (!(taskGroups["__unlisted__"].includes(task))) {
+            taskInfoGroup.textContent = "~ " + task.group;
+        }
+        else {
+            taskInfoGroup.textContent = "Unlisted";
+        }
 
         infoModalCont.appendChild(taskInfoGroup);
     }

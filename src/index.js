@@ -30,6 +30,7 @@ const groupedTask9 = createTask.createGroupedTask("grouped 9", "grouped task 9",
 const groupedTask10 = createTask.createGroupedTask("grouped 10", "grouped task 10", "group5", 3);
 const groupedTask11 = createTask.createGroupedTask("grouped 11", "grouped task 11", "group5", 3);
 groupedTask1.complete();
+groupedTask9.removeListing();
 
 
 const originallyAllDay = createTask.createDatedTask("testing all day", "all day task", "2024-03-21T12:30:00", false, 3);

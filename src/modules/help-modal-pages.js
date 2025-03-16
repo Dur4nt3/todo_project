@@ -1,4 +1,5 @@
 import { generateWelcomePage } from "./help-modal-welcome-page.js";
+import { generateGroupHelpPage } from "./help-modal-groups-page.js";
 
 export function getHelpPageHeader(id) {
     switch (id) {
@@ -20,14 +21,8 @@ function generateRepetitiveHelpPage() {
 
 }
 
-function generateGroupHelpPage() {
-
-}
-
-
-
 export function generateAllHelpPages() {
-    return [generateWelcomePage()];
+    return [generateWelcomePage(), generateGroupHelpPage()];
 
     // return [ generateWelcomePage(), generateGroupHelpPage(), generateRepetitiveHelpPage() ];
 }
