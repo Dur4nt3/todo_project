@@ -7,6 +7,53 @@
     <title>Task Ticker</title>
 </head>
 <body>
+
+    <div class="modal">
+        <div class="modal-cont help-modal">
+            <img src="./images/Close.svg" alt="Close" class="close-modal-icon">
+            <h2 class="help-page-title">Filtering Tasks:</h2>
+            <div class="help-page-main-content">
+                <div class="help-page-details" id="page-2">
+                    <div class="help-page-section">
+                        <h3 class="help-section-header">Introduction:</h3>
+                        <p class="help-paragraph">Filters can significantly enhance productivity by allowing you to order/list tasks based on certain parameters.</p>
+                        <p class="help-paragraph">
+                            If a tab includes a <img src="./images/Filter.svg" alt="" class="demo-filter"> icon you can safely assume you are able to filter tasks within that tab.
+                        </p>
+                        <p class="help-paragraph">
+                            You can click the <img src="./images/Filter.svg" alt="" class="demo-filter"> icon to show the available filters and click the <img src="./images/Filter-off.svg" alt="" class="demo-filter"> icon to hide the available filters.
+                        </p>
+                        <p class="help-paragraph">Task Ticker offers four different filters: "Show Completed", "Filter by Priority", "Filter by Earliest", "Filter by Latest".</p>
+                        <p class="help-paragraph">Note that not all tabs will include all four filters, some may include only three, others may include none.</p>
+                        <p class="help-paragraph">This section will clarify the logic behind filters.</p>
+                    </div>
+
+                    <div class="help-page-section">
+                        <h3 class="help-section-header">How Filters Works:</h3>
+                        <p class="help-paragraph">By applying <span class="enlarge-text">"Show Completed" </span>in eligible tabs you can view tasks that you already marked as completed; this filter works in conjunction with other filters.</p>
+                        <p class="help-paragraph">By applying <span class="enlarge-text">"Filter by Priority" </span> in eligible tabs you can order the tasks in the tab by their priority; this filter can only work with the "Show Completed" filter.</p>
+                        <p class="help-paragraph">By applying <span class="enlarge-text">"Filter by Earliest" </span> in eligible tabs you can order the tasks in the tab by their date, tasks with an earlier date will be shown higher up; this filter can only work with the "Show Completed" filter.</p>
+                        <p class="help-paragraph">By applying <span class="enlarge-text">"Filter by Latest" </span> in eligible tabs you can order the tasks in the tab by their date, tasks with a later date will be shown higher up; this filter can only work with the "Show Completed" filter.</p>
+                        <p class="help-paragraph">It should be noted that an "All-day" task (i.e., a task with a set date but without a specific time of the day) is considered as later than non "All-day" task. Moreover, tasks without dates will always be listed at the bottom when filtering by either "Earliest" or "Latest".</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="help-page-navigator">
+            
+                <img src="./images/Move-left.svg" alt="Move Left" class="move-page-icon move-left-icon">
+            
+                <div class="help-page-selection">
+                    <span class="help-page-selector" id="page-1"></span>
+                    <span class="help-page-selector" id="page-2"></span>
+                    <span class="help-page-selector" id="page-3"></span>
+                </div>
+                <img src="./images/Move-right.svg" alt="Move Right" class="move-page-icon move-right-icon"> 
+            </div>    
+        </div>
+        
+    </div>
+
     <div class="page-grid">
         <div class="sidebar-cont">
 

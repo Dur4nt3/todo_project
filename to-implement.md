@@ -34,8 +34,6 @@
 
     2) Type 2 - Editable: Modal that both include a task's information and include an option to edit the task's details
 
-- Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal
-
 - Search tab:
 
     1) Fetch all tasks (completed included) & save in an array specifically made for the search tab (array regenerates on tab refresh) - *COMPLETE*
@@ -67,17 +65,13 @@
 
     2) Information in the modal:
 
-        - Information about groups, listing positions, unlisted groups
+        - Information about task creation
+
+        - Information about groups, listing positions, unlisted groups - *COMPLETE*
 
         - Information about the filters earliest first and latest first and their interaction with an all-day task
 
         - Information about repetitive tasks
-
-- Help Extra Information:
-
-    - Group editing: explain that you cannot change into a name of an already existing group, if you want to do that, change that name of the existing group to another, submit the request to edit the name, and then, you can change back to the initial desired name
-
-    - No special characters allow for group names, only numbers, letters, hyphens and white spaces
 
 - Settings:
 
@@ -91,3 +85,5 @@ Settings will be saved to the localStorage using a JSON object with settings as 
     *That same welcome message will appear under the "Help" tab*
 
     3) Modal Coloring: Based on priority | light gray regardless of priority
+
+- Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal
