@@ -1,5 +1,6 @@
 import { generateWelcomePage } from "./help-modal-welcome-page.js";
 import { generateGroupHelpPage } from "./help-modal-groups-page.js";
+import { generateFiltersHelpPage } from "./help-modal-filters-page.js";
 
 export function getHelpPageHeader(id) {
     switch (id) {
@@ -7,10 +8,13 @@ export function getHelpPageHeader(id) {
             return "Welcome:";
 
         case 2:
-            return "About Groups:";
+            return "Filtering Tasks:";
 
         case 3:
-            return "Repetitive Tasks:";
+            return "About Groups:";
+
+        case 4:
+            return "Repetitive Tasks";
 
         default:
             return "Help:";
@@ -22,7 +26,7 @@ function generateRepetitiveHelpPage() {
 }
 
 export function generateAllHelpPages() {
-    return [generateWelcomePage(), generateGroupHelpPage()];
+    return [generateWelcomePage(), generateFiltersHelpPage(), generateGroupHelpPage()];
 
     // return [ generateWelcomePage(), generateGroupHelpPage(), generateRepetitiveHelpPage() ];
 }
