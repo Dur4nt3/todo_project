@@ -18,6 +18,8 @@
 
     --secondary-contrast-border: #40215a;
 
+    --secondary-contract-icon-color: #7127b0;
+
     --due-color: #04ec00;
     --due-soon-color: #ffae00;
     --past-due-color: #f90000;
@@ -206,7 +208,7 @@ body {
     gap: 0.5rem;
 }
 
-.edit-groups-icon {
+.edit-groups-icon, .refresh-groups-icon {
     cursor: pointer;
     user-select: none;
     visibility: hidden;
@@ -806,10 +808,10 @@ input[type="checkbox"]:focus {
     padding: 1rem;
     border-radius: 0.7rem;
 
-    background: rgba(36,30,65,0.65);
+    background: rgba(43,28,115,0.25);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(36,30,65,0.325);
+    border: 1px solid rgba(43,28,115,0.125);
 
     position: fixed;
     z-index: 2;
@@ -841,13 +843,13 @@ input[type="checkbox"]:focus {
 }
 
 .deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont,
-.edit-groups-button-cont {
+.edit-groups-button-cont, .add-tasks-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
 .deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button,
-.edit-groups-button {
+.edit-groups-button, .add-tasks-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -891,21 +893,21 @@ input[type="checkbox"]:focus {
     max-width: 65ch;
     max-height: 80svh;
 
-    background: rgba(43,43,44,0.55);
+    background: rgba(43,43,44,0.35);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(13,13,14,0.25);
 }
 
 .task-info-modal.priority-two {
-    background: rgba(255,174,0,0.55);
+    background: rgba(255,174,0,0.35);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,174,0,0.25);
 }
 
 .task-info-modal.priority-three {
-    background: rgba(217,0,0,0.55);
+    background: rgba(217,0,0,0.35);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(217,0,0,0.25);
@@ -925,6 +927,7 @@ input[type="checkbox"]:focus {
     font-size: 0.875rem;
     padding: 0.25rem;
     line-height: 1.75;
+    white-space: pre-wrap;
 
     max-height: 65svh;
     overflow: auto;
@@ -1039,12 +1042,12 @@ input[type=number] {
 }
 
 .select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button,
-.edit-groups-button.confirm-button {
+.edit-groups-button.confirm-button, .add-tasks-button.confirm-button {
     background-color: var(--confirm-green);
 }
 
 .select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active,
-.edit-groups-button.confirm-button:active {
+.edit-groups-button.confirm-button:active, .add-tasks-button.confirm-button:active {
     background-color: var(--confirm-green-low-opacity);
 }
 
@@ -1054,13 +1057,13 @@ input[type=number] {
 
 /* Advanced Search Modal Styles */
 
-.advanced-search-modal, .edit-groups-modal {
+.advanced-search-modal, .edit-groups-modal, .add-tasks-modal {
     top: 45%;
 
-    background: rgba(84,43,119,0.45);
+    background: rgba(137,2,227,0.2);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(84,43,119,0.325);
+    border: 1px solid rgba(137,2,227,0.1);
 }
 
 .advanced-search-form {
@@ -1083,12 +1086,13 @@ input[type=number] {
     margin-top: 1rem;
 }
 
-.advanced-search-label {
-    font-size: 0.875rem;
+.advanced-search-label, .add-tasks-label {
+    font-size: 0.925rem;
     opacity: 0.85;
+    cursor: pointer;
 }
 
-.advanced-search-input, .advanced-search-date-input {
+.advanced-search-input, .advanced-search-date-input, .add-tasks-input, .add-tasks-date-input {
     height: 1.75rem;
     border: none;
     background-color: var(--button-hover-background);
@@ -1096,20 +1100,24 @@ input[type=number] {
     outline: none;
 }
 
-.advanced-search-input {
+.add-tasks-date-input, .advanced-search-date-input {
+    text-align: center;
+}
+
+.advanced-search-input, .add-tasks-input {
     border-radius: 0.5rem;
     width: 35ch;
 }
 
-.advanced-search-input:focus, .advanced-search-date-input:focus {
+.advanced-search-input:focus, .advanced-search-date-input:focus, .add-tasks-input:focus, .add-tasks-date-input:focus {
     border: 2.5px solid var(--secondary-color);
 }
 
-.advanced-search-date-input:first-child {
+.advanced-search-date-input:first-child, .add-tasks-date-input:first-child {
     border-radius: 0.5rem 0 0 0.5rem;
 }
 
-.advanced-search-date-input:last-child {
+.advanced-search-date-input:last-child, .add-tasks-date-input:last-child {
     border-radius: 0 0.5rem 0.5rem 0;
 }
 
@@ -1301,7 +1309,7 @@ input[type=number] {
     padding: 1rem;
     border-radius: 0.5rem;
 
-    box-shadow: 0 0 2.75px 1.15px rgba(20, 11, 29, 0.6);
+    box-shadow: 0 0 2.625px 0.625px rgba(70, 0, 117, 0.5);
 
     display: flex;
     align-items: center;
@@ -1349,11 +1357,11 @@ input[type=number] {
     transition: 0.2s;
 }
 
-.modify-group-button:hover {
+.modify-group-button:hover, .add-tasks-button:hover {
     transform: translateY(-0.25rem);
 }
 
-.modify-group-button:active {
+.modify-group-button:active, .add-tasks-button:active {
     opacity: 0.85;
 }
 
@@ -1632,6 +1640,305 @@ input[type="color"] {
 }
 
 /* Help Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Add Tasks Modal Styles */
+
+.add-tasks-modal {
+    max-width: 65ch;
+    max-height: 75svh;
+
+    padding: 1rem;
+}
+
+.add-tasks-form {
+    padding: 1rem;
+    max-height: 85%;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.add-tasks-form textarea {
+    min-width: 35ch;
+    max-width: 55ch;
+    min-height: 7.5rem;
+}
+
+select {
+    appearance: none;
+    background-color:  transparent;
+    user-select: none;
+    border: none;
+    padding: 0 1rem 0 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    line-height: inherit;
+    outline: none;
+}
+
+select option {
+    text-align: center;
+    background-color: var(--background-color);
+}
+
+.select-input-cont {
+    width: 35ch;
+    height: 1.75rem;
+    position: relative;
+
+    display: grid;
+    grid-template-areas: "select";
+    align-items: center;
+
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1.1;
+    background-color: var(--button-hover-background);
+}
+
+.select-input-cont.in-row {
+    width: max-content;
+}
+
+.select-input-cont::after {
+    content: "";
+    user-select: none;
+    pointer-events: none;
+    width: 0.8rem;
+    height: 0.5rem;
+    background-color: var(--primary-text-color);
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    justify-self: end;
+}
+
+select, .select-input-cont::after {
+    grid-area: select;
+}
+
+select:focus + .focus-select {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 2px solid var(--accent-color);
+    border-radius: inherit;
+}
+
+.all-day-input-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.task-time-input-grid {
+    display: grid;
+    grid-template-columns: 4ch 4ch;
+    gap: 0.15rem;
+}
+
+.information-icon {
+    display: inline;
+    vertical-align: middle;
+    padding: 0.15rem;
+}
+
+.add-tasks-label {
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+.toggle-switch-label:has(input.task-all-day-input) {
+    position: relative;
+}
+
+.toggle-switch-label:has(input.task-all-day-input)::before {
+    position: absolute;
+    bottom: 115%;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    position: absolute;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--background-color);
+}
+
+.toggle-switch-label:has(input.task-all-day-input):hover::before {
+    opacity: 1;
+}
+
+.toggle-switch-label:has(input.task-all-day-input:checked)::before {
+    content: "Task is currently all-day";
+}
+
+.toggle-switch-label:has(input.task-all-day-input:not(:checked))::before {
+    content: "Task is currently timed";
+}
+
+.add-tasks-input.invalid-entry {
+    border: 1.5px solid var(--past-due-color);
+}
+
+.add-tasks-date-input:disabled {
+    opacity: 0.15;
+    cursor: not-allowed;
+}
+
+.time-pattern-input-cont, .hybrid-weekly-frequency-input-cont, .hybrid-monthly-input-cont {
+    display: flex;
+    gap: 0.5rem;
+    align-items: end;
+}
+
+.time-pattern-paragraph, .hybrid-monthly-pattern-paragraph {
+    font-size: 0.875rem;
+}
+
+input.task-time-pattern-input, input.task-hybrid-monthly-end-frequency-input, input.task-hybrid-monthly-specific-frequency-input,
+input.task-hybrid-weekly-frequency-input {
+    outline: none;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid var(--cancel-gray);
+    background-color: transparent;
+    width: 5ch;
+    overflow: hidden;
+    caret-color: var(--primary-text-color);
+    text-align: center;
+}
+
+input.task-time-pattern-input:focus, input.task-hybrid-monthly-end-frequency-input:focus, input.task-hybrid-monthly-specific-frequency-input:focus,
+input.task-hybrid-weekly-frequency-input:focus {
+    border: none;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.day-pattern-input-cont, .hybrid-weekly-days-input-cont {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.hybrid-monthly-repetition-type-row {
+    max-width: 35ch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.repetition-type-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.select-day-input {
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 0.75rem;
+    background-color: var(--button-hover-background);
+    text-align: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    line-height: 1.45rem;
+    cursor: pointer;
+}
+
+.select-day-input:hover {
+    transform: translateY(-0.075rem);
+    box-shadow: 0 1px 6px 1.5px rgba(24, 12, 34, 0.7);
+}
+
+.select-day-input.selected-day {
+    background-color: var(--secondary-contract-icon-color);
+}
+
+.error-span {
+    font-size: 0.875rem;
+    color: var(--past-due-color);
+    max-width: 35ch;
+}
+
+.invalid-hybrid-monthly-selection {
+    display: inline-block;
+    width: 100%;
+    max-width: 45ch;
+    text-align: center;
+}
+
+.add-tasks-label:has( > .information-icon)::before {
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+    bottom: 100%;
+    padding: 0.5rem;
+    opacity: 0;
+    border-radius: 0.5rem;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: var(--background-color);
+}
+
+.add-tasks-label:has( > .information-icon):hover::before {
+    opacity: 1;
+}
+
+.add-tasks-label.task-type-label::before {
+    content: 'Refer to the "Help" section (available on the bottom of the sidebar) for additional information regarding task types.';
+}
+
+.add-tasks-label.task-group-label::before {
+    content: 'Select a group for the task to be labeled under. You may create a new group by selecting a unique name. You may leave this field blank to label this task as unlisted.';
+}
+
+.add-tasks-label.task-date-label::before {
+    content: 'Select a deadline for this task. Please use the "DD/MM/YYYY" (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this indicates the date the repetition of tasks starts from.';
+}
+
+.add-tasks-label.task-all-day-label::before {
+    content: 'All day tasks don\'t have a specified time of the day. If you opt-out of this option, you must specify a time of the day for the task using the "HH:MM" (i.e., hour and minute format) format.';
+}
+
+.add-tasks-label.task-repetition-pattern-label::before {
+    content: 'The repetition pattern determines how your tasks will repeat: "Time" refers to "repeat every X time", "Day" refers to "repeat on specified days every week", "Hybrid - Weekly" refers to "repeat on specified days every X weeks", and finally, "Hybrid - Monthly" refers to "repeat on the X occurrence of a certain day of every month".';
+}
+
+.add-tasks-label.task-time-pattern-label::before {
+    content: 'Select a value (integer) for the repetition pattern. For tasks that repeat every X hours, choose a value larger than 1, and opt-out of the "all-day" option. for all other options, the cumulative amount of days may not exceed 1825 (5 years).';
+}
+
+.add-tasks-label.task-day-pattern-label::before {
+    content: 'Select days of the week for the task to repeat on. Note that the values are monday to sunday (from left to right).';
+}
+
+.add-tasks-label.task-hybrid-weekly-days-label::before {
+    content: 'Select days of the week for the task to repeat on. Note that the values are monday to sunday (from left to right). Those task will repeat on the specified days every X weeks (depending on the frequency specified).';
+}
+
+.add-tasks-label.task-hybrid-weekly-frequency-label::before {
+    content: 'Select the frequency of the repetition. The minimum number is 1.';
+}
+
+.add-tasks-label.task-specific-occurrence-option-label::before {
+    content: 'Repeats on a specific occurrence (first, second, third, forth or final) of a selected day (monday-sunday) every X months.';
+}
+
+.add-tasks-label.task-end-of-month-option-label::before {
+    content: 'Repeats on the end of the month, every X months.';
+}
+
+/* Add Tasks Modal Styles */
 
 /*-----------------------------------------------------------------------*/
 

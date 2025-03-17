@@ -37,9 +37,14 @@ function taskInformationModal(task) {
     if (task.group !== undefined) {
         const taskInfoGroup = buildElement("p", "task-info-group");
 
-        if (!(taskGroups["__unlisted__"].includes(task))) {
+        if (taskGroups["__unlisted__"] === undefined) {
             taskInfoGroup.textContent = "~ " + task.group;
         }
+
+        else if (!(taskGroups["__unlisted__"].includes(task))) {
+            taskInfoGroup.textContent = "~ " + task.group;
+        }
+
         else {
             taskInfoGroup.textContent = "Unlisted";
         }

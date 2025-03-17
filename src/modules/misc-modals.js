@@ -184,7 +184,7 @@ export function editGroupsModalInteractivity() {
 
         else if (target.classList.contains("confirm-button")) {
             if (!processGroupChanges(editsChangeLog)) {
-                // This is a fallback, as by the time a user submits the modal, there should be any errors 
+                // This is a fallback, as by the time a user submits the modal, there shouldn't be any errors 
                 document.querySelector(".modal-catastrophic-error").classList.remove("hide");
                 return;
             }

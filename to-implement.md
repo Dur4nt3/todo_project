@@ -87,3 +87,17 @@ Settings will be saved to the localStorage using a JSON object with settings as 
     3) Modal Coloring: Based on priority | light gray regardless of priority
 
 - Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal
+
+- Edit Tasks:
+
+**Reuses various functions from the "add tasks" functionality**
+
+Interactions to watch for:
+
+    1) Changing group names: unlike "add tasks" allow for blank group names and treat them as "__unlisted__"
+
+    2) Repetitive Tasks - changing names/descriptions/priorities/group names: have a modal popup asking whether to submit the changes to all tasks or only that task
+
+    3) Repetitive Tasks - changing deadline: if a user changes the deadline for a repetitive task => remove that task from the cluster (this ensures the new date doesn't effect the repetition generation)
+
+    4) Repetitive Tasks - changing repetition pattern/value:  delete all future tasks (i.e., tasks with deadlines after the current day) and change the repetition pattern to the new one to all remaining tasks in the cluster

@@ -106,3 +106,16 @@ export function generateGroupList() {
     groupListCont.appendChild(listContents);
 
 }
+
+export function refreshGroupList() {
+    const sidebarGroupList = document.querySelector(".group-list-cont");
+
+    while (sidebarGroupList.lastChild !== null) {
+        if (sidebarGroupList === null) {
+            break;
+        }
+        sidebarGroupList.lastChild.remove();
+    }
+
+    generateGroupList();
+}

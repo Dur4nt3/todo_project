@@ -80,13 +80,13 @@ export function generateFiltersHelpPage() {
     p3span1.textContent = '"Filter by Earliest First ';
     p4span1.textContent = '"Filter by Latest First" ';
 
-    const s2p1text1 = document.createTextNode("By applying");
+    const s2p1text1 = document.createTextNode("By applying ");
     const s2p1text2 = document.createTextNode("in eligible tabs you can view tasks that you already marked as completed; this filter works in conjunction with other filters.");
-    const s2p2text1 = document.createTextNode('By applying');
+    const s2p2text1 = document.createTextNode('By applying ');
     const s2p2text2 = document.createTextNode('in eligible tabs you can order the tasks in the tab by their priority; this filter can only work with the "Show Completed" filter.');
-    const s2p3text1 = document.createTextNode('By applying');
+    const s2p3text1 = document.createTextNode('By applying ');
     const s2p3text2 = document.createTextNode('in eligible tabs you can order the tasks in the tab by their date, tasks with an earlier date will be shown higher up; this filter can only work with the "Show Completed" filter.');
-    const s2p4text1 = document.createTextNode('By applying');
+    const s2p4text1 = document.createTextNode('By applying ');
     const s2p4text2 = document.createTextNode('in eligible tabs you can order the tasks in the tab by their date, tasks with a later date will be shown higher up; this filter can only work with the "Show Completed" filter.');
 
     paragraph1section2.appendChild(s2p1text1);
