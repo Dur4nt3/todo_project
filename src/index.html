@@ -7,6 +7,56 @@
     <title>Task Ticker</title>
 </head>
 <body>
+
+    <div class="modal">
+        <div class="modal-cont add-tasks-modal">
+            <h2 class="modal-title">Create a New Task:</h2>
+            <form action="" class="add-tasks-form">
+
+                <h4 class="form-subsection-title">Primary Details</h4>
+                <div class="form-row">
+                    <label for="task-name-input" class="task-name-label add-tasks-label">Task Name</label>
+                    <input type="text" class="task-name-input add-tasks-input" id="task-name-input" placeholder="Task Name" maxlength="30">
+                </div>
+
+                <div class="form-row">
+                    <label for="task-description-input" class="task-description-label add-tasks-label">Task Description</label>
+                    <textarea class="task-description-input add-tasks-input" id="task-description-input"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <label for="task-priority-input" class="task-priority-label add-tasks-label">Task Priority</label>
+                    <div class="select-input-cont">
+                        <select id="task-priority-input" class="task-priority-input">
+                            <option value="1">1 (Lowest Priority)</option>
+                            <option value="2">2</option>
+                            <option value="3">3 (Highest Priority)</option>
+                        </select>
+                        <span class="focus-select"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="task-type-input" class="task-type-label add-tasks-label">Task Type</label>
+                    <div class="select-input-cont">
+                        <select id="task-type-input" class="task-type-input">
+                            <option value="basic">Basic</option>
+                            <option value="grouped">Grouped</option>
+                            <option value="dated">Dated</option>
+                            <option value="datedGrouped">Dated & Grouped</option>
+                            <option value="repetitive">Repetitive</option>
+                            <option value="repetitiveGrouped">Repetitive & Grouped</option>
+                        </select>
+                        <span class="focus-select"></span>
+                    </div>
+                </div>
+
+                <h4 class="form-subsection-title task-type-subsection-title">[Task Type] Details</h4>
+
+            </form>
+        </div>
+    </div>
+
     <div class="page-grid">
         <div class="sidebar-cont">
 

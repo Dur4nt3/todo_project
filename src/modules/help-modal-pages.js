@@ -21,12 +21,6 @@ export function getHelpPageHeader(id) {
     }
 }
 
-function generateRepetitiveHelpPage() {
-
-}
-
 export function generateAllHelpPages() {
     return [generateWelcomePage(), generateFiltersHelpPage(), generateGroupHelpPage()];
-
-    // return [ generateWelcomePage(), generateGroupHelpPage(), generateRepetitiveHelpPage() ];
 }
