@@ -51,9 +51,68 @@
                     </div>
                 </div>
 
-                <h4 class="form-subsection-title task-type-subsection-title">[Task Type] Details</h4>
+                <div class="task-type-form-subsection">
+
+                    <div class="group-details-form-subsection" id="grouped">
+
+                        <h4 class="form-subsection-title">Group Details</h4>
+
+                        <div class="form-row">
+                            <label for="task-group-input" class="task-group-label add-tasks-label">
+                                Group Name <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                            </label>
+                            <input type="text" class="task-group-input add-tasks-input" id="task-group-input" placeholder="Group Name" maxlength="30">
+                            <span class="error-span invalid-group-name hide">The group name you entered is invalid.</span>
+                        </div>
+
+                    </div>
+
+                    <div class="deadline-details-form-subsection" id="dated">
+
+                        <h4 class="form-subsection-title">Deadline Details</h4>
+
+                        <div class="form-row">
+                            <span class="task-date-label add-tasks-label">
+                                Task Deadline <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                            </span>
+                            <div class="task-date-input-grid date-input-grid">
+                                <input type="text" class="add-tasks-date-input add-tasks-day-input" id="add-tasks-day-input" placeholder="DD" maxlength="2">
+                                <input type="text" class="add-tasks-date-input add-tasks-month-input" id="add-tasks-month-input" placeholder="MM" maxlength="2">
+                                <input type="text" class="add-tasks-date-input add-tasks-year-input" id="add-tasks-year-input" placeholder="YYYY" maxlength="4">
+                            </div>
+                            <span class="error-span invalid-deadline hide">The deadline you entered is invalid.</span>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="task-all-day-input" class="task-all-day-label add-tasks-label">
+                                All Day <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                            </label>
+
+                            <div class="all-day-input-cont">
+
+                                <div class="task-time-input-grid date-input-grid">
+                                    <input type="text" class="add-tasks-date-input add-tasks-hour-input" id="add-tasks-day-input" placeholder="HH" maxlength="2" disabled>
+                                    <input type="text" class="add-tasks-date-input add-tasks-minutes-input" id="add-tasks-month-input" placeholder="MM" maxlength="2" disabled>
+                                </div>
+
+                                <label class="toggle-switch-label">
+                                    <input class="toggle-switch-input task-all-day-input" type="checkbox" id="task-all-day-input" checked>
+                                    <span class="toggle-switch-slider"></span>
+                                </label>
+
+                            </div> 
+                        </div>
+
+                    </div>
+
+                </div>
 
             </form>
+            
+            <div class="add-tasks-button-cont">
+                <button class="add-tasks-button cancel-button">Cancel</button>
+                <button class="add-tasks-button confirm-button">Create</button>
+            </div>
         </div>
     </div>
 

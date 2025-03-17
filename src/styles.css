@@ -841,13 +841,13 @@ input[type="checkbox"]:focus {
 }
 
 .deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont,
-.edit-groups-button-cont {
+.edit-groups-button-cont, .add-tasks-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
 .deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button,
-.edit-groups-button {
+.edit-groups-button, .add-tasks-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -1039,12 +1039,12 @@ input[type=number] {
 }
 
 .select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button,
-.edit-groups-button.confirm-button {
+.edit-groups-button.confirm-button, .add-tasks-button.confirm-button {
     background-color: var(--confirm-green);
 }
 
 .select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active,
-.edit-groups-button.confirm-button:active {
+.edit-groups-button.confirm-button:active, .add-tasks-button.confirm-button:active {
     background-color: var(--confirm-green-low-opacity);
 }
 
@@ -1089,7 +1089,7 @@ input[type=number] {
     cursor: pointer;
 }
 
-.advanced-search-input, .advanced-search-date-input, .add-tasks-input {
+.advanced-search-input, .advanced-search-date-input, .add-tasks-input, .add-tasks-date-input {
     height: 1.75rem;
     border: none;
     background-color: var(--button-hover-background);
@@ -1102,15 +1102,15 @@ input[type=number] {
     width: 35ch;
 }
 
-.advanced-search-input:focus, .advanced-search-date-input:focus, .add-tasks-input:focus {
+.advanced-search-input:focus, .advanced-search-date-input:focus, .add-tasks-input:focus, .add-tasks-date-input:focus {
     border: 2.5px solid var(--secondary-color);
 }
 
-.advanced-search-date-input:first-child {
+.advanced-search-date-input:first-child, .add-tasks-date-input:first-child {
     border-radius: 0.5rem 0 0 0.5rem;
 }
 
-.advanced-search-date-input:last-child {
+.advanced-search-date-input:last-child, .add-tasks-date-input:last-child {
     border-radius: 0 0.5rem 0.5rem 0;
 }
 
@@ -1350,11 +1350,11 @@ input[type=number] {
     transition: 0.2s;
 }
 
-.modify-group-button:hover {
+.modify-group-button:hover, .add-tasks-button:hover {
     transform: translateY(-0.25rem);
 }
 
-.modify-group-button:active {
+.modify-group-button:active, .add-tasks-button:active {
     opacity: 0.85;
 }
 
@@ -1676,10 +1676,7 @@ select {
 
 select option {
     text-align: center;
-}
-
-select option {
-    background-color: var(--primary-color);
+    background-color: var(--background-color);
 }
 
 .select-input-cont {
@@ -1721,6 +1718,71 @@ select:focus + .focus-select {
     bottom: -1px;
     border: 2px solid var(--accent-color);
     border-radius: inherit;
+}
+
+.all-day-input-cont {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.task-time-input-grid {
+    display: grid;
+    grid-template-columns: 4ch 4ch;
+    gap: 0.15rem;
+}
+
+.information-icon {
+    display: inline;
+    vertical-align: middle;
+    padding: 0.15rem;
+}
+
+.add-tasks-label {
+    position: relative;
+}
+
+.add-tasks-input.invalid-entry {
+    border: 1.5px solid var(--past-due-color);
+}
+
+.add-tasks-date-input:disabled {
+    opacity: 0.15;
+    cursor: not-allowed;
+}
+
+.error-span {
+    font-size: 0.875rem;
+    color: var(--past-due-color);
+}
+
+.add-tasks-label:has( > .information-icon)::before {
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+    bottom: 100%;
+    padding: 0.5rem;
+    opacity: 0;
+    border-radius: 0.5rem;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: var(--background-color);
+}
+
+.add-tasks-label:has( > .information-icon):hover::before {
+    opacity: 1;
+}
+
+.add-tasks-label.task-group-label::before {
+    content: "Select a group for the task to be labeled under. You may create a new group by selecting a unique name. You may leave this field blank to label this task as unlisted.";
+}
+
+.add-tasks-label.task-date-label::before {
+    content: "Select a deadline for this task. Please use the 'DD/MM/YYYY' (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this indicates the date the repetition of tasks starts from.";
+}
+
+.add-tasks-label.task-all-day-label::before {
+    content: "All day tasks don't have a specified time of the day. If you opt-out of this option, you must specify a time of the day for the task using the 'HH:MM' (i.e., hour and minute format) format.";
 }
 
 /* Add Tasks Modal Styles */
