@@ -93,8 +93,8 @@
                             <div class="all-day-input-cont">
 
                                 <div class="task-time-input-grid date-input-grid">
-                                    <input type="text" class="add-tasks-date-input add-tasks-hour-input" id="add-tasks-day-input" placeholder="HH" maxlength="2" disabled>
-                                    <input type="text" class="add-tasks-date-input add-tasks-minutes-input" id="add-tasks-month-input" placeholder="MM" maxlength="2" disabled>
+                                    <input type="text" class="add-tasks-date-input add-tasks-hour-input" id="add-tasks-hour-input" placeholder="HH" maxlength="2" disabled>
+                                    <input type="text" class="add-tasks-date-input add-tasks-minutes-input" id="add-tasks-minute-input" placeholder="MM" maxlength="2" disabled>
                                 </div>
 
                                 <label class="toggle-switch-label">
@@ -107,7 +107,7 @@
 
                     </div>
 
-                    <div class="repetitive-details-form-subsection" id="repetitive">
+                    <div class="repetitive-details-form-subsection hide" id="repetitive">
 
                         <h4 class="form-subsection-title">Repetition Details</h4>
 
@@ -129,14 +129,14 @@
                         <div class="time-pattern-details-form-subsection hide">
                             <div class="form-row">
                                 <label for="task-time-pattern-input" class="task-time-pattern-label add-tasks-label">
-                                    Time Pattern Details  <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                                    Frequency  <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
                                 </label>
 
                                 <div class="time-pattern-input-cont">
                                     <p class="time-pattern-paragraph">Repeat every</p>
                                     <input type="number" class="task-time-pattern-input add-tasks-input" id="task-time-pattern-input" min="1">
                                     <div class="select-input-cont in-row">
-                                        <select id="task-time-pattern-input" class="task-time-pattern-input">
+                                        <select id="task-time-type-input" class="task-time-pattern-input">
                                             <option value="hour">Hour/s</option>
                                             <option value="day">Day/s</option>
                                             <option value="week">Week/s</option>
@@ -150,10 +150,10 @@
                             </div>
                         </div>
 
-                        <div class="day-pattern-details-form-subsection">
+                        <div class="day-pattern-details-form-subsection hide">
                             <div class="from-row">
                                 <label class="task-day-pattern-label add-tasks-label">
-                                    Day Pattern Details  <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                                    Repeat Days  <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
                                 </label>
 
                                 <div class="day-pattern-input-cont">
@@ -165,6 +165,116 @@
                                     <p class="select-day-input" id="6">S</p>
                                     <p class="select-day-input" id="0">S</p>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="hybrid-weekly-pattern-details-form-subsection hide">
+                            <div class="form-row">
+                                <label class="task-hybrid-weekly-days-label add-tasks-label">
+                                    Repeat Days <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                                </label>
+                                
+                                <div class="hybrid-weekly-pattern-input-cont">
+                                    <p class="select-day-input" id="1">M</p>
+                                    <p class="select-day-input" id="2">T</p>
+                                    <p class="select-day-input" id="3">W</p>
+                                    <p class="select-day-input" id="4">T</p>
+                                    <p class="select-day-input" id="5">F</p>
+                                    <p class="select-day-input" id="6">S</p>
+                                    <p class="select-day-input" id="0">S</p>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label class="task-hybrid-weekly-frequency-label add-tasks-label">
+                                    Frequency <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                                </label>
+
+                                <div class="hybrid-weekly-frequency-input-cont">
+                                    <p class="hybrib-weekly-pattern-paragraph">Repeat every</p>
+                                    <input type="number" class="task-hybrid-weekly-pattern-input add-tasks-input" id="task-hybrid-weekly-pattern-input" min="1">
+                                    <p class="hybrib-weekly-pattern-paragraph">weeks.</p>
+                                </div>
+                                <span class="error-span invalid-hybrid-weekly-pattern hide">The value you entered is invalid.</span>
+                            </div>
+                        </div>
+
+                        <div class="hybrid-monthly-pattern-details-form-subsection hide">
+
+                            <div class="form-row repetition-type-row">
+            
+                                <div class="repetition-type-cont">
+                                    <label for="task-specific-occurrence-option-input" class="task-specific-occurrence-option-label add-tasks-label">
+                                        Specific Occurrence <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                                    </label>
+                                    
+                                    <label class="toggle-switch-label">
+                                        <input class="toggle-switch-input task-specific-occurrence-option-input" type="checkbox" id="task-specific-occurrence-option-input">
+                                        <span class="toggle-switch-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="repetition-type-cont">
+                                    <label for="task-end-of-month-option-input" class="task-end-of-month-option-label add-tasks-label">
+                                        End of Month <img src="./images/More-information.svg" alt="Additional Info" class="information-icon">
+                                    </label>
+                                    
+                                    <label class="toggle-switch-label">
+                                        <input class="toggle-switch-input task-end-of-month-option-input" type="checkbox" id="task-end-of-month-option-input">
+                                        <span class="toggle-switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="hybrid-monthly-specific-occurrence-row">
+                                <div class="form-row">
+                                    <label class="task-specific-occurrence-more-label add-tasks-label">Additional Details</label>
+
+                                    <div class="hybrid-monthly-input-cont">
+                                        <p class="time-pattern-paragraph">Repeat on the</p>
+                                        <div class="select-input-cont in-row">
+                                            <select id="task-specific-occurrence-input" class="task-time-pattern-input">
+                                                <option value="1">First</option>
+                                                <option value="2">Second</option>
+                                                <option value="3">Third</option>
+                                                <option value="4">Fourth</option>
+                                                <option value="f">Final</option>
+                                            </select>
+                                            <span class="focus-select"></span>
+                                        </div>
+
+                                        <div class="select-input-cont in-row">
+                                            <select id="task-specific-day-input" class="task-time-pattern-input">
+                                                <option value="1">Monday</option>
+                                                <option value="2">Tuesday</option>
+                                                <option value="3">Wednesday</option>
+                                                <option value="4">Thursday</option>
+                                                <option value="5">Friday</option>
+                                                <option value="6">Saturday</option>
+                                                <option value="0">Sunday</option>
+                                            </select>
+                                            <span class="focus-select"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="hybrid-monthly-input-cont">
+                                        <p class="hybrid-monthly-pattern-paragraph">Every</p>
+                                        <input type="number" class="task-hybrid-monthly-specific-frequency-input add-tasks-input" id="task-hybrid-monthly-specific-frequency-input" min="1">
+                                        <p class="hybrid-monthly-pattern-paragraph">months.</p>
+                                    </div>
+                                    <span class="error-span invalid-hybrid-monthly-specific">The value you entered is invalid.</span>
+                                </div>
+                            </div>
+
+                            <div class="hybrid-monthly-end-of-month-row">
+                                <label class="task-end-of-month-more-label add-tasks-label">Additional Details</label>
+
+                                <div class="hybrid-monthly-input-cont">
+                                    <p class="hybrid-monthly-pattern-paragraph">Repeat every</p>
+                                    <input type="number" class="task-hybrid-monthly-end-frequency-input add-tasks-input" id="task-hybrid-monthly-end-frequency-input" min="1">
+                                    <p class="hybrid-monthly-pattern-paragraph">months.</p>
+                                </div>
+                                <span class="error-span invalid-hybrid-monthly-end">The value you entered is invalid.</span>
                             </div>
                         </div>
 

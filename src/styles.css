@@ -1759,17 +1759,18 @@ select:focus + .focus-select {
     cursor: not-allowed;
 }
 
-.time-pattern-input-cont {
+.time-pattern-input-cont, .hybrid-weekly-frequency-input-cont, .hybrid-monthly-input-cont {
     display: flex;
     gap: 0.5rem;
     align-items: end;
 }
 
-.time-pattern-paragraph {
+.time-pattern-paragraph, .hybrid-monthly-pattern-paragraph {
     font-size: 0.875rem;
 }
 
-input.task-time-pattern-input {
+input.task-time-pattern-input, input.task-hybrid-monthly-end-frequency-input, input.task-hybrid-monthly-specific-frequency-input,
+input.task-hybrid-weekly-pattern-input {
     outline: none;
     border: none;
     border-radius: 0;
@@ -1780,15 +1781,29 @@ input.task-time-pattern-input {
     caret-color: var(--primary-text-color);
 }
 
-input.task-time-pattern-input:focus {
+input.task-time-pattern-input:focus, input.task-hybrid-monthly-end-frequency-input:focus, input.task-hybrid-monthly-specific-frequency-input:focus,
+input.task-hybrid-weekly-pattern-input:focus {
     border: none;
     border-bottom: 2px solid var(--secondary-color);
 }
 
-.day-pattern-input-cont {
+.day-pattern-input-cont, .hybrid-weekly-pattern-input-cont {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
+}
+
+.repetition-type-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.repetition-type-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .select-day-input {
@@ -1860,6 +1875,22 @@ input.task-time-pattern-input:focus {
 
 .add-tasks-label.task-day-pattern-label::before {
     content: 'Select days of the week for the task to repeat on. Note that the values are monday to sunday (from left to right).';
+}
+
+.add-tasks-label.task-hybrid-weekly-days-label::before {
+    content: 'Select days of the week for the task to repeat on. Note that the values are monday to sunday (from left to right). Those task will repeat on the specified days every X weeks (depending on the frequency specified).';
+}
+
+.add-tasks-label.task-hybrid-weekly-frequency-label::before {
+    content: 'Select the frequency of the repetition. The minimum number is 1.';
+}
+
+.add-tasks-label.task-specific-occurrence-option-label::before {
+    content: 'Repeats on a specific occurrence (first, second, third, forth or final) of a selected day (monday-sunday) every X months.';
+}
+
+.add-tasks-label.task-end-of-month-option-label::before {
+    content: 'Repeats on the end of the month, every X months.';
 }
 
 /* Add Tasks Modal Styles */
