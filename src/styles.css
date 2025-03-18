@@ -18,6 +18,8 @@
 
     --secondary-contrast-border: #40215a;
 
+    --secondary-contract-icon-color: #7127b0;
+
     --due-color: #04ec00;
     --due-soon-color: #ffae00;
     --past-due-color: #f90000;
@@ -1695,6 +1697,10 @@ select option {
     background-color: var(--button-hover-background);
 }
 
+.select-input-cont.in-row {
+    width: max-content;
+}
+
 .select-input-cont::after {
     content: "";
     user-select: none;
@@ -1739,6 +1745,8 @@ select:focus + .focus-select {
 }
 
 .add-tasks-label {
+    display: block;
+    width: 100%;
     position: relative;
 }
 
@@ -1749,6 +1757,59 @@ select:focus + .focus-select {
 .add-tasks-date-input:disabled {
     opacity: 0.15;
     cursor: not-allowed;
+}
+
+.time-pattern-input-cont {
+    display: flex;
+    gap: 0.5rem;
+    align-items: end;
+}
+
+.time-pattern-paragraph {
+    font-size: 0.875rem;
+}
+
+input.task-time-pattern-input {
+    outline: none;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid var(--cancel-gray);
+    background-color: transparent;
+    width: 5ch;
+    overflow: hidden;
+    caret-color: var(--primary-text-color);
+}
+
+input.task-time-pattern-input:focus {
+    border: none;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.day-pattern-input-cont {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.select-day-input {
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 0.75rem;
+    background-color: var(--button-hover-background);
+    text-align: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    line-height: 1.45rem;
+    cursor: pointer;
+}
+
+.select-day-input:hover {
+    transform: translateY(-0.075rem);
+    box-shadow: 0 1px 6px 1.5px rgba(24, 12, 34, 0.7);
+}
+
+.select-day-input.selected-day {
+    background-color: var(--secondary-contract-icon-color);
 }
 
 .error-span {
@@ -1773,16 +1834,32 @@ select:focus + .focus-select {
     opacity: 1;
 }
 
+.add-tasks-label.task-type-label::before {
+    content: 'Refer to the "Help" section (available on the bottom of the sidebar) for additional information regarding task types.';
+}
+
 .add-tasks-label.task-group-label::before {
-    content: "Select a group for the task to be labeled under. You may create a new group by selecting a unique name. You may leave this field blank to label this task as unlisted.";
+    content: 'Select a group for the task to be labeled under. You may create a new group by selecting a unique name. You may leave this field blank to label this task as unlisted.';
 }
 
 .add-tasks-label.task-date-label::before {
-    content: "Select a deadline for this task. Please use the 'DD/MM/YYYY' (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this indicates the date the repetition of tasks starts from.";
+    content: 'Select a deadline for this task. Please use the "DD/MM/YYYY" (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this indicates the date the repetition of tasks starts from.';
 }
 
 .add-tasks-label.task-all-day-label::before {
-    content: "All day tasks don't have a specified time of the day. If you opt-out of this option, you must specify a time of the day for the task using the 'HH:MM' (i.e., hour and minute format) format.";
+    content: 'All day tasks don\'t have a specified time of the day. If you opt-out of this option, you must specify a time of the day for the task using the "HH:MM" (i.e., hour and minute format) format.';
+}
+
+.add-tasks-label.task-repetition-pattern-label::before {
+    content: 'The repetition pattern determines how your tasks will repeat: "Time" refers to "repeat every X time", "Day" refers to "repeat on specified days every week", "Hybrid - Weekly" refers to "repeat on specified days every X weeks", and finally, "Hybrid - Monthly" refers to "repeat on the X occurrence of a certain day of every month".';
+}
+
+.add-tasks-label.task-time-pattern-label::before {
+    content: 'Select a value for the repetition pattern. For tasks that repeat every X hours, you may choose a value between 1-24. for all other options, the cumulative amount of days may not exceed 1825 (5 years).';
+}
+
+.add-tasks-label.task-day-pattern-label::before {
+    content: 'Select days of the week for the task to repeat on. Note that the values are monday to sunday (from left to right).';
 }
 
 /* Add Tasks Modal Styles */
