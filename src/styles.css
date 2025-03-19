@@ -1799,7 +1799,7 @@ select:focus + .focus-select {
 }
 
 input.task-time-pattern-input, input.task-hybrid-monthly-end-frequency-input, input.task-hybrid-monthly-specific-frequency-input,
-input.task-hybrid-weekly-pattern-input {
+input.task-hybrid-weekly-frequency-input {
     outline: none;
     border: none;
     border-radius: 0;
@@ -1811,12 +1811,12 @@ input.task-hybrid-weekly-pattern-input {
 }
 
 input.task-time-pattern-input:focus, input.task-hybrid-monthly-end-frequency-input:focus, input.task-hybrid-monthly-specific-frequency-input:focus,
-input.task-hybrid-weekly-pattern-input:focus {
+input.task-hybrid-weekly-frequency-input:focus {
     border: none;
     border-bottom: 2px solid var(--secondary-color);
 }
 
-.day-pattern-input-cont, .hybrid-weekly-pattern-input-cont {
+.day-pattern-input-cont, .hybrid-weekly-days-input-cont {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
@@ -1899,7 +1899,7 @@ input.task-hybrid-weekly-pattern-input:focus {
 }
 
 .add-tasks-label.task-time-pattern-label::before {
-    content: 'Select a value for the repetition pattern. For tasks that repeat every X hours, you may choose a value between 1-24. for all other options, the cumulative amount of days may not exceed 1825 (5 years).';
+    content: 'Select a value (integer) for the repetition pattern. For tasks that repeat every X hours, choose a value larger than 1, and opt-out of the "all-day" option. for all other options, the cumulative amount of days may not exceed 1825 (5 years).';
 }
 
 .add-tasks-label.task-day-pattern-label::before {
