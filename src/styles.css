@@ -1750,6 +1750,35 @@ select:focus + .focus-select {
     position: relative;
 }
 
+.toggle-switch-label:has(input.task-all-day-input) {
+    position: relative;
+}
+
+.toggle-switch-label:has(input.task-all-day-input)::before {
+    position: absolute;
+    bottom: 115%;
+    transition: 0.3s;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 0.875rem;
+    position: absolute;
+    padding: 0.30rem;
+    border-radius: 0.7rem;
+    background-color: var(--background-color);
+}
+
+.toggle-switch-label:has(input.task-all-day-input):hover::before {
+    opacity: 1;
+}
+
+.toggle-switch-label:has(input.task-all-day-input:checked)::before {
+    content: "Task is currently all-day";
+}
+
+.toggle-switch-label:has(input.task-all-day-input:not(:checked))::before {
+    content: "Task is currently timed";
+}
+
 .add-tasks-input.invalid-entry {
     border: 1.5px solid var(--past-due-color);
 }

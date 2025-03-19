@@ -6,6 +6,7 @@ import initialLoad from "./modules/initial-load.js";
 import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
 import { editGroupsModalInteractivity } from "./modules/misc-modals.js";
 import { helpModalInteractivity } from "./modules/help-modal.js";
+import { addTasksModalInteractivity } from "./modules/add-tasks-modal-interactivity.js";
 
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
@@ -98,7 +99,7 @@ sidebarFunctionalities.addEventListener("click", (e) => {
         changeTabs.changeTab(target.parentNode);
     }
     else {
-        console.log("Trying to add a task");
+        addTasksModalInteractivity()
     }
 });
 

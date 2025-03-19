@@ -2,22 +2,24 @@ import { buildElement, hide, buildSelectElement, buildImgElement } from "./dom-m
 
 import infoSvg from "../images/More-information.svg";
 
-function timePatternSection() {
+// This module creates the repetitive task section of the form for the "add tasks" feature
+
+function timePatternSection(cont) {
 
 }
 
-function dayPatternSection() {
+function dayPatternSection(cont) {
 
 }
 
-function hybridWeeklyPatternSection() {
+function hybridWeeklyPatternSection(cont) {
 
 }
 
-function hybridMonthlyPatternSection() {
+function hybridMonthlyPatternSection(cont) {
 
 }
 
-export function addTasksRepetitiveSection() {
+export function addTasksRepetitiveSection(cont) {
     
 }
