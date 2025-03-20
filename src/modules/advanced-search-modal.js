@@ -47,7 +47,7 @@ function advancedSearchMainDetails() {
 
     const groupLabel = buildElement("label", "task-group-label", "advanced-search-label");
     groupLabel.htmlFor = "search-task-group";
-    groupLabel.textContent = "Task group";
+    groupLabel.textContent = "Task Group";
     
     const groupInput = buildElement("input", "search-task-group", "advanced-search-input");
     groupInput.type = "text";

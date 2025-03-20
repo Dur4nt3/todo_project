@@ -1086,7 +1086,7 @@ input[type=number] {
 }
 
 .advanced-search-label, .add-tasks-label {
-    font-size: 0.875rem;
+    font-size: 0.925rem;
     opacity: 0.85;
     cursor: pointer;
 }
@@ -1097,6 +1097,10 @@ input[type=number] {
     background-color: var(--button-hover-background);
     caret-color: var(--accent-color);
     outline: none;
+}
+
+.add-tasks-date-input, .advanced-search-date-input {
+    text-align: center;
 }
 
 .advanced-search-input, .add-tasks-input {
@@ -1808,6 +1812,7 @@ input.task-hybrid-weekly-frequency-input {
     width: 5ch;
     overflow: hidden;
     caret-color: var(--primary-text-color);
+    text-align: center;
 }
 
 input.task-time-pattern-input:focus, input.task-hybrid-monthly-end-frequency-input:focus, input.task-hybrid-monthly-specific-frequency-input:focus,
@@ -1822,11 +1827,12 @@ input.task-hybrid-weekly-frequency-input:focus {
     gap: 0.5rem;
 }
 
-.repetition-type-row {
+.hybrid-monthly-repetition-type-row {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 1.25rem;
 }
 
 .repetition-type-cont {
@@ -1859,6 +1865,7 @@ input.task-hybrid-weekly-frequency-input:focus {
 .error-span {
     font-size: 0.875rem;
     color: var(--past-due-color);
+    max-width: 35ch;
 }
 
 .add-tasks-label:has( > .information-icon)::before {

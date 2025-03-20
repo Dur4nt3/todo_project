@@ -164,8 +164,12 @@ function primaryDetailsSection(modalForm) {
     taskNameInput.placeholder = "Task Name";
     taskNameInput.maxLength = 30;
 
+    const errorSpan = buildElement("span", "error-span", "invalid-name", "hide");
+    errorSpan.textContent = "Select a name between 1 and 30 characters, and without any special characters (apart from spaces and dashes).";
+
     formRow1.appendChild(taskNameLabel);
     formRow1.appendChild(taskNameInput);
+    formRow1.appendChild(errorSpan)
 
     const taskDescriptionLabel = buildElement("label", "task-description-label", "add-tasks-label");
     taskDescriptionLabel.htmlFor = "task-description-input";

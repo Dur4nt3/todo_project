@@ -6,7 +6,7 @@ import infoSvg from "../images/More-information.svg";
 // This module creates the repetitive task section of the form for the "add tasks" feature
 
 function timePatternSection(cont) {
-    const timePatternSectionCont = buildElement("div", "time-pattern-details-form-subsection", "hide");
+    const timePatternSectionCont = buildElement("div", "time-pattern-details-form-subsection");
 
     const formRow = buildElement("div", "form-row");
 
@@ -26,6 +26,7 @@ function timePatternSection(cont) {
 
     const timePatternInput = buildElement("input", "task-time-pattern-input", "add-tasks-input");
     timePatternInput.type = "number";
+    timePatternInput.placeholder = "X";
     timePatternInput.id = "task-time-pattern-input";
     timePatternInput.min = 1;
 
@@ -183,6 +184,7 @@ function hybridWeeklyPatternSection(cont) {
 
     const frequencyInput = buildElement("input", "task-hybrid-weekly-frequency-input", "add-tasks-input");
     frequencyInput.type = "number";
+    frequencyInput.placeholder = "X"
     frequencyInput.id = "task-hybrid-weekly-frequency-input";
     frequencyInput.min = 1;
 
@@ -206,7 +208,7 @@ function hybridWeeklyPatternSection(cont) {
 }
 
 export function addTasksRepetitiveSection(cont) {
-    const repetitiveSectionCont = buildElement("div", "repetitive-details-form-subsection");
+    const repetitiveSectionCont = buildElement("div", "repetitive-details-form-subsection", "hide");
     repetitiveSectionCont.id = "repetitive";
 
     const sectionHeader = buildElement("h4", "form-subsection-title");
