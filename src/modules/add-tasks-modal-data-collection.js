@@ -49,7 +49,7 @@ export function collectAddTasksFormData(modalCont) {
     const taskDeadline = { day: modalCont.querySelector(".add-tasks-day-input").value,
         month: modalCont.querySelector(".add-tasks-month-input").value, year: modalCont.querySelector(".add-tasks-year-input").value };
     const allDay = modalCont.querySelector(".task-all-day-input").checked
-    const taskTime = { hour: modalCont.querySelector(".add-tasks-hour-input").value, minute: modalCont.querySelector(".add-tasks-minute-input").value };
+    const taskTime = { hours: modalCont.querySelector(".add-tasks-hour-input").value, minutes: modalCont.querySelector(".add-tasks-minute-input").value };
 
     const repetitionPattern = modalCont.querySelector(".task-repetition-pattern-input").value
 

@@ -1,5 +1,6 @@
 import { validateGroup, validateDeadline } from "./task-utility-functions.js";
 import { whiteSpacesAndDashesOnly } from "./text-input-validation.js";
+import { isValidFormatted } from "./date-input-validation.js";
 
 // This module validates task details to ensure a valid task can be created
 // This module is used in conjunction with other to ensure the task is indeed valid
@@ -19,16 +20,21 @@ function validateTaskName(name) {
 function validateTaskDeadline(deadline, allDay, timedDeadline) {
     let deadlineIssues = [];
 
-    if (!validateDeadline([deadline])) {
+    if (!validateDeadline([deadline]) || !(isValidFormatted(deadline))) {
         deadlineIssues.push("deadline");
     }
 
-    // A time wasn't specified
-    if (allDay === false && (deadline === timedDeadline)) {
+    // The format for the timed deadline is invalid
+    if (!(isValidFormatted(timedDeadline))) {
         deadlineIssues.push("time");
     }
 
-    // The time specified is invalid
+    // A time wasn't specified
+    else if (allDay === false && (deadline === timedDeadline)) {
+        deadlineIssues.push("time");
+    }
+
+    // The time specified is invalid (doesn't uphold 5 years past and present limitation)
     else if (allDay === false && !(validateDeadline([timedDeadline]))) {
         deadlineIssues.push("time");
     }
