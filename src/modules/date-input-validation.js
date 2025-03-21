@@ -34,3 +34,7 @@ export function isValidDate3Inputs(day, month, year) {
     const fullDate = year + "-" + month + "-" + day;
     return true;
 }
+
+export function isValidFormatted(date) {
+    return isValid(new Date(date));
+}

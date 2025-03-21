@@ -1,6 +1,7 @@
 import { addTasksModal, revealTaskTypeFormSection, allDayToggle,
     revealRepetitivePatternSection, toggleSelectDayInput, revealHybridMonthlyTypeSection } from "./add-tasks-modal.js";
 import { formatAddTaskSubmissionData } from "./add-tasks-modal-format-data.js";
+import { collectAddTasksFormData } from "./add-tasks-modal-data-collection.js";
 
 // This module includes the interactivity logic for the "add tasks" feature
 
@@ -27,6 +28,11 @@ export function addTasksModalInteractivity() {
 
         if (target.classList.contains("select-day-input")) {
             toggleSelectDayInput(target);
+        }
+
+        if (target.classList.contains("confirm-button")) {
+            const formData = collectAddTasksFormData(addTasksModalCont);
+            formatAddTaskSubmissionData(addTasksModalCont.querySelector(".task-type-input").value, formData);
         }
     });
 
