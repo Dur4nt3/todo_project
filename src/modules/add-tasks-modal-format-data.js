@@ -1,7 +1,8 @@
 import { isSingleDigitNumber, isNumberInRange } from "./number-input-validation.js";
 import { isValidDate3InputsNoBlanks, isValidTime2InputsNoBlanks } from "./date-input-validation.js";
+import { fetchPatternValue } from "./convert-repetition-input.js";
 
-// This module takes the collect form data when submitting a request to edit/create a new task and formats that data so it's easier to validate
+// This module takes the collected form data when submitting a request to edit/create a new task and formats that data so it's easier to validate
 
 class basicTaskData {
     constructor(name, description, priority) {
@@ -50,7 +51,7 @@ class repetitiveTaskData extends basicTaskData {
 
 class repetitiveGroupedTaskData extends repetitiveTaskData {
     constructor(name, description, priority, groupName, deadline, allDay, timedDeadline, pattern, patternValue) {
-        super(name, description, priority, deadline, allDay, pattern, patternValue);
+        super(name, description, priority, deadline, allDay, timedDeadline, pattern, patternValue);
         this.group = groupName;
     }
 }
@@ -109,15 +110,29 @@ function formatDatedTaskData(formData) {
 }
 
 function formatDatedGroupedTaskData(formData) {
-    
+    let groupData = formatGroupedTaskData(formData);
+    let dateData = formatDatedTaskData(formData);
+
+    return new datedGroupedTaskData(groupData.name, groupData.description, groupData.priority, groupData.group,
+        dateData.deadline, dateData.allDay, dateData.timedDeadline);
 }
 
 function formatRepetitiveTaskData(formData) {
+    let dateData = formatDatedTaskData(formData);
     
+    let repetitionValue = fetchPatternValue(formData.repetitionPattern, formData);
+
+    return new repetitiveTaskData(dateData.name, dateData.description, dateData.priority,
+        dateData.deadline, dateData.allDay, dateData.timedDeadline, formData.repetitionPattern, repetitionValue);
 }
 
 function formatRepetitiveGroupedTaskData(formData) {
-    
+    let repetitiveData = formatRepetitiveTaskData(formData);
+    let groupData = formatGroupedTaskData(formData);
+
+    return new repetitiveGroupedTaskData(groupData.name, groupData.description, groupData.priority, groupData.groupName,
+        repetitiveData.deadline, repetitiveData.allDay, repetitiveData.timedDeadline,
+        repetitiveData.repetitionPattern, repetitiveData.repetitionValue);
 }
 
 export function formatAddTaskSubmissionData(taskType, formData) {

@@ -74,10 +74,12 @@ export function revealTaskTypeFormSection(taskType, modalCont) {
             return;
 
         case "repetitive":
+            show(datedSection);
             show(repetitiveSection);
             return;
 
         case "repetitiveGrouped":
+            show(datedSection);
             show(groupedSection);
             show(repetitiveSection);
             return;

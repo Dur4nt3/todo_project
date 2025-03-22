@@ -808,10 +808,10 @@ input[type="checkbox"]:focus {
     padding: 1rem;
     border-radius: 0.7rem;
 
-    background: rgba(36,30,65,0.65);
+    background: rgba(43,28,115,0.25);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(36,30,65,0.325);
+    border: 1px solid rgba(43,28,115,0.125);
 
     position: fixed;
     z-index: 2;
@@ -893,21 +893,21 @@ input[type="checkbox"]:focus {
     max-width: 65ch;
     max-height: 80svh;
 
-    background: rgba(43,43,44,0.55);
+    background: rgba(43,43,44,0.35);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(13,13,14,0.25);
 }
 
 .task-info-modal.priority-two {
-    background: rgba(255,174,0,0.55);
+    background: rgba(255,174,0,0.35);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,174,0,0.25);
 }
 
 .task-info-modal.priority-three {
-    background: rgba(217,0,0,0.55);
+    background: rgba(217,0,0,0.35);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(217,0,0,0.25);
@@ -1059,10 +1059,10 @@ input[type=number] {
 .advanced-search-modal, .edit-groups-modal, .add-tasks-modal {
     top: 45%;
 
-    background: rgba(84,43,119,0.45);
+    background: rgba(137,2,227,0.2);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(84,43,119,0.325);
+    border: 1px solid rgba(137,2,227,0.1);
 }
 
 .advanced-search-form {
@@ -1308,7 +1308,7 @@ input[type=number] {
     padding: 1rem;
     border-radius: 0.5rem;
 
-    box-shadow: 0 0 2.75px 1.15px rgba(20, 11, 29, 0.6);
+    box-shadow: 0 0 2.625px 0.625px rgba(70, 0, 117, 0.5);
 
     display: flex;
     align-items: center;

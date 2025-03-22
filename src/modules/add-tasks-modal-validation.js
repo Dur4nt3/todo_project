@@ -42,7 +42,7 @@ function validateTaskDeadline(deadline, allDay, timedDeadline) {
     return deadlineIssues;
 }
 
-export function validateBasicTaskDetails(taskDataObj) {
+function validateBasicTaskDetails(taskDataObj) {
     let errors = []
     // Only the name needs to validated as an invalid priority default to 1 and descriptions can be any text
     if (!(validateTaskName(taskDataObj.name))) {
@@ -53,7 +53,7 @@ export function validateBasicTaskDetails(taskDataObj) {
     return true;
 }
 
-export function validateGroupedTaskDetails(taskDataObj) {
+function validateGroupedTaskDetails(taskDataObj) {
     const basicCheckOutput = validateBasicTaskDetails(taskDataObj);
 
     let errors = []
@@ -73,7 +73,7 @@ export function validateGroupedTaskDetails(taskDataObj) {
     return errors;
 }
 
-export function validateDatedTaskDetails(taskDataObj) {
+function validateDatedTaskDetails(taskDataObj) {
     const basicCheckOutput = validateBasicTaskDetails(taskDataObj);
 
     let errors = []
@@ -95,4 +95,38 @@ export function validateDatedTaskDetails(taskDataObj) {
     }
     
     return errors;
+}
+
+function validateDatedGroupedTaskDetails(taskDataObj) {
+
+}
+
+function validateRepetitiveTaskDetails(taskDataObj) {
+    
+}
+
+function validateRepetitiveGroupedTaskDetails(taskDataObj) {
+    
+}
+
+export function validateTaskDetails(taskType, taskDataObj) {
+    switch (taskType) {
+        case "basic":
+            return validateBasicTaskDetails(taskDataObj);
+
+        case "grouped":
+            return validateGroupedTaskDetails(taskDataObj);
+
+        case "dated":
+            return validateDatedTaskDetails(taskDataObj);
+
+        case "datedGrouped":
+            return validateDatedGroupedTaskDetails(taskDataObj);
+
+        case "repetitive":
+            return validateRepetitiveTaskDetails(taskDataObj);
+
+        case "repetitiveGrouped":
+            return validateRepetitiveGroupedTaskDetails(taskDataObj);
+    }
 }

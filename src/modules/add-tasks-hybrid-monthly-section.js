@@ -127,7 +127,7 @@ function endOfMonthRow(cont) {
     const paragraph1 = buildElement("p", "hybrid-monthly-pattern-paragraph");
     const paragraph2 = buildElement("p", "hybrid-monthly-pattern-paragraph");
     paragraph1.textContent = "Repeat every";
-    paragraph2.textContent = "month.";
+    paragraph2.textContent = "months.";
 
     const frequencyInput = buildElement("input", "task-hybrid-monthly-end-frequency-input", "add-tasks-input");
     frequencyInput.type = "number";
