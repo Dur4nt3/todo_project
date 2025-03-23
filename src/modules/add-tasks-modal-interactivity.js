@@ -2,6 +2,9 @@ import { addTasksModal, revealTaskTypeFormSection, allDayToggle,
     revealRepetitivePatternSection, toggleSelectDayInput, revealHybridMonthlyTypeSection } from "./add-tasks-modal.js";
 import { formatAddTaskSubmissionData } from "./add-tasks-modal-format-data.js";
 import { collectAddTasksFormData } from "./add-tasks-modal-data-collection.js";
+import { validateTaskDetails } from "./add-tasks-modal-validation.js";
+import { displayAddTasksErrors } from "./add-tasks-display-errors.js";
+import { addTasksCreateTask } from "./add-tasks-task-creation.js";
 
 // This module includes the interactivity logic for the "add tasks" feature
 
@@ -14,12 +17,6 @@ export function addTasksModalInteractivity() {
     addTasksModalCont.addEventListener("click", (e) => {
         const target = e.target;
 
-        if (target === addTasksModalCont) {
-            addTasksModalCont.children[0].classList.add("close-modal-animation");
-            setTimeout(() => { addTasksModalCont.remove() }, 300);
-            return;
-        }
-
         if (target.classList.contains("cancel-button")) {
             addTasksModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { addTasksModalCont.remove() }, 300);
@@ -28,11 +25,29 @@ export function addTasksModalInteractivity() {
 
         if (target.classList.contains("select-day-input")) {
             toggleSelectDayInput(target);
+            return;
         }
 
         if (target.classList.contains("confirm-button")) {
+            const taskType = addTasksModalCont.querySelector(".task-type-input").value;
+
             const formData = collectAddTasksFormData(addTasksModalCont);
-            formatAddTaskSubmissionData(addTasksModalCont.querySelector(".task-type-input").value, formData);
+            const taskDataObj = formatAddTaskSubmissionData(taskType, formData);
+
+            const validationData = validateTaskDetails(taskType, taskDataObj);
+            if (validationData !== true) {
+                displayAddTasksErrors(validationData, taskType, addTasksModalCont);
+                return;
+            }
+
+            else if (validationData === true) {
+                addTasksCreateTask(taskDataObj, taskType);
+                addTasksModalCont.children[0].classList.add("close-modal-animation");
+                setTimeout(() => { addTasksModalCont.remove() }, 300);
+                return;
+            }
+
+            return;
         }
     });
 

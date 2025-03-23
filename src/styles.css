@@ -208,7 +208,7 @@ body {
     gap: 0.5rem;
 }
 
-.edit-groups-icon {
+.edit-groups-icon, .refresh-groups-icon {
     cursor: pointer;
     user-select: none;
     visibility: hidden;
@@ -1828,6 +1828,7 @@ input.task-hybrid-weekly-frequency-input:focus {
 }
 
 .hybrid-monthly-repetition-type-row {
+    max-width: 35ch;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1866,6 +1867,13 @@ input.task-hybrid-weekly-frequency-input:focus {
     font-size: 0.875rem;
     color: var(--past-due-color);
     max-width: 35ch;
+}
+
+.invalid-hybrid-monthly-selection {
+    display: inline-block;
+    width: 100%;
+    max-width: 45ch;
+    text-align: center;
 }
 
 .add-tasks-label:has( > .information-icon)::before {

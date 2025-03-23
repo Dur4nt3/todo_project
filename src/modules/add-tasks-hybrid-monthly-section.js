@@ -57,7 +57,11 @@ function repetitionTypeRow(cont) {
     repetitionTypeCont.appendChild(specificOccurrenceSelect);
     repetitionTypeCont.appendChild(endOfMonthSelect);
 
+    const errorSpan = buildElement("span", "error-span", "invalid-hybrid-monthly-selection", "hide");
+    errorSpan.textContent = "Please select an option.";
+
     cont.appendChild(repetitionTypeCont);
+    cont.appendChild(errorSpan);
 
     return;
 }

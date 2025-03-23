@@ -130,7 +130,7 @@ function formatRepetitiveGroupedTaskData(formData) {
     let repetitiveData = formatRepetitiveTaskData(formData);
     let groupData = formatGroupedTaskData(formData);
 
-    return new repetitiveGroupedTaskData(groupData.name, groupData.description, groupData.priority, groupData.groupName,
+    return new repetitiveGroupedTaskData(groupData.name, groupData.description, groupData.priority, groupData.group,
         repetitiveData.deadline, repetitiveData.allDay, repetitiveData.timedDeadline,
         repetitiveData.repetitionPattern, repetitiveData.repetitionValue);
 }
@@ -141,32 +141,26 @@ export function formatAddTaskSubmissionData(taskType, formData) {
     switch (taskType) {
         case "basic":
             taskDataObj = formatBasicTaskData(formData);
-            console.log(taskDataObj);
-            return;
+            return taskDataObj;
         
         case "grouped":
             taskDataObj = formatGroupedTaskData(formData);
-            console.log(taskDataObj);
-            return;
+            return taskDataObj;
 
         case "dated":
             taskDataObj = formatDatedTaskData(formData);
-            console.log(taskDataObj);
-            return;
+            return taskDataObj;
 
         case "datedGrouped":
             taskDataObj = formatDatedGroupedTaskData(formData);
-            console.log(taskDataObj);
-            return;
+            return taskDataObj;
 
         case "repetitive":
             taskDataObj = formatRepetitiveTaskData(formData);
-            console.log(taskDataObj);
-            return;
+            return taskDataObj;
             
         case "repetitiveGrouped":
             taskDataObj = formatRepetitiveGroupedTaskData(formData);
-            console.log(taskDataObj);
-            return;
+            return taskDataObj;
     }
 }

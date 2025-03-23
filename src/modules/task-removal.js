@@ -1,4 +1,4 @@
-import { taskCollection, taskGroups } from "./task-utility-functions.js";
+import { taskCollection, taskGroups, groupsColorLabels, listedGroups } from "./task-utility-functions.js";
 
 // This module handles the logic behind task removal
 
@@ -10,6 +10,8 @@ function removeFromTaskGroups(taskID, groupName) {
             // If removed the last task in the group => delete the group
             if (taskGroups[groupName].length === 0) {
                 delete taskGroups[groupName];
+                delete groupsColorLabels[groupName];
+                listedGroups[listedGroups.indexOf(groupName)] = undefined;
             }
         }
     }

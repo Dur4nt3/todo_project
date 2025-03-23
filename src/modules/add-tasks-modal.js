@@ -26,9 +26,13 @@ export function addTasksModal() {
     buttonCont.appendChild(cancelButton);
     buttonCont.appendChild(confirmButton);
 
+    const generalModalError = buildElement("span", "error-span", "modal-error", "hide");
+    generalModalError.textContent = "An error occurred, select cancel and try again."
+
     addTasksModalCont.appendChild(modalTitle);
     addTasksModalCont.appendChild(modalForm);
     addTasksModalCont.appendChild(buttonCont);
+    addTasksModalCont.appendChild(generalModalError);
 
     modalCont.appendChild(addTasksModalCont);
 

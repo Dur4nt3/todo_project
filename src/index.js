@@ -3,6 +3,7 @@ import "./stylesheets/reset.css";
 
 import * as changeTabs from "./modules/change-tabs.js";
 import initialLoad from "./modules/initial-load.js";
+import { refreshGroupList } from "./modules/create-groups-cont.js";
 import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
 import { editGroupsModalInteractivity } from "./modules/misc-modals.js";
 import { helpModalInteractivity } from "./modules/help-modal.js";
@@ -114,6 +115,11 @@ groupListCont.addEventListener("click", (e) => {
         return;
     }
 
+    else if (target.classList.contains("refresh-groups-icon")) {
+        refreshGroupList();
+        return;
+    }
+    
     else if (target.classList[0] === "group-symbol" || target.classList[0] === "group-name" ) {
         changeTabs.changeGroupTab(target.parentNode);
         return;

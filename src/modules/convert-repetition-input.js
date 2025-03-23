@@ -85,7 +85,7 @@ function convertToHybridMonthly(data) {
     }
 
     else { 
-        return undefined;
+        return [];
     }
 }
 
