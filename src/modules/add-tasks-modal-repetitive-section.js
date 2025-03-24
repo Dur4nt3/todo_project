@@ -38,12 +38,16 @@ function timePatternSection(cont) {
     timePatternInputCont.appendChild(timePatternInput);
     timePatternInputCont.appendChild(frequencySelect);
 
-    const errorSpan = buildElement("span", "error-span", "invalid-time-pattern", "hide");
-    errorSpan.textContent = "The value you entered is invalid.";
+    const errorSpan1 = buildElement("span", "error-span", "invalid-time-pattern", "hide");
+    errorSpan1.textContent = "The value you entered is invalid.";
+
+    const errorSpan2 = buildElement("span", "error-span", "hourly-and-all-day-error", "hide");
+    errorSpan2.textContent = "All-day tasks cannot repeat on an hourly basis.";
 
     formRow.appendChild(repetitionFrequencyLabel);
     formRow.appendChild(timePatternInputCont);
-    formRow.appendChild(errorSpan);
+    formRow.appendChild(errorSpan1);
+    formRow.appendChild(errorSpan2);
 
     timePatternSectionCont.appendChild(formRow);
 

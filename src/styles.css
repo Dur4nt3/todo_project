@@ -927,6 +927,7 @@ input[type="checkbox"]:focus {
     font-size: 0.875rem;
     padding: 0.25rem;
     line-height: 1.75;
+    white-space: pre-wrap;
 
     max-height: 65svh;
     overflow: auto;

@@ -129,6 +129,12 @@ function validateTimePatternDetails(taskDataObj) {
         return ["timePattern"];
     }
 
+    if (Object.keys(taskDataObj.repetitionValue) !== undefined) {
+        if (Object.keys(taskDataObj.repetitionValue)[0] === "hours" && taskDataObj.allDay === true) {
+            return ["hourlyAndAllDay"];
+        }
+    }
+
     if (add(new Date(), taskDataObj.repetitionValue) > add(new Date(), {years: 5})) {
         return ["timePattern"];
     }

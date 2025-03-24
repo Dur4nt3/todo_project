@@ -39,6 +39,11 @@ function repetitiveErrors(validationData, modalCont) {
 
     const repetitionPattern = modalCont.querySelector(".task-repetition-pattern-input").value;
     
+    if (validationData.includes("hourlyAndAllDay")) {
+        show(modalCont.querySelector(".hourly-and-all-day-error"));
+    }
+
+
     if (validationData.includes("timePattern")) {
         if (repetitionPattern === "time") {
             show(modalCont.querySelector(".invalid-time-pattern"));

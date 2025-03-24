@@ -31,3 +31,5 @@
 - Fix the option to name different groups the same new name, i.e., a name that doesn't exist in taskGroups - *COMPLETE*
 
 - Remove console logs from "index.js"
+
+- Ensure that allDay tasks cannot have an hourly repetition
