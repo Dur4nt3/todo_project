@@ -1665,6 +1665,14 @@ input[type="color"] {
     min-height: 7.5rem;
 }
 
+.task-type-placeholder, .repetition-pattern-placeholder {
+    width: 35ch;
+    height: 1.75rem;
+    background-color: var(--button-hover-background);
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
 select {
     appearance: none;
     background-color:  transparent;

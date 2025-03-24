@@ -100,4 +100,4 @@ Interactions to watch for:
 
     3) Repetitive Tasks - changing deadline: if a user changes the deadline for a repetitive task => remove that task from the cluster (this ensures the new date doesn't effect the repetition generation)
 
-    4) Repetitive Tasks - changing repetition pattern/value:  delete all future tasks (i.e., tasks with deadlines after the current day) and change the repetition pattern to the new one to all remaining tasks in the cluster
+    4) Repetitive Tasks - changing repetition pattern/value:  delete all future tasks (i.e., tasks with deadlines after the current day, meaning don't delete the duplicate created on the initialization) and change the repetition pattern to the new one to all remaining tasks in the cluster

@@ -1,6 +1,7 @@
 import { generateWelcomePage } from "./help-modal-welcome-page.js";
 import { generateGroupHelpPage } from "./help-modal-groups-page.js";
 import { generateFiltersHelpPage } from "./help-modal-filters-page.js";
+import { generateRepetitionHelpPage } from "./help-modal-repetitive-page.js";
 
 export function getHelpPageHeader(id) {
     switch (id) {
@@ -22,5 +23,5 @@ export function getHelpPageHeader(id) {
 }
 
 export function generateAllHelpPages() {
-    return [generateWelcomePage(), generateFiltersHelpPage(), generateGroupHelpPage()];
+    return [generateWelcomePage(), generateFiltersHelpPage(), generateGroupHelpPage(), generateRepetitionHelpPage()];
 }

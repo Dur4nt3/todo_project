@@ -77,7 +77,7 @@ export function generateFiltersHelpPage() {
 
     p1span1.textContent = '"Show Completed" ';
     p2span1.textContent = '"Filter by Priority" ';
-    p3span1.textContent = '"Filter by Earliest First ';
+    p3span1.textContent = '"Filter by Earliest First" ';
     p4span1.textContent = '"Filter by Latest First" ';
 
     const s2p1text1 = document.createTextNode("By applying ");
