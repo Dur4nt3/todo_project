@@ -2,6 +2,7 @@ import { findByID, determineTaskType } from "./task-utility-functions.js";
 import { buildElement } from "./dom-manipulator.js";
 import { deletionConfirmationModalInteractivity } from "./confirmation-modals.js";
 import { taskInformationModalInteractivity } from "./task-modals.js";
+import { editTasksModalInteractivity } from "./edit-tasks-modal-interactivity.js";
 
 // This module includes various UI-related task utilities
 // It mainly manages general logic for tabs and the tasks within them
@@ -87,7 +88,7 @@ export function createNoScheduledTasksMsg(tabCont, msgType) {
 
 // Open a modal with the task's information (editable fields)
 function editTaskUI(task) {
-    console.log("edit", task);
+    editTasksModalInteractivity(task);
 }
 
 // Completes the task & plays an animation

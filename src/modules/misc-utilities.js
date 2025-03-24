@@ -112,3 +112,41 @@ export function getDayEnd(date) {
 
     return new Date(currentYear, currentMonth, currentDay+1, 0, 0, -1);
 }
+
+export function formatTaskType(taskType) {
+    switch (taskType) {
+        case "basic":
+            return "Basic";
+
+        case "grouped":
+            return "Grouped";
+
+        case "dated":
+            return "Dated";
+
+        case "datedGrouped":
+            return "Dated & Grouped";
+
+        case "repetitive":
+            return "Repetitive & Grouped";
+
+        case "repetitiveGrouped":
+            return "repetitive & Grouped";
+    }
+}
+
+export function formatRepetitionPattern(repetitionPattern) {
+    switch (taskType) {
+        case "time":
+            return "Time";
+
+        case "day":
+            return "Day";
+
+        case "hybrid-weekly":
+            return "Hybrid - Weekly";
+
+        case "hybrid-monthly":
+            return "Hybrid - Monthly";
+    }
+}

@@ -43,7 +43,7 @@ import * as repetitionGenerator from "./modules/repetition-generator.js"
 // const dated4 = createTask.createDatedTask("dated 4", "dated task 4", "2025-03-11", true, 2);
 // const dated5 = createTask.createDatedTask("dated 5", "dated task 5", "2025-03-09T16:30:00", false, 3);
 // const dated6 = createTask.createDatedTask("dated 6", "dated task 6", "2025-03-05", true, 3);
-// const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-19", true, 2);
+const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-25", true, 2);
 // const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-19T13:45:00", false, 3);
 // const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-19T21:22:00", false, 1);
 // const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-19", true, 2);
