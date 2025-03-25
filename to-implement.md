@@ -6,10 +6,6 @@
 
 - Ability to change task types between: basic, dated, grouped, datedGrouped - *COMPLETE*
 
-- Ability to change tasks into repetitive ones (use the given task as a template for the origin)
-
-- Ability to change task clusters' title/description/group
-
 - Ability to remove task clusters - *COMPLETE*
 
 - Ability to remove individual tasks via unique ID - *COMPLETE*
@@ -32,7 +28,7 @@
 
     1) Type 1 - Not Editable: Modals that include a task's information but don't include an option to edit the task's details - *COMPLETE*
 
-    2) Type 2 - Editable: Modal that both include a task's information and include an option to edit the task's details
+    2) Type 2 - Editable: Modal that both include a task's information and include an option to edit the task's details - *COMPLETE*
 
 - Search tab:
 
@@ -65,13 +61,43 @@
 
     2) Information in the modal:
 
-        - Information about task creation
+        - Information about task creation- *COMPLETE*
 
         - Information about groups, listing positions, unlisted groups - *COMPLETE*
 
-        - Information about the filters earliest first and latest first and their interaction with an all-day task
+        - Information about the filters earliest first and latest first and their interaction with an all-day task - *COMPLETE*
 
-        - Information about repetitive tasks
+        - Information about repetitive tasks - *COMPLETE*
+
+- Edit Tasks:
+
+**Reuses various functions from the "add tasks" functionality**
+
+Interactions to watch for:
+
+    1) Changing group names: unlike "add tasks" allow for blank group names and treat them as "__unlisted__" - *COMPLETE*
+
+    2) Repetitive Tasks - changing names/descriptions/priorities/group names: have a modal popup asking whether to submit the changes to all tasks or only that task - *COMPLETE*
+
+    3) Repetitive Tasks - changing deadline: if a user changes the deadline for a repetitive task => remove that task from the cluster (this ensures the new date doesn't effect the repetition generation) - *COMPLETE*
+
+    4) Repetitive Tasks - changing repetition pattern/value:  delete all future tasks (i.e., tasks with deadlines after the current day, meaning don't delete the duplicate created on the initialization) and change the repetition pattern to the new one to all remaining tasks in the cluster - *COMPLETE*
+
+**Checks to make:** What happens when a user deletes the origin duplicate and then makes changes to the repetition pattern:
+
+    1) When all listed tasks are deleted due to all of them being in the future - *COMPLETE*
+
+    2) When the latest task is in the past but in a later date than the duplicate - *COMPLETE*
+
+**Pattern Changes Interactions:** 
+
+    1) If the only task remaining after the preparation is the origin => initialize - *COMPLETE*
+
+    2) If there were tasks remaining after the preparation (other than the origin) => no need to initialize - *COMPLETE*
+
+- Repetitive tasks confirmation modals: task deletion => cluster/individual | name/description/group changes => cluster/individual - *COMPLETE*
+
+- Create a function that essentially simulates a page refresh => refreshes all tabs - *COMPLETE*
 
 - Settings:
 
@@ -84,20 +110,18 @@ Settings will be saved to the localStorage using a JSON object with settings as 
     2) Do not show welcome message => by default a welcome message will appear when visiting the page containing useful information => dismiss the message
     *That same welcome message will appear under the "Help" tab*
 
-    3) Modal Coloring: Based on priority | light gray regardless of priority
+    3) Do not show warning when changing the deadline of repetitive tasks
+
+    4) Default Tab => Search/Today/Upcoming/Past Due/All Tasks/Completed
+
+- Local Storage:
+
+    1) Task Storage: store by type
+
+    **For repetitive tasks: create the origin => generate repetition => copy details by comparing dates**
+
+    2) Groups: store only group listing positions and color labels the groups themselves are automatically created when creating a task
+
+    3) Settings: one object for all settings
 
 - Create an initial load modal that displays a loader => once all the initial load functions finish executing => remove the modal
-
-- Edit Tasks:
-
-**Reuses various functions from the "add tasks" functionality**
-
-Interactions to watch for:
-
-    1) Changing group names: unlike "add tasks" allow for blank group names and treat them as "__unlisted__"
-
-    2) Repetitive Tasks - changing names/descriptions/priorities/group names: have a modal popup asking whether to submit the changes to all tasks or only that task
-
-    3) Repetitive Tasks - changing deadline: if a user changes the deadline for a repetitive task => remove that task from the cluster (this ensures the new date doesn't effect the repetition generation)
-
-    4) Repetitive Tasks - changing repetition pattern/value:  delete all future tasks (i.e., tasks with deadlines after the current day, meaning don't delete the duplicate created on the initialization) and change the repetition pattern to the new one to all remaining tasks in the cluster

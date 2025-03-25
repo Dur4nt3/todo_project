@@ -1,6 +1,7 @@
 import { createRepetitiveTask, createRepetitiveGroupedTask } from "./create-task-objects.js";
 import { taskCollection } from "./task-utility-functions.js";
-import { add as increaseDate, sub as decreaseDate, getDay, startOfMonth, endOfMonth } from "../../node_modules/date-fns";
+import { add as increaseDate, sub as decreaseDate, getDay, startOfMonth, endOfMonth, differenceInCalendarDays } from "../../node_modules/date-fns";
+import { removeFromTaskCollection } from "./task-removal.js";
 
 // This module includes various utilities used in repetitive task related logic
 
@@ -21,6 +22,15 @@ function findOriginGrouped(clusterID) {
         if (task.clusterID === clusterID && task.origin === true) {
             return task;
         }
+    }
+}
+
+export function findOrigin(task) {
+    if (task.group === undefined) {
+        return findOriginUngrouped(task.clusterID);
+    }
+    else {
+        return findOriginGrouped(task.clusterID);
     }
 }
 
@@ -171,4 +181,126 @@ export function findLastOccurrence(day, date) {
     }
 
     return targetDate;
+}
+
+// Prepares a task cluster for pattern changes (values, types)
+// This effectively remove all future tasks
+export function prepareForPatternChange(taskObj) {
+    let origin;
+    let grouped;
+    if (taskObj.group === undefined) {
+        origin = findOriginUngrouped(taskObj.clusterID);
+        grouped = false;
+    }
+    else {
+        origin = findOriginGrouped(taskObj.clusterID);
+        grouped = true;
+    }
+
+    const tasksToDeleteIDs = [];
+    const currentDate = new Date();
+
+    if (grouped) {
+        for (let i in taskCollection.repetitiveGrouped) {
+            let task = taskCollection.repetitiveGrouped[i];
+
+            if (task.clusterID !== taskObj.clusterID || task.origin === true || (task.deadline === origin.deadline && task.origin === false)) {
+                continue;
+            }
+
+            if (Date.parse(task.deadline) > Date.parse(currentDate) && differenceInCalendarDays(Date.parse(task.deadline), currentDate) >= 1) {
+                tasksToDeleteIDs.push(task.id);
+                continue;
+            }
+        }
+
+        for (let i in tasksToDeleteIDs) {
+            removeFromTaskCollection(tasksToDeleteIDs[i], "repetitiveGrouped");
+        }
+    }
+    else {
+        for (let i in taskCollection.repetitive) {
+            let task = taskCollection.repetitive[i];
+
+            if (task.clusterID !== taskObj.clusterID || task.origin === true || (task.deadline === origin.deadline && task.origin === false)) {
+                continue;
+            }
+
+            if (Date.parse(task.deadline) > Date.parse(currentDate) && differenceInCalendarDays(Date.parse(task.deadline), currentDate) >= 1) {
+                tasksToDeleteIDs.push(task.id);
+                continue;
+            }
+        }
+        
+        for (let i in tasksToDeleteIDs) {
+            removeFromTaskCollection(tasksToDeleteIDs[i], "repetitive");
+        }
+    }
+
+    return;
+}
+
+// Relevant when trying to determine whether an initialization is needed or not
+// If the only task in the cluster is the origin (i.e., length === 1) an initialization is required
+export function getClusterSize(taskObj) {
+    let count = 0;
+
+    // Fallback if taskObj is invalid
+    if (taskObj.clusterID === undefined) {
+        return count;
+    }
+
+
+    if (taskObj.group === undefined) {
+        for (let i in taskCollection.repetitive) {
+            let task = taskCollection.repetitive[i];
+
+            if (task.clusterID === taskObj.clusterID) {
+                count++;
+            } 
+        }
+    }
+    else {
+        for (let i in taskCollection.repetitiveGrouped) {
+            let task = taskCollection.repetitiveGrouped[i];
+
+            if (task.clusterID === taskObj.clusterID) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+// Returns an array with all tasks within the cluster
+export function getClusterTasks(taskObj) {
+    let tasksArray = [];
+
+    // Fallback if taskObj is invalid
+    if (taskObj.clusterID === undefined) {
+        return count;
+    }
+
+
+    if (taskObj.group === undefined) {
+        for (let i in taskCollection.repetitive) {
+            let task = taskCollection.repetitive[i];
+
+            if (task.clusterID === taskObj.clusterID) {
+                tasksArray.push(task);
+            }
+        }
+    }
+    else {
+        for (let i in taskCollection.repetitiveGrouped) {
+            let task = taskCollection.repetitiveGrouped[i];
+            
+            if (task.clusterID === taskObj.clusterID) {
+                tasksArray.push(task);
+            }
+        }
+    }
+
+    return tasksArray;
 }

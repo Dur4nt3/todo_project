@@ -26,6 +26,9 @@
 
     --negative-low-opacity: rgba(249,0,0,0.75);
 
+    --medium-orange: rgba(236,168,0);
+    --medium-low-opacity: rgba(236,168,0,0.75);
+
     --cancel-gray: #6b6b6b;
     --cancel-gray-low-opacity: rgba(107,107,107,0.75);
 
@@ -825,6 +828,35 @@ input[type="checkbox"]:focus {
     gap: 0.5rem;
 }
 
+.hide-below {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: transparent;
+    z-index: 3;
+}
+
+.extra-confirmation-modal {
+    padding: 1rem;
+    border-radius: 0.7rem;
+
+    background: rgba(43,43,44,0.65);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(23,23,24,0.45);
+
+    position: fixed;
+    z-index: 4;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .close-modal-animation {
     animation: close-modal 0.25s steps(15, end) forwards;
 }
@@ -843,13 +875,19 @@ input[type="checkbox"]:focus {
 }
 
 .deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont,
-.edit-groups-button-cont, .add-tasks-button-cont {
+.edit-groups-button-cont, .add-tasks-button-cont, .repetitive-changes-button-cont, .repetitive-deletion-button-cont,
+.repetitive-deadline-button-cont {
     display: flex;
     gap: 3.5rem;
 }
 
+.repetitive-changes-button-cont, .repetitive-deletion-button-cont {
+    margin-top: 1.25rem;
+}
+
 .deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button,
-.edit-groups-button, .add-tasks-button {
+.edit-groups-button, .add-tasks-button, .repetitive-changes-button, .repetitive-deletion-button, 
+.repetitive-deadline-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -858,6 +896,11 @@ input[type="checkbox"]:focus {
     width: 10ch;
 
     transition: 0.2s;
+}
+
+.repetitive-changes-button, .repetitive-deletion-button {
+    white-space: nowrap;
+    width: max-content;
 }
 
 .deletion-confirmation-button:hover {
@@ -872,12 +915,28 @@ input[type="checkbox"]:focus {
     background-color: var(--cancel-gray-low-opacity);
 }
 
-.confirm-button {
+.confirm-button, .repetitive-deletion-button.all-tasks-button {
     background-color: var(--past-due-color);
 }
 
-.confirm-button:active {
+.confirm-button:active, .repetitive-deletion-button.all-tasks-button:active {
     background-color: var(--negative-low-opacity);
+}
+
+.all-tasks-button {
+    background-color: var(--confirm-green);
+}
+
+.all-tasks-button:active {
+    background-color: var(--confirm-green-low-opacity);
+}
+
+.this-task-button {
+    background-color: var(--medium-orange);
+}
+
+.this-task-button:active {
+    background-color: var(--medium-low-opacity);
 }
 
 /* Confirmation Modals Styles */
@@ -1057,7 +1116,7 @@ input[type=number] {
 
 /* Advanced Search Modal Styles */
 
-.advanced-search-modal, .edit-groups-modal, .add-tasks-modal {
+.advanced-search-modal, .edit-groups-modal, .add-tasks-modal, .edit-tasks-modal {
     top: 45%;
 
     background: rgba(137,2,227,0.2);
@@ -1645,7 +1704,7 @@ input[type="color"] {
 
 /* Add Tasks Modal Styles */
 
-.add-tasks-modal {
+.add-tasks-modal, .edit-tasks-modal {
     max-width: 65ch;
     max-height: 75svh;
 
@@ -1907,11 +1966,15 @@ input.task-hybrid-weekly-frequency-input:focus {
 }
 
 .add-tasks-label.task-group-label::before {
-    content: 'Select a group for the task to be labeled under. You may create a new group by selecting a unique name. You may leave this field blank to label this task as unlisted.';
+    content: 'Select a group for the task to be labeled under. You may create a new group by selecting a unique name. The group name must be between 1 and 30 characters and cannot include special characters apart from spaces and dashes.';
 }
 
 .add-tasks-label.task-date-label::before {
     content: 'Select a deadline for this task. Please use the "DD/MM/YYYY" (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this indicates the date the repetition of tasks starts from.';
+}
+
+.edit-tasks-modal .add-tasks-label.task-date-label::before {
+    content: 'Select a deadline for this task. Please use the "DD/MM/YYYY" (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this will remove the task from the cluster of repetitive tasks it belongs to.';
 }
 
 .add-tasks-label.task-all-day-label::before {

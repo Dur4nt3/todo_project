@@ -14,7 +14,7 @@ import { taskCollection  } from "./modules/task-utility-functions.js";
 import * as createTask from "./modules/create-task-objects.js";
 import * as repetitionGenerator from "./modules/repetition-generator.js"
 
-// const basicTask = createTask.createBasicTask("testing basic", "basic task");
+const basicTask = createTask.createBasicTask("testing basic", "basic task");
 // const basicTask2 = createTask.createBasicTask("basic 2", "basic task 2", 2);
 // const basicTask3 = createTask.createBasicTask("basic 3", "basic task 3", 3);
 // const basicTask4 = createTask.createBasicTask("basic 4", "basic task 4", 1);
@@ -43,7 +43,7 @@ import * as repetitionGenerator from "./modules/repetition-generator.js"
 // const dated4 = createTask.createDatedTask("dated 4", "dated task 4", "2025-03-11", true, 2);
 // const dated5 = createTask.createDatedTask("dated 5", "dated task 5", "2025-03-09T16:30:00", false, 3);
 // const dated6 = createTask.createDatedTask("dated 6", "dated task 6", "2025-03-05", true, 3);
-const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-25", true, 2);
+const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-03-27", true, 2);
 // const todayTask2 = createTask.createDatedTask("today 2", "today task 2", "2025-03-19T13:45:00", false, 3);
 // const todayTask3 = createTask.createDatedTask("today 3", "today task 3", "2025-03-19T21:22:00", false, 1);
 // const todayTask4 = createTask.createDatedTask("today 4", "today task 4", "2025-03-19", true, 2);
@@ -52,7 +52,7 @@ const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-0
 // todayTask4.complete();
 
 
-// const datedGroupedTask1 = createTask.createDatedGroupedTask("dated & grouped", "timed grouped", "group1", "2025-01-26T02:59:00", false, 2);
+const datedGroupedTask1 = createTask.createDatedGroupedTask("dated - grouped", "timed grouped", "group1", "2025-01-26T02:59:00", false, 2);
 // const datedGroupedTask2 = createTask.createDatedGroupedTask("dated & grouped 2", "all-day grouped", "group3", "2025-02-03", true, 2);
 // const datedGroupedTask3 = createTask.createDatedGroupedTask("dated & grouped 3", "dated & grouped task 3", "group4", "2025-03-26", true, 2);
 // const datedGroupedTask4 = createTask.createDatedGroupedTask("dated & grouped 4", "dated & grouped task 4", "group5", "2025-02-03T13:30:00", false, 3);
@@ -63,15 +63,20 @@ const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-0
 // datedGroupedTask4.complete();
 
 // const repetitiveTask = createTask.createRepetitiveTask("repetitive task", "checking repetition",
-//     "2025-03-06T12:30:00", false, "time", {"hours": 1}, true, 2, null
+//     "2025-03-25T12:30:00", false, "hybrid-weekly", [[1,3,5], { "weeks": 2 }], true, 2, null
 // );
 
-// const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
-//     "2025-03-11T12:30:00", false, "hybrid-weekly", [[0,2,4], {"weeks": 2}], true, 2, null
-// );
+const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
+    "2025-03-27T12:30:00", false, "hybrid-monthly", [2, 3, {"months": 2}], true, 2, null
+);
+
+const repetitiveGroupedTask = createTask.createRepetitiveGroupedTask("repetitive - grouped task", "checking repetition & groups",
+    "repetitive", "2025-02-21", true, "hybrid-monthly", [1,3,{ "months": 1 }], true, 3, null
+);
 
 // repetitionGenerator.generateRepetition(repetitiveTask, true);
-// repetitionGenerator.generateRepetition(repetitiveTask2, true);
+repetitionGenerator.generateRepetition(repetitiveTask2, true);
+repetitionGenerator.generateRepetition(repetitiveGroupedTask, true);
 
 
 

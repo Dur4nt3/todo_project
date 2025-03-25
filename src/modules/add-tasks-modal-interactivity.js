@@ -5,6 +5,7 @@ import { collectAddTasksFormData } from "./add-tasks-modal-data-collection.js";
 import { validateTaskDetails } from "./add-tasks-modal-validation.js";
 import { displayAddTasksErrors } from "./add-tasks-display-errors.js";
 import { addTasksCreateTask } from "./add-tasks-task-creation.js";
+import { simulatePageRefresh } from "./simulate-page-refresh.js";
 
 // This module includes the interactivity logic for the "add tasks" feature
 
@@ -43,7 +44,7 @@ export function addTasksModalInteractivity() {
             else if (validationData === true) {
                 addTasksCreateTask(taskDataObj, taskType);
                 addTasksModalCont.children[0].classList.add("close-modal-animation");
-                setTimeout(() => { addTasksModalCont.remove() }, 300);
+                setTimeout(() => { addTasksModalCont.remove(); simulatePageRefresh(); }, 300);
                 return;
             }
 

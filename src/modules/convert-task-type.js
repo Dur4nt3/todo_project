@@ -110,3 +110,24 @@ export function datedGroupedToDated(datedGroupedTask) {
 
     return newDatedTask;
 }
+
+// Convert a repetitive task into a dated one
+export function repetitiveToDated(repetitiveTask) {
+    taskRemoval.removeFromTaskCollection(repetitiveTask.id, "repetitive");
+
+    const newDatedTask = createTask.createDatedTask(repetitiveTask.title, repetitiveTask.description, 
+    repetitiveTask.deadline, repetitiveTask.allDay, repetitiveTask.priority
+    );
+    
+    return newDatedTask;
+}
+
+export function repetitiveGroupedToDatedGrouped(repetitiveGroupedTask) {
+    taskRemoval.removeFromTaskCollection(repetitiveGroupedTask.id, "repetitiveGrouped");
+
+    const newDatedGroupedTask = createTask.createDatedGroupedTask(repetitiveGroupedTask.title, repetitiveGroupedTask.description,
+    repetitiveGroupedTask.group, repetitiveGroupedTask.deadline, repetitiveGroupedTask.allDay, repetitiveGroupedTask.priority
+    );
+    
+    return newDatedGroupedTask;
+}

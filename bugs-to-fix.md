@@ -30,6 +30,10 @@
 
 - Fix the option to name different groups the same new name, i.e., a name that doesn't exist in taskGroups - *COMPLETE*
 
-- Remove console logs from "index.js"
+- Remove console logs from "index.js" - *COMPLETE*
 
-- Ensure that allDay tasks cannot have an hourly repetition
+- Ensure that allDay tasks cannot have an hourly repetition - *COMPLETE*
+
+- switch ids containing group names to hex encoding of the group name => ensures IDs remain valid - *COMPLETE*
+
+- Fix group ID usage in: "simulate-page-refresh.js" | "create-groups-cont.js" | "edit-groups-modal.js" | "more-groups-modal.js" - *COMPLETE*

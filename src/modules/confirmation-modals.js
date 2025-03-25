@@ -1,6 +1,7 @@
 import { determineTaskType } from "./task-utility-functions.js";
 import * as removeTask from "./task-removal.js";
 import { buildElement } from "./dom-manipulator.js";
+import { repetitiveDeletionConfirmationInteractivity } from "./repetitive-tasks-confirmation-modals-interactivity.js";
 
 // This module is used to create both the markup and the UI for the task deletion modals
 
@@ -59,10 +60,6 @@ export function deletionConfirmationModalInteractivity(task, taskCont) {
         const target = e.target;
 
         if (!target.classList.contains("deletion-confirmation-button")) {
-            if (target === deletionModal) {
-                deletionModal.children[0].classList.add("close-modal-animation");
-                setTimeout(() => { deletionModal.remove() }, 300);
-            }
             return;
         }
 
@@ -72,10 +69,20 @@ export function deletionConfirmationModalInteractivity(task, taskCont) {
             return;
         }
         else if (target.classList.contains("confirm-button")) {
-            deletionModal.children[0].classList.add("close-modal-animation");
-            setTimeout(() => { deletionModal.remove(); }, 300);
-            deleteTaskUI(task, taskCont);
-            return;
+            const taskType = determineTaskType(task);
+
+            if (taskType === "repetitive" || taskType === "repetitiveGrouped") {
+                deletionModal.children[0].remove();
+                repetitiveDeletionConfirmationInteractivity(deletionModal, task);
+                return;
+            }
+
+            else {
+                deletionModal.children[0].classList.add("close-modal-animation");
+                setTimeout(() => { deletionModal.remove(); }, 300);
+                deleteTaskUI(task, taskCont);
+                return;
+            }
         }
     });
 

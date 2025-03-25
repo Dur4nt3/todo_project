@@ -1,4 +1,4 @@
-import { getMonth, getDate, getDay, getYear } from "../../node_modules/date-fns";
+import { getMonth, getDate, getDay, getYear, getHours, getMinutes } from "../../node_modules/date-fns";
 
 // This module includes various utilities that aren't categorized under a specific category
 
@@ -97,6 +97,34 @@ export function getTaskDateRegular(deadline) {
     return taskDate + "." + taskMonth + "." + taskYear;
 }
 
+export function getTaskDateObject(deadline) {
+    let taskDate = getDate(deadline);
+    let taskMonth = getMonth(deadline) + 1;
+    let taskYear = getYear(deadline);
+
+    if (taskDate < 10) {
+        taskDate = "0" + String(taskDate);
+    }
+    if (taskMonth < 10) {
+        taskMonth = "0" + String(taskMonth);
+    }
+
+    let hours = "", minutes = "";
+    if (deadline.includes("T")) {
+        hours = getHours(deadline);
+        minutes = getMinutes(deadline);
+
+        if (hours < 10) {
+            hours = "0" + String(hours);
+        }
+        if (minutes < 10) {
+            minutes = "0" + String(minutes);
+        }
+    }
+
+    return { day: taskDate, month: taskMonth, year: taskYear, hours, minutes };
+}
+
 export function getDayStart(date) {
     const currentDay = getDate(date);
     const currentMonth = getMonth(date);
@@ -111,6 +139,10 @@ export function getDayEnd(date) {
     const currentYear = getYear(date);
 
     return new Date(currentYear, currentMonth, currentDay+1, 0, 0, -1);
+}
+
+export function formatTime(timedDeadline) {
+    return timedDeadline.slice(-9).slice(1).slice(0,5);
 }
 
 export function formatTaskType(taskType) {
@@ -128,7 +160,7 @@ export function formatTaskType(taskType) {
             return "Dated & Grouped";
 
         case "repetitive":
-            return "Repetitive & Grouped";
+            return "Repetitive";
 
         case "repetitiveGrouped":
             return "repetitive & Grouped";
@@ -136,7 +168,7 @@ export function formatTaskType(taskType) {
 }
 
 export function formatRepetitionPattern(repetitionPattern) {
-    switch (taskType) {
+    switch (repetitionPattern) {
         case "time":
             return "Time";
 
@@ -149,4 +181,30 @@ export function formatRepetitionPattern(repetitionPattern) {
         case "hybrid-monthly":
             return "Hybrid - Monthly";
     }
+}
+
+export function capitalizeFirstLetter(string) {
+    return String(string).charAt(0).toUpperCase() + String(string).slice(1);
+}
+
+export function stringToHex(string) {
+    let hex;
+    let result = "id_";
+    for (let i = 0; i < string.length; i++) {
+        hex = string.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    return result
+}
+
+export function hexToString(hex) {
+    let pureHex = hex.slice(3);
+    let hexes = pureHex.match(/.{1,4}/g) || [];
+    let back = "";
+    for(let j = 0; j < hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+
+    return back;
 }

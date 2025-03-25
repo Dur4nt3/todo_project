@@ -116,15 +116,18 @@ export function generateGroupHelpPage() {
     const paragraph1section5 = buildElement("p", "help-paragraph");
     const paragraph2section5 = buildElement("p", "help-paragraph");
     const paragraph3section5 = buildElement("p", "help-paragraph");
+    const paragraph4section5 = buildElement("p", "help-paragraph");
 
     paragraph1section5.textContent = 'You might encounter a scenario where you no longer want a task or a collection of tasks to be a part of any group.';
-    paragraph2section5.textContent = ' In those cases, you can opt-out of the grouping utility and "un-list" tasks. You can achieve that by editing the task and selecting the "un-list" option.';
+    paragraph2section5.textContent = ' In those cases, you can opt-out of the grouping utility and "un-list" tasks. You can achieve that by editing the task, ensuring the "Group" field is left blank, and applying the changes.';
     paragraph3section5.textContent = 'Unlisted tasks will not be found under the "My Groups" sub-section, but can be found via the search utility. Specifically, click the "Search" tab and select the advanced search utility (by clicking the icon on the right side of the search bar), then search for tasks with the group name "__unlisted__".'; 
+    paragraph4section5.textContent = 'Note that you cannot create unlisted tasks; if you leave the "Group" field blank when attempting to create a grouped task you will encounter an error.'; 
 
     section5.appendChild(header5);
     section5.appendChild(paragraph1section5);
     section5.appendChild(paragraph2section5);
     section5.appendChild(paragraph3section5);
+    section5.appendChild(paragraph4section5);
 
     pageDetailsCont.appendChild(section1);
     pageDetailsCont.appendChild(section2);

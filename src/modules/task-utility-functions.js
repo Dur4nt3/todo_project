@@ -118,9 +118,6 @@ export function validateDeadline(newDeadline) {
         return newDeadline[0];
     }
 
-    if (Date.parse(newDeadline) < (new Date().getTime())) {
-        return false
-    }
     return newDeadline;
 }
 
@@ -187,6 +184,7 @@ export function updateGroups(groupName, obj, oldGroup = null) {
 }
 
 export function validateGroup(groupName) {
+    console.log(taskGroups);
     
     if (Array.isArray(groupName) && groupName[0] === "__unlisted__") {
         return true;
