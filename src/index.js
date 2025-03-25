@@ -30,7 +30,7 @@ import * as repetitionGenerator from "./modules/repetition-generator.js"
 // const groupedTask8 = createTask.createGroupedTask("grouped 8", "grouped task 8", "group1", 3);
 // const groupedTask9 = createTask.createGroupedTask("grouped 9", "grouped task 9", "group7", 3);
 // const groupedTask10 = createTask.createGroupedTask("grouped 10", "grouped task 10", "group5", 3);
-// const groupedTask11 = createTask.createGroupedTask("grouped 11", "grouped task 11", "group5", 3);
+const groupedTask11 = createTask.createGroupedTask("grouped 11", "grouped task 11", "group5", 3);
 // groupedTask1.complete();
 // groupedTask9.removeListing();
 

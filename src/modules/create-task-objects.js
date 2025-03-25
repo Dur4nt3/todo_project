@@ -16,7 +16,6 @@ function handleTaskBasics(title, description, priority) {
 
         get title() { return title; },
         set title(newTitle) {
-            // **Possibly create a separate function that checks the below**
             if (newTitle === "") {
                 throw new Error("Title is blank");
             }
@@ -53,7 +52,6 @@ function handleTaskDates(deadline, allDay) {
     return {
         get deadline() { return deadline; },
         set deadline(newDeadline) {
-            // **Possibly create a separate function that checks the below**
             let valid = taskUtil.validateDeadline(newDeadline);
             if (valid === false) {
                 throw new Error("Deadline is invalid!");
@@ -100,11 +98,9 @@ function handleTaskGroups(group) {
     return {
         get group() { return group },
         set group(newGroup) {
-            // **Possibly create a separate function that checks the below**
             if (!(taskUtil.validateGroup(newGroup))) {
                 throw new Error("Invalid group name");
             }
-            // **Possibly create a separate function that runs the below**
             // Because we are setting a new group: 
             // ensure previous task isn't in the previous one and is on the new one
             taskUtil.updateGroups(newGroup, this, group);

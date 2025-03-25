@@ -66,7 +66,15 @@ function validateGroupedTaskDetails(taskDataObj) {
     }
 
     if (!(validateGroup(taskDataObj.group)) || !(whiteSpacesAndDashesOnly(taskDataObj.group))) {
-        errors.push("group");
+        // Allows users to remove the listing of a task from a group
+        if (Array.isArray(taskDataObj.group)) {
+            if (!(taskDataObj.group[0] === "__unlisted__")) {
+                errors.push("group");
+            }
+        }
+        else {
+            errors.push("group");
+        }
     }
 
     if (errors.length === 0) {

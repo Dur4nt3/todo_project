@@ -281,3 +281,13 @@ export function editTasksModal(taskObj) {
 
     return editTaskModal;
 }
+
+export function adjustUnlistedEntry(taskDataObj) {
+    if (taskDataObj.group !== undefined) {
+        if (taskDataObj.group === "") {
+            taskDataObj.group = ["__unlisted__"];
+        }
+    }
+
+    return;
+}

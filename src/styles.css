@@ -1907,11 +1907,15 @@ input.task-hybrid-weekly-frequency-input:focus {
 }
 
 .add-tasks-label.task-group-label::before {
-    content: 'Select a group for the task to be labeled under. You may create a new group by selecting a unique name. You may leave this field blank to label this task as unlisted.';
+    content: 'Select a group for the task to be labeled under. You may create a new group by selecting a unique name. The group name must be between 1 and 30 characters and cannot include special characters apart from spaces and dashes.';
 }
 
 .add-tasks-label.task-date-label::before {
     content: 'Select a deadline for this task. Please use the "DD/MM/YYYY" (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this indicates the date the repetition of tasks starts from.';
+}
+
+.edit-tasks-modal .add-tasks-label.task-date-label::before {
+    content: 'Select a deadline for this task. Please use the "DD/MM/YYYY" (i.e., Day-Month-Year format) format. You may pick a date from the past. For repetitive tasks, this will remove the task from the cluster of repetitive tasks it belongs to.';
 }
 
 .add-tasks-label.task-all-day-label::before {
