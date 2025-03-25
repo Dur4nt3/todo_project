@@ -63,15 +63,15 @@ const todayTask1 = createTask.createDatedTask("today 1", "today task 1", "2025-0
 // datedGroupedTask4.complete();
 
 // const repetitiveTask = createTask.createRepetitiveTask("repetitive task", "checking repetition",
-//     "2025-03-06T12:30:00", false, "time", {"hours": 1}, true, 2, null
+//     "2025-03-25T12:30:00", false, "hybrid-weekly", [[1,3,5], { "weeks": 2 }], true, 2, null
 // );
 
-// const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
-//     "2025-03-11T12:30:00", false, "hybrid-weekly", [[0,2,4], {"weeks": 2}], true, 2, null
-// );
+const repetitiveTask2 = createTask.createRepetitiveTask("repetitive task2", "checking repetition2",
+    "2025-03-25T12:30:00", false, "hybrid-monthly", [2, 3, {"months": 2}], true, 2, null
+);
 
 // repetitionGenerator.generateRepetition(repetitiveTask, true);
-// repetitionGenerator.generateRepetition(repetitiveTask2, true);
+repetitionGenerator.generateRepetition(repetitiveTask2, true);
 
 
 

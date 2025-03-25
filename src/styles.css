@@ -1057,7 +1057,7 @@ input[type=number] {
 
 /* Advanced Search Modal Styles */
 
-.advanced-search-modal, .edit-groups-modal, .add-tasks-modal {
+.advanced-search-modal, .edit-groups-modal, .add-tasks-modal, .edit-tasks-modal {
     top: 45%;
 
     background: rgba(137,2,227,0.2);
@@ -1645,7 +1645,7 @@ input[type="color"] {
 
 /* Add Tasks Modal Styles */
 
-.add-tasks-modal {
+.add-tasks-modal, .edit-tasks-modal {
     max-width: 65ch;
     max-height: 75svh;
 

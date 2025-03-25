@@ -1,4 +1,4 @@
-import { getMonth, getDate, getDay, getYear } from "../../node_modules/date-fns";
+import { getMonth, getDate, getDay, getYear, getHours, getMinutes, min } from "../../node_modules/date-fns";
 
 // This module includes various utilities that aren't categorized under a specific category
 
@@ -97,6 +97,34 @@ export function getTaskDateRegular(deadline) {
     return taskDate + "." + taskMonth + "." + taskYear;
 }
 
+export function getTaskDateObject(deadline) {
+    let taskDate = getDate(deadline);
+    let taskMonth = getMonth(deadline) + 1;
+    let taskYear = getYear(deadline);
+
+    if (taskDate < 10) {
+        taskDate = "0" + String(taskDate);
+    }
+    if (taskMonth < 10) {
+        taskMonth = "0" + String(taskMonth);
+    }
+
+    let hours = "", minutes = "";
+    if (deadline.includes("T")) {
+        hours = getHours(deadline);
+        minutes = getMinutes(deadline);
+
+        if (hours < 10) {
+            hours = "0" + String(hours);
+        }
+        if (minutes < 10) {
+            minutes = "0" + String(minutes);
+        }
+    }
+
+    return { day: taskDate, month: taskMonth, year: taskYear, hours, minutes };
+}
+
 export function getDayStart(date) {
     const currentDay = getDate(date);
     const currentMonth = getMonth(date);
@@ -128,7 +156,7 @@ export function formatTaskType(taskType) {
             return "Dated & Grouped";
 
         case "repetitive":
-            return "Repetitive & Grouped";
+            return "Repetitive";
 
         case "repetitiveGrouped":
             return "repetitive & Grouped";
@@ -136,7 +164,7 @@ export function formatTaskType(taskType) {
 }
 
 export function formatRepetitionPattern(repetitionPattern) {
-    switch (taskType) {
+    switch (repetitionPattern) {
         case "time":
             return "Time";
 
