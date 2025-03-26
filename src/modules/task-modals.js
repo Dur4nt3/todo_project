@@ -9,6 +9,11 @@ import clockSvg from "../images/Clock.svg";
 // *This is in-fact the module that is used for the modals that pop-up when clicking tasks*
 
 function taskInformationModal(task) {
+    // User is attempting to select an already deleted task
+    if (task === undefined) {
+        return;
+    }
+
     const modalCont = buildElement("div", "modal");
     modalCont.tabIndex = 0;
 
@@ -91,6 +96,11 @@ function taskInformationModal(task) {
 
 export function taskInformationModalInteractivity(task) {
     const modalCont = taskInformationModal(task);
+
+    // This means the task a user selected was already deleted
+    if (modalCont === undefined) {
+        return;
+    }
 
     document.body.prepend(modalCont);
     modalCont.focus();

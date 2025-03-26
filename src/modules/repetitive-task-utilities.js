@@ -230,3 +230,68 @@ export function prepareForPatternChange(taskObj) {
 
     return;
 }
+
+// Relevant when trying to determine whether an initialization is needed or not
+// If the only task in the cluster is the origin (i.e., length === 1) an initialization is required
+export function getClusterSize(taskObj) {
+    let count = 0;
+
+    // Fallback if taskObj is invalid
+    if (taskObj.clusterID === undefined) {
+        return count;
+    }
+
+
+    if (taskObj.group === undefined) {
+        for (let i in taskCollection.repetitive) {
+            let task = taskCollection.repetitive[i];
+
+            if (task.clusterID === taskObj.clusterID) {
+                count++;
+            } 
+        }
+    }
+    else {
+        for (let i in taskCollection.repetitiveGrouped) {
+            let task = taskCollection.repetitiveGrouped[i];
+
+            if (task.clusterID === taskObj.clusterID) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+// Returns an array with all tasks within the cluster
+export function getClusterTasks(taskObj) {
+    let tasksArray = [];
+
+    // Fallback if taskObj is invalid
+    if (taskObj.clusterID === undefined) {
+        return count;
+    }
+
+
+    if (taskObj.group === undefined) {
+        for (let i in taskCollection.repetitive) {
+            let task = taskCollection.repetitive[i];
+
+            if (task.clusterID === taskObj.clusterID) {
+                tasksArray.push(task);
+            }
+        }
+    }
+    else {
+        for (let i in taskCollection.repetitiveGrouped) {
+            let task = taskCollection.repetitiveGrouped[i];
+            
+            if (task.clusterID === taskObj.clusterID) {
+                tasksArray.push(task);
+            }
+        }
+    }
+
+    return tasksArray;
+}

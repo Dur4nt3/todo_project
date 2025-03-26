@@ -33,3 +33,7 @@
 - Remove console logs from "index.js"
 
 - Ensure that allDay tasks cannot have an hourly repetition
+
+- switch ids containing group names to base64 encoding of the group name => ensures IDs remain valid
+
+- Fix group ID usage in: "simulate-page-refresh.js" | "create-groups-cont.js" | "edit-groups-modal.js" | "more-groups-modal.js"

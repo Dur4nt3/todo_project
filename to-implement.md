@@ -102,4 +102,28 @@ Interactions to watch for:
 
     4) Repetitive Tasks - changing repetition pattern/value:  delete all future tasks (i.e., tasks with deadlines after the current day, meaning don't delete the duplicate created on the initialization) and change the repetition pattern to the new one to all remaining tasks in the cluster
 
+**Checks to make:** What happens when a user deletes the origin duplicate and then makes changes to the repetition pattern:
+
+    1) When all listed tasks are deleted due to all of them being in the future
+
+    2) When the latest task is in the past but in a later date than the duplicate
+
+**Pattern Changes Interactions:** 
+
+    1) If the only task remaining after the preparation is the origin => initialize
+
+    2) If there were tasks remaining after the preparation (other than the origin) => no need to initialize
+
 - Repetitive tasks confirmation modals: task deletion => cluster/individual | name/description/group changes => cluster/individual
+
+- Create a function that essentially simulates a page refresh => refreshes all tabs
+
+- Local Storage:
+
+    1) Task Storage: store by type
+
+    **For repetitive tasks: create the origin => generate repetition => copy details by comparing dates**
+
+    2) Groups: store only group listing positions and color labels the groups themselves are automatically created when creating a task
+
+    3) Settings: one object for all settings

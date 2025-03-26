@@ -41,7 +41,7 @@ export function editTasksModalInteractivity(taskObj) {
             }
 
             else if (validationData === true) {
-                editTasksApplyChanges(taskDataObj, taskType);
+                editTasksApplyChanges(taskObj, taskDataObj, taskType);
                 editTasksModalCont.children[0].classList.add("close-modal-animation");
                 setTimeout(() => { editTasksModalCont.remove() }, 300);
                 return;

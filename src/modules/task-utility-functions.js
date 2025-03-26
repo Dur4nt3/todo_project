@@ -118,9 +118,6 @@ export function validateDeadline(newDeadline) {
         return newDeadline[0];
     }
 
-    if (Date.parse(newDeadline) < (new Date().getTime())) {
-        return false
-    }
     return newDeadline;
 }
 
