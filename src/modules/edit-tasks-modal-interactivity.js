@@ -6,6 +6,7 @@ import { collectAddTasksFormData } from "./add-tasks-modal-data-collection.js";
 import { validateTaskDetails } from "./add-tasks-modal-validation.js";
 import { displayAddTasksErrors } from "./add-tasks-display-errors.js";
 import { editTasksApplyChanges } from "./edit-tasks-modal-apply-changes.js";
+import { simulatePageRefresh } from "./simulate-page-refresh.js";
 
 export function editTasksModalInteractivity(taskObj) {
     const editTasksModalCont = editTasksModal(taskObj);
@@ -16,7 +17,7 @@ export function editTasksModalInteractivity(taskObj) {
     editTasksModalCont.addEventListener("click", (e) => {
         const target = e.target;
 
-        if (target.classList.contains("cancel-button")) {
+        if (target.classList.contains("cancel-button") && target.classList.contains("add-tasks-button")) {
             editTasksModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { editTasksModalCont.remove() }, 300);
             return;
@@ -27,7 +28,7 @@ export function editTasksModalInteractivity(taskObj) {
             return;
         }
 
-        if (target.classList.contains("confirm-button")) {
+        if (target.classList.contains("confirm-button") && target.classList.contains("add-tasks-button")) {
             const taskType = determineTaskType(taskObj);
 
             const formData = collectAddTasksFormData(editTasksModalCont);
@@ -41,9 +42,12 @@ export function editTasksModalInteractivity(taskObj) {
             }
 
             else if (validationData === true) {
-                editTasksApplyChanges(taskObj, taskDataObj, taskType);
-                editTasksModalCont.children[0].classList.add("close-modal-animation");
-                setTimeout(() => { editTasksModalCont.remove() }, 300);
+                if (editTasksApplyChanges(taskObj, taskDataObj, taskType) === true) {
+                    editTasksModalCont.children[0].classList.add("close-modal-animation");
+                    setTimeout(() => { editTasksModalCont.remove(); simulatePageRefresh(); }, 300);
+                    return;
+                }
+
                 return;
             }
 
@@ -52,32 +56,35 @@ export function editTasksModalInteractivity(taskObj) {
     });
 
     editTasksModalCont.addEventListener("input", (e) => {
-            const target = e.target;
-        
-            if (target.classList.contains("task-all-day-input")) {
-                allDayToggle(target);
-                return;
-            }
+        const target = e.target;
     
-            else if (target.classList.contains("task-repetition-pattern-input")) {
-                revealRepetitivePatternSection(target.value, editTasksModalCont);
-                return;
-            }
-    
-            else if (target.classList.contains("task-specific-occurrence-option-input")) {
-                revealHybridMonthlyTypeSection("specific", editTasksModalCont);
-                return;
-            }
-    
-            else if (target.classList.contains("task-end-of-month-option-input")) {
-                revealHybridMonthlyTypeSection("end", editTasksModalCont);
-                return;
-            }
-        });
+        if (target.classList.contains("task-all-day-input")) {
+            allDayToggle(target);
+            return;
+        }
+
+        else if (target.classList.contains("task-repetition-pattern-input")) {
+            revealRepetitivePatternSection(target.value, editTasksModalCont);
+            return;
+        }
+
+        else if (target.classList.contains("task-specific-occurrence-option-input")) {
+            revealHybridMonthlyTypeSection("specific", editTasksModalCont);
+            return;
+        }
+
+        else if (target.classList.contains("task-end-of-month-option-input")) {
+            revealHybridMonthlyTypeSection("end", editTasksModalCont);
+            return;
+        }
+    });
 
     editTasksModalCont.addEventListener("keyup", (e) => {
         if (e.key === "Escape") {
             editTasksModalCont.children[0].classList.add("close-modal-animation");
+            if (editTasksModalCont.children[1] !== undefined) {
+                editTasksModalCont.children[1].remove();
+            }
             setTimeout(() => { editTasksModalCont.remove() }, 300);
         }
     });

@@ -23,6 +23,7 @@ export function generateRepetitionHelpPage() {
     const paragraph3section1 = buildElement("p", "help-paragraph");
     const paragraph4section1 = buildElement("p", "help-paragraph");
     const paragraph5section1 = buildElement("p", "help-paragraph");
+    const paragraph6section1 = buildElement("p", "help-paragraph");
 
     const span1 = buildElement("span", "enlarge-text");
     span1.textContent = "Repetitive Tasks ";
@@ -33,7 +34,8 @@ export function generateRepetitionHelpPage() {
     paragraph2section1.textContent = 'You\'ll find repetitive tasks helpful when you want to automatically repeat certain task after a certain amount of time rather than manually creating another.';
     paragraph3section1.textContent = 'Task Ticker provide 4 different repetition patterns that you can utilize: "Time", "Day", "Hybrid - Weekly", "Hybrid - Monthly".';
     paragraph4section1.textContent = 'Each of the mentioned patterns will be useful depending on your requirements. The next section will delve deeper into each of the patterns and their usage.';
-    paragraph5section1.textContent = 'It should be noted that you might be able to replicate the functionality of one pattern with another, still you should find using dedicate pattern more convenient.';
+    paragraph5section1.textContent = 'When you create a new repetitive task you are essentially creating a cluster of tasks that originated from the initial task created. This "cluster" can sync information across all tasks within it allowing you to change the title, description, priority, and group of multiple tasks at once.'
+    paragraph6section1.textContent = 'It should be noted that you might be able to replicate the functionality of one pattern with another, still you should find using dedicate pattern more convenient.';
 
     section1.appendChild(header1);
     section1.appendChild(paragraph1section1);
@@ -41,6 +43,7 @@ export function generateRepetitionHelpPage() {
     section1.appendChild(paragraph3section1);
     section1.appendChild(paragraph4section1);
     section1.appendChild(paragraph5section1);
+    section1.appendChild(paragraph6section1);
 
     const paragraph1section2 = buildElement("p", "help-paragraph");
     const paragraph2section2 = buildElement("p", "help-paragraph");
@@ -104,15 +107,18 @@ export function generateRepetitionHelpPage() {
     const paragraph1section4 = buildElement("p", "help-paragraph");
     const paragraph2section4 = buildElement("p", "help-paragraph");
     const paragraph3section4 = buildElement("p", "help-paragraph");
+    const paragraph4section4 = buildElement("p", "help-paragraph");
 
     paragraph1section4.textContent = 'Changing a repetitive task\'s repetition pattern and/or its value is entirely possible, still some precautions should be displayed.';
-    paragraph2section4.textContent = 'When you change a repetitive task\'s repetition pattern and/or its value you will delete all future tasks scheduled and in-turn generate new tasks based on the new information.';
-    paragraph3section4.textContent = 'If this is an issue to you, consider creating a new, separate task with your desired repetition pattern and value.';
+    paragraph2section4.textContent = 'When you change a repetitive task\'s repetition pattern and/or its value you will delete all future tasks scheduled and in-turn generate new tasks based on the new information. Specifically, the latest task within the cluster (which must be before the next calender day) will become the new reference point for task generation.';
+    paragraph3section4.textContent = 'This means that the although the newly generated pool of tasks will match your desired pattern and/or value, tasks scheduled before the next calender day will remain as is. You can still, of course, manually remove the tasks that persist even after the change.';
+    paragraph4section4.textContent = 'If this is an issue to you, consider creating a new, separate task with your desired repetition pattern and value.';
 
     section4.appendChild(header4);
     section4.appendChild(paragraph1section4);
     section4.appendChild(paragraph2section4);
     section4.appendChild(paragraph3section4);
+    section4.appendChild(paragraph4section4);
 
     pageDetailsCont.appendChild(section1);
     pageDetailsCont.appendChild(section2);

@@ -828,6 +828,14 @@ input[type="checkbox"]:focus {
     gap: 0.5rem;
 }
 
+.hide-below {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: transparent;
+    z-index: 3;
+}
+
 .extra-confirmation-modal {
     padding: 1rem;
     border-radius: 0.7rem;
@@ -838,7 +846,7 @@ input[type="checkbox"]:focus {
     border: 1px solid rgba(23,23,24,0.45);
 
     position: fixed;
-    z-index: 3;
+    z-index: 4;
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);

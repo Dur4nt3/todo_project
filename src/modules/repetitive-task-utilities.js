@@ -25,6 +25,15 @@ function findOriginGrouped(clusterID) {
     }
 }
 
+export function findOrigin(task) {
+    if (task.group === undefined) {
+        return findOriginUngrouped(task.clusterID);
+    }
+    else {
+        return findOriginGrouped(task.clusterID);
+    }
+}
+
 // Finds the latest task in the cluster (for ungrouped repetitive tasks)
 function findLatestInRepetitive(clusterID) {
     let latestDate = findOriginUngrouped(clusterID).deadline;
@@ -193,7 +202,7 @@ export function prepareForPatternChange(taskObj) {
 
     if (grouped) {
         for (let i in taskCollection.repetitiveGrouped) {
-            let task = taskCollection.repetitive[i];
+            let task = taskCollection.repetitiveGrouped[i];
 
             if (task.clusterID !== taskObj.clusterID || task.origin === true || (task.deadline === origin.deadline && task.origin === false)) {
                 continue;

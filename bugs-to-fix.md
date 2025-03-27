@@ -34,6 +34,6 @@
 
 - Ensure that allDay tasks cannot have an hourly repetition - *COMPLETE*
 
-- switch ids containing group names to base64 encoding of the group name => ensures IDs remain valid
+- switch ids containing group names to hex encoding of the group name => ensures IDs remain valid - *COMPLETE*
 
-- Fix group ID usage in: "simulate-page-refresh.js" | "create-groups-cont.js" | "edit-groups-modal.js" | "more-groups-modal.js"
+- Fix group ID usage in: "simulate-page-refresh.js" | "create-groups-cont.js" | "edit-groups-modal.js" | "more-groups-modal.js" - *COMPLETE*

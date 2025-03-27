@@ -141,6 +141,10 @@ export function getDayEnd(date) {
     return new Date(currentYear, currentMonth, currentDay+1, 0, 0, -1);
 }
 
+export function formatTime(timedDeadline) {
+    return timedDeadline.slice(-9).slice(1).slice(0,5);
+}
+
 export function formatTaskType(taskType) {
     switch (taskType) {
         case "basic":

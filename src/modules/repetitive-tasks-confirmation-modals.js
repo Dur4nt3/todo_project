@@ -1,7 +1,8 @@
 import { buildElement } from "./dom-manipulator.js";
-import { capitalizeFirstLetter, getTaskDateTextFormat, getTaskTime } from "./misc-utilities.js";
+import { capitalizeFirstLetter, getTaskDateTextFormat, formatTime } from "./misc-utilities.js";
 
-export function informationChangeModal(title, ...changes) {
+export function informationChangeModal(title, changes) {
+    const hideBelow = buildElement("div", "hide-below");
     const confirmationModal = buildElement("div", "extra-confirmation-modal", "repetitive-changes-confirmation-modal");
 
     const modalTitle = buildElement("h3", "confirmation-modal-title");
@@ -11,6 +12,7 @@ export function informationChangeModal(title, ...changes) {
     const paragraph2 = buildElement("p", "confirmation-paragraph");
     const paragraph3 = buildElement("p", "confirmation-paragraph");
     const paragraph4 = buildElement("p", "confirmation-paragraph");
+    const paragraph5 = buildElement("p", "confirmation-paragraph");
 
     const p1text1 = document.createTextNode("You've chosen to change the following details for the ");
     const p1text2 = document.createTextNode(" task:");
@@ -23,13 +25,19 @@ export function informationChangeModal(title, ...changes) {
 
     const p2span = buildElement("span", "selected-changes", "enlarge-text");
     for (let i in changes) {
-        p2span.textContent += capitalizeFirstLetter(changes[i]);
+        if (i == (changes.length - 1)) {
+            p2span.textContent += capitalizeFirstLetter(changes[i]) + ".";
+            break;
+        }
+
+        p2span.textContent += capitalizeFirstLetter(changes[i]) + ", ";
     }
 
     paragraph2.appendChild(p2span);
 
     paragraph3.textContent = "As this is a repetitive task, you can choose to apply these changes to this task only or to all tasks within the cluster.";
-    paragraph4.textContent = "Please select the scope of the changes.";
+    paragraph4.textContent = "If any changes were made to the repetition pattern and/or value, they were already applied.";
+    paragraph5.textContent = "Please select the scope of the changes.";
 
     const buttonCont = buildElement("div", "repetitive-changes-button-cont");
 
@@ -50,9 +58,12 @@ export function informationChangeModal(title, ...changes) {
     confirmationModal.appendChild(paragraph2);
     confirmationModal.appendChild(paragraph3);
     confirmationModal.appendChild(paragraph4);
+    confirmationModal.appendChild(paragraph5);
     confirmationModal.appendChild(buttonCont);
 
-    return confirmationModal;
+    hideBelow.appendChild(confirmationModal)
+
+    return hideBelow;
 }
 
 export function repetitiveDeletionConfirmation(title) {
@@ -99,6 +110,7 @@ export function repetitiveDeletionConfirmation(title) {
 }
 
 export function deadlineChangeModal(task) {
+    const hideBelow = buildElement("div", "hide-below");
     const confirmationModal = buildElement("div", "extra-confirmation-modal", "repetitive-deadline-confirmation-modal");
 
     const modalTitle = buildElement("h3", "confirmation-modal-title");
@@ -110,10 +122,10 @@ export function deadlineChangeModal(task) {
     const paragraph4 = buildElement("p", "confirmation-paragraph");
     const paragraph5 = buildElement("p", "confirmation-paragraph");
 
-    const p1text1 = document.createTextNode("You've chosen to change the following details for the ");
-    const p1text2 = document.createTextNode(" to:");
+    const p1text1 = document.createTextNode("You've chosen to change the deadline for the ");
+    const p1text2 = document.createTextNode(" task to:");
     const p1span = buildElement("span", "task-title-span", "enlarge-text");
-    p1span.textContent = task.title;
+    p1span.textContent = task.name;
 
     paragraph1.appendChild(p1text1);
     paragraph1.appendChild(p1span);
@@ -123,7 +135,7 @@ export function deadlineChangeModal(task) {
     p2span.textContent = getTaskDateTextFormat(task.deadline);
     // This means that a time is specified
     if (!(task.allDay)) {
-        p2span.textContent += " at" + getTaskTime(task)
+        p2span.textContent += " at " + formatTime(task.timedDeadline);
     }
 
     paragraph2.appendChild(p2span);
@@ -151,5 +163,7 @@ export function deadlineChangeModal(task) {
     confirmationModal.appendChild(paragraph5);
     confirmationModal.appendChild(buttonCont);
 
-    return confirmationModal;
+    hideBelow.appendChild(confirmationModal)
+
+    return hideBelow;
 }
