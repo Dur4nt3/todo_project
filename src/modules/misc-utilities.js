@@ -1,4 +1,4 @@
-import { getMonth, getDate, getDay, getYear, getHours, getMinutes, min } from "../../node_modules/date-fns";
+import { getMonth, getDate, getDay, getYear, getHours, getMinutes } from "../../node_modules/date-fns";
 
 // This module includes various utilities that aren't categorized under a specific category
 
@@ -181,4 +181,26 @@ export function formatRepetitionPattern(repetitionPattern) {
 
 export function capitalizeFirstLetter(string) {
     return String(string).charAt(0).toUpperCase() + String(string).slice(1);
+}
+
+export function stringToHex(string) {
+    let hex;
+    let result = "id_";
+    for (let i = 0; i < string.length; i++) {
+        hex = string.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    return result
+}
+
+export function hexToString(hex) {
+    let pureHex = hex.slice(3);
+    let hexes = pureHex.match(/.{1,4}/g) || [];
+    let back = "";
+    for(let j = 0; j < hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+
+    return back;
 }

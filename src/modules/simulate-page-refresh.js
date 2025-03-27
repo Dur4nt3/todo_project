@@ -48,7 +48,7 @@ export function simulatePageRefresh() {
     }
 
     else if (Array.isArray(currentActiveTab)) {
-        currentActiveTab = document.getElementById(currentActiveTab[0]);
+        currentActiveTab = document.querySelector(".group-list-cont").querySelector("#"+currentActiveTab[0]);
 
         // When all tasks within the group are deleted this condition will be met
         if (currentActiveTab === null) {

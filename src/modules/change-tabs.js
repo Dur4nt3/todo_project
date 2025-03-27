@@ -1,5 +1,6 @@
 import { hide, show } from "./dom-manipulator.js";
 import { createGroupTab } from "./create-group-tab.js";
+import { hexToString } from "./misc-utilities.js";
 
 // This module is used to change between tabs available in the sidebar
 
@@ -137,7 +138,7 @@ export function changeGroupTab(groupCont, modal = false) {
 
     else if (!modal) {
         makeGroupTabActive(groupCont);
-        createGroupTab(groupCont.id);
+        createGroupTab(hexToString(groupCont.id));
     }
 
 }

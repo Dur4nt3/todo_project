@@ -21,14 +21,14 @@ const basicTask = createTask.createBasicTask("testing basic", "basic task");
 // basicTask3.complete();
 
 // const groupedTask1 = createTask.createGroupedTask("testing groups", "grouped task 1", "group1");
-// const groupedTask2 = createTask.createGroupedTask("more groups", "grouped task 2", "group2", 3);
-// const groupedTask3 = createTask.createGroupedTask("grouped 3", "grouped task 3", "group3", 2);
+const groupedTask2 = createTask.createGroupedTask("more groups", "grouped task 2", "group2", 3);
+const groupedTask3 = createTask.createGroupedTask("grouped 3", "grouped task 3", "group3", 2);
 // const groupedTask4 = createTask.createGroupedTask("grouped 4", "grouped task 4", "group1", 3);
-// const groupedTask5 = createTask.createGroupedTask("grouped 5", "grouped task 5", "group6", 2);
+const groupedTask5 = createTask.createGroupedTask("grouped 5", "grouped task 5", "group6", 2);
 // const groupedTask6 = createTask.createGroupedTask("grouped 6", "grouped task 6", "group1", 3);
 // const groupedTask7 = createTask.createGroupedTask("grouped 7", "grouped task 7", "group1", 2);
 // const groupedTask8 = createTask.createGroupedTask("grouped 8", "grouped task 8", "group1", 3);
-// const groupedTask9 = createTask.createGroupedTask("grouped 9", "grouped task 9", "group7", 3);
+const groupedTask9 = createTask.createGroupedTask("grouped 9", "grouped task 9", "group7", 3);
 // const groupedTask10 = createTask.createGroupedTask("grouped 10", "grouped task 10", "group5", 3);
 const groupedTask11 = createTask.createGroupedTask("grouped 11", "grouped task 11", "group5", 3);
 // groupedTask1.complete();

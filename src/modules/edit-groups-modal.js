@@ -1,5 +1,6 @@
 import { buildElement, hide, show } from "./dom-manipulator.js";
 import { getGroupList, groupsColorLabels, listedGroups, taskGroups } from "./task-utility-functions.js";
+import { hexToString, stringToHex } from "./misc-utilities.js";
 
 import submitSvg from "../images/Submit.svg";
 
@@ -18,15 +19,11 @@ export class groupChangeLog {
 }
 
 function groupNameToID(groupName) {
-    return groupName.replace(/\s+/g, '-')
+    return stringToHex(groupName);
 }
 
 export function idToGroupName(id) {
-    // This is true if the id matches the group
-    if (Object.hasOwn(taskGroups, id)) {
-        return id;
-    }
-    return id.replace(/-/g, ' ');
+    return hexToString(id);
 }
 
 function groupCurrentOrderInfoCont(groupName) {

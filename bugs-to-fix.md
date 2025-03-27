@@ -30,9 +30,9 @@
 
 - Fix the option to name different groups the same new name, i.e., a name that doesn't exist in taskGroups - *COMPLETE*
 
-- Remove console logs from "index.js"
+- Remove console logs from "index.js" - *COMPLETE*
 
-- Ensure that allDay tasks cannot have an hourly repetition
+- Ensure that allDay tasks cannot have an hourly repetition - *COMPLETE*
 
 - switch ids containing group names to base64 encoding of the group name => ensures IDs remain valid
 

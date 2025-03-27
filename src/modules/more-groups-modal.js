@@ -1,6 +1,7 @@
 import { getGroupList, generateGroupColorLabels } from "./task-utility-functions.js";
 import { buildElement } from "./dom-manipulator.js";
 import { changeGroupTab } from "./change-tabs.js";
+import { hexToString, stringToHex } from "./misc-utilities.js";
 
 import closeSvg from "../images/Close.svg";
 
@@ -8,7 +9,7 @@ import closeSvg from "../images/Close.svg";
 
 function buildMoreGroupsGroupCont(groupName) {
     const groupCont = buildElement("div", "more-groups-group-cont");
-    groupCont.id = groupName;
+    groupCont.id = stringToHex(groupName);
 
     const labelColor = generateGroupColorLabels(groupName);
 
@@ -75,19 +76,19 @@ export function moreGroupsModalInteractivity() {
         }
 
         else if (target.classList.contains("more-groups-group-cont")) {
-            changeGroupTab(target.id, true);
+            changeGroupTab(hexToString(target.id), true);
             moreGroupsModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { moreGroupsModalCont.remove() }, 300);
             return;
         }
         else if (target.classList.contains("more-groups-group-name")) {
-            changeGroupTab(target.parentNode.id, true);
+            changeGroupTab(hexToString(target.parentNode.id), true);
             moreGroupsModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { moreGroupsModalCont.remove() }, 300);
             return;
         }
         else if (target.classList.contains("group-label") || target.classList.contains("group-name-text")) {
-            changeGroupTab(target.parentNode.parentNode.id, true);
+            changeGroupTab(hexToString(target.parentNode.parentNode.id), true);
             moreGroupsModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { moreGroupsModalCont.remove() }, 300);
             return;
