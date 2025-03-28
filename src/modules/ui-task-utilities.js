@@ -1,8 +1,9 @@
 import { findByID, determineTaskType } from "./task-utility-functions.js";
 import { buildElement } from "./dom-manipulator.js";
-import { deletionConfirmationModalInteractivity } from "./confirmation-modals.js";
+import { deletionConfirmationModalInteractivity, deleteTaskUI } from "./confirmation-modals.js";
 import { taskInformationModalInteractivity } from "./task-modals.js";
 import { editTasksModalInteractivity } from "./edit-tasks-modal-interactivity.js";
+import { settingsValues } from "./settings-modal-interactivity.js";
 
 // This module includes various UI-related task utilities
 // It mainly manages general logic for tabs and the tasks within them
@@ -166,7 +167,16 @@ export function taskContEventListeners(taskCont) {
                 return;
             }
             if (target.classList.contains("delete-task")) {
-                deletionConfirmationModalInteractivity(findByID(target.parentNode.parentNode.id), target.parentNode.parentNode);
+                const task = findByID(target.parentNode.parentNode.id);
+                const taskCont = target.parentNode.parentNode;
+                const taskType = determineTaskType(task);
+
+                if (!(taskType === "repetitive" || taskType === "repetitiveGrouped") && settingsValues['deletionConfirmation'] === false) {
+                    deleteTaskUI(task, taskCont);
+                    return;
+                }
+
+                deletionConfirmationModalInteractivity(task, taskCont);
                 return;
             }
         }

@@ -876,7 +876,7 @@ input[type="checkbox"]:focus {
 
 .deletion-confirmation-button-cont, .select-upcoming-range-button-cont, .advanced-search-button-cont,
 .edit-groups-button-cont, .add-tasks-button-cont, .repetitive-changes-button-cont, .repetitive-deletion-button-cont,
-.repetitive-deadline-button-cont {
+.repetitive-deadline-button-cont, .settings-button-cont {
     display: flex;
     gap: 3.5rem;
 }
@@ -887,7 +887,7 @@ input[type="checkbox"]:focus {
 
 .deletion-confirmation-button, .select-upcoming-range-button, .advanced-search-button,
 .edit-groups-button, .add-tasks-button, .repetitive-changes-button, .repetitive-deletion-button, 
-.repetitive-deadline-button {
+.repetitive-deadline-button, .settings-button {
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     border: none;
@@ -1022,7 +1022,7 @@ input[type="checkbox"]:focus {
 
 /* Selection Modals Styles */
 
-.select-upcoming-range-modal, .more-groups-modal {
+.select-upcoming-range-modal, .more-groups-modal, .settings-modal {
     top: 20%;
 
     background: rgba(43,43,44,0.55);
@@ -1101,12 +1101,14 @@ input[type=number] {
 }
 
 .select-upcoming-range-button.confirm-button, .advanced-search-button.confirm-button,
-.edit-groups-button.confirm-button, .add-tasks-button.confirm-button {
+.edit-groups-button.confirm-button, .add-tasks-button.confirm-button,
+.settings-button.confirm-button {
     background-color: var(--confirm-green);
 }
 
 .select-upcoming-range-button.confirm-button:active, .advanced-search-button.confirm-button:active,
-.edit-groups-button.confirm-button:active, .add-tasks-button.confirm-button:active {
+.edit-groups-button.confirm-button:active, .add-tasks-button.confirm-button:active,
+.settings-button.confirm-button:active {
     background-color: var(--confirm-green-low-opacity);
 }
 
@@ -1130,7 +1132,7 @@ input[type=number] {
     overflow: auto;
 }
 
-.form-row {
+.form-row, .settings-option {
     margin-bottom: 1.25rem;
 
     display: flex;
@@ -1145,7 +1147,7 @@ input[type=number] {
     margin-top: 1rem;
 }
 
-.advanced-search-label, .add-tasks-label {
+.advanced-search-label, .add-tasks-label, .settings-option-label {
     font-size: 0.925rem;
     opacity: 0.85;
     cursor: pointer;
@@ -1186,7 +1188,7 @@ input[type=number] {
     gap: 0.15rem;
 }
 
-.filter-options-row {
+.filter-options-row, .options-row {
     width: 45ch;
 
     display: flex;
@@ -1194,7 +1196,7 @@ input[type=number] {
     align-items: center;
 }
 
-.filter-options-row > .form-row {
+.filter-options-row > .form-row, .options-row > .settings-option {
     width: 35ch;
 }
 
@@ -1572,7 +1574,7 @@ input[type="color"] {
     top: 0.5%;
 }
 
-.help-page-main-content {
+.help-page-main-content, .settings-options-cont {
     overflow: auto;
 }
 
@@ -1704,7 +1706,7 @@ input[type="color"] {
 
 /* Add Tasks Modal Styles */
 
-.add-tasks-modal, .edit-tasks-modal {
+.add-tasks-modal, .edit-tasks-modal, .settings-modal {
     max-width: 65ch;
     max-height: 75svh;
 
@@ -1944,7 +1946,7 @@ input.task-hybrid-weekly-frequency-input:focus {
     text-align: center;
 }
 
-.add-tasks-label:has( > .information-icon)::before {
+.add-tasks-label:has( > .information-icon)::before, .settings-option-label:has( > .information-icon)::before {
     width: 100%;
     position: absolute;
     pointer-events: none;
@@ -1957,7 +1959,13 @@ input.task-hybrid-weekly-frequency-input:focus {
     background-color: var(--background-color);
 }
 
-.add-tasks-label:has( > .information-icon):hover::before {
+.settings-option-label:has( > .information-icon)::before {
+    bottom: 105%;
+    background-color: var(--secondary-color);
+}
+
+.add-tasks-label:has( > .information-icon):hover::before,
+.settings-option-label:has( > .information-icon):hover::before {
     opacity: 1;
 }
 
@@ -2010,6 +2018,36 @@ input.task-hybrid-weekly-frequency-input:focus {
 }
 
 /* Add Tasks Modal Styles */
+
+/*-----------------------------------------------------------------------*/
+
+/* Settings Modal Styles */
+
+.settings-modal {
+    top: 45%;
+}
+
+.settings-option .select-input-cont {
+    width: max-content;
+}
+
+.settings-option-label.confirm-deletion-option-label::before {
+    content: "When deleting non-repetitive tasks you will be prompted to confirm the deletion. Disabling this option will disable the prompt, automatically deleting the task when clicking the delete icon.";
+}
+
+.settings-option-label.show-welcome-option-label::before {
+    content: 'When visiting "Task Ticker" a guide will pop-up containing information about "Task Ticker". Disabling this option will disable the pop-up when visiting "Task Ticker".';
+}
+
+.settings-option-label.deadline-warning-option-label::before {
+    content: "When attempting to change the deadline of a repetitive task you will be prompted to confirm that you acknowledge that said action will remove the task from its cluster. Disabling this option will disable the prompt, automatically accepting the consequences.";
+}
+
+.settings-option-label.default-tab-option-label::before {
+    content: 'Select the default tab to show upon visiting "Task Ticker".';
+}
+
+/* Settings Modal Styles */
 
 /*-----------------------------------------------------------------------*/
 
