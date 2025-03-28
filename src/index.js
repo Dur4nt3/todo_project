@@ -8,7 +8,7 @@ import { moreGroupsModalInteractivity } from "./modules/more-groups-modal.js";
 import { editGroupsModalInteractivity } from "./modules/misc-modals.js";
 import { helpModalInteractivity } from "./modules/help-modal.js";
 import { addTasksModalInteractivity } from "./modules/add-tasks-modal-interactivity.js";
-
+import { settingsModalInteractivity } from "./modules/settings-modal-interactivity.js";
 
 import { taskCollection  } from "./modules/task-utility-functions.js";
 import * as createTask from "./modules/create-task-objects.js";
@@ -140,7 +140,7 @@ settingsCont.addEventListener("click", (e) => {
     const target = e.target;
 
     if (target.classList.contains("settings-icon") || target.classList.contains("settings-label")) {
-        console.log("trying to open settings");
+        settingsModalInteractivity();
     }
     if (target.classList.contains("help-icon") || target.classList.contains("help-label")) {
         helpModalInteractivity();

@@ -42,7 +42,7 @@ function deletionConfirmationModal(taskTitle) {
     return modalCont;
 }
 
-function deleteTaskUI(task, taskCont) {
+export function deleteTaskUI(task, taskCont) {
     const taskType = determineTaskType(task)
     removeTask.removeFromTaskCollection(task.id, taskType);
 

@@ -4,6 +4,7 @@ import { determineTaskType } from "./task-utility-functions.js";
 import { simulatePageRefresh } from "./simulate-page-refresh.js";
 import { addTasksCreateTask } from "./add-tasks-task-creation.js";
 import { getClusterTasks} from "./repetitive-task-utilities.js";
+import { settingsValues } from "./settings-modal-interactivity.js";
 
 function performLocalChanges(originalTask, taskObj) {
     originalTask.title = taskObj.name;
@@ -105,6 +106,23 @@ export function repetitiveDeletionConfirmationInteractivity(parentModal, taskObj
 }
 
 export function deadlineChangeModalInteractivity(parentModal, taskObj, originalTaskID) {
+    // No need to create the modal if the user requested not to show a confirmation prompt
+    if (settingsValues['deadlineConfirmation'] === false) {
+        if (taskObj.group === undefined) {
+            removeFromTaskCollection(originalTaskID, "repetitive");
+            addTasksCreateTask(taskObj, "dated");
+        }
+        else {
+            removeFromTaskCollection(originalTaskID, "repetitiveGrouped");
+            addTasksCreateTask(taskObj, "datedGrouped");
+        }
+
+        parentModal.children[0].classList.add("close-modal-animation");
+        setTimeout(() => { parentModal.remove(); simulatePageRefresh(); }, 300);
+        return;
+    }
+
+
     const deadlineModal = deadlineChangeModal(taskObj);
 
     parentModal.appendChild(deadlineModal);
