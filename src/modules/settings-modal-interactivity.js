@@ -1,4 +1,5 @@
 import { settingsModal, validateSettingsValues } from "./settings-modal.js";
+import { updateSettings } from "./update-local-storage.js";
 
 const settingsValues = {
     'deletionConfirmation': true,
@@ -9,16 +10,25 @@ const settingsValues = {
 
 export { settingsValues };
 
+function matchCurrentSettings(modalCont) {
+    modalCont.querySelector(".confirm-deletion-option").checked = settingsValues["deletionConfirmation"];
+    modalCont.querySelector(".show-welcome-option").checked = settingsValues["showGuide"];
+    modalCont.querySelector(".deadline-warning-option").checked = settingsValues["deadlineConfirmation"];
+    modalCont.querySelector(".default-tab-option").value = settingsValues["defaultTab"];
+}
+
 export function settingsModalInteractivity() {
     const settingsModalCont = settingsModal();
     
+    matchCurrentSettings(settingsModalCont);
+
     document.body.prepend(settingsModalCont);
     settingsModalCont.focus();
 
     settingsModalCont.addEventListener("click", (e) => {
         const target = e.target;
 
-        if (target.classList.contains("cancel-button")) {
+        if (target.classList.contains("cancel-button") || target === settingsModalCont) {
             settingsModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { settingsModalCont.remove() }, 300);
             return;
@@ -38,9 +48,9 @@ export function settingsModalInteractivity() {
                 settingsValues['showGuide'] = showGuideValue;
                 settingsValues['deadlineConfirmation'] = deadlineConfirmationValue;
                 settingsValues['defaultTab'] = defaultTabValue;
-            }
 
-            console.log(settingsValues);
+                updateSettings(settingsValues);
+            }
 
             settingsModalCont.children[0].classList.add("close-modal-animation");
             setTimeout(() => { settingsModalCont.remove() }, 300);

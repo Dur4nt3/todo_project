@@ -1,7 +1,8 @@
-import { determineTaskType } from "./task-utility-functions.js";
+import { determineTaskType, taskCollection } from "./task-utility-functions.js";
 import * as removeTask from "./task-removal.js";
 import { buildElement } from "./dom-manipulator.js";
 import { repetitiveDeletionConfirmationInteractivity } from "./repetitive-tasks-confirmation-modals-interactivity.js";
+import { updateTasks } from "./update-local-storage.js";
 
 // This module is used to create both the markup and the UI for the task deletion modals
 
@@ -45,6 +46,7 @@ function deletionConfirmationModal(taskTitle) {
 export function deleteTaskUI(task, taskCont) {
     const taskType = determineTaskType(task)
     removeTask.removeFromTaskCollection(task.id, taskType);
+    updateTasks(taskType, taskCollection[taskType]);
 
     taskCont.classList.add("deleted-animation");
     setTimeout(() => { taskCont.remove() }, 600);

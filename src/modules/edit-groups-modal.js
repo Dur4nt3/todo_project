@@ -18,7 +18,7 @@ export class groupChangeLog {
     }
 }
 
-function groupNameToID(groupName) {
+export function groupNameToID(groupName) {
     return stringToHex(groupName);
 }
 

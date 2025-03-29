@@ -54,6 +54,21 @@ export function appendToListed(groupName, listNumber) {
     return true;
 }
 
+export function appendToListedIfEmpty(groupName) {
+    for (let i = 0; i < 5; i++) {
+        // If a selected position doesn't have a group in it => insert the selected group into said position
+        if (listedGroups[i] === null || listedGroups[i] === undefined) {
+            listedGroups[i] = groupName;
+            return;
+        }
+        // If a selected position has a group in it but that group was deleted => override the group in said position with the selected group
+        if (!(Object.hasOwn(taskGroups, listedGroups[i]))) {
+            listedGroups[i] = groupName;
+            return;
+        }
+    }
+}
+
 export function generateGroupColorLabels(groupName) {
     if (Object.hasOwn(groupsColorLabels, groupName)) {
         return groupsColorLabels[groupName];
@@ -162,9 +177,12 @@ export function formateToDeadlineValue(date, time) {
 // Task-Specific Utility Functions (Grouped Tasks):
 
 export function updateGroups(groupName, obj, oldGroup = null) {
-
     // If changing the group of a task, ensure to remove it from its previous group
     if (oldGroup !== null) {
+        if (oldGroup === groupName) {
+            return;
+        }
+
         let objIndex = taskGroups[oldGroup].findIndex(task => task.id === obj.id);
         taskGroups[oldGroup].splice(objIndex,1);
         // Prevent bloating the object with empty groups by deleting groups without any tasks
@@ -184,7 +202,6 @@ export function updateGroups(groupName, obj, oldGroup = null) {
 }
 
 export function validateGroup(groupName) {
-    console.log(taskGroups);
     
     if (Array.isArray(groupName) && groupName[0] === "__unlisted__") {
         return true;

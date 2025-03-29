@@ -1,9 +1,10 @@
-import { findByID, determineTaskType } from "./task-utility-functions.js";
+import { findByID, determineTaskType, taskCollection } from "./task-utility-functions.js";
 import { buildElement } from "./dom-manipulator.js";
 import { deletionConfirmationModalInteractivity, deleteTaskUI } from "./confirmation-modals.js";
 import { taskInformationModalInteractivity } from "./task-modals.js";
 import { editTasksModalInteractivity } from "./edit-tasks-modal-interactivity.js";
 import { settingsValues } from "./settings-modal-interactivity.js";
+import { updateTasks } from "./update-local-storage.js";
 
 // This module includes various UI-related task utilities
 // It mainly manages general logic for tabs and the tasks within them
@@ -94,8 +95,11 @@ function editTaskUI(task) {
 
 // Completes the task & plays an animation
 function completeTaskUI(task, taskCont) {
+    const taskType = determineTaskType(task);
+
     if (task.completionStatus === true) {
         task.undoCompletion();
+        updateTasks(taskType, taskCollection[taskType]);
         return;
     }
     
@@ -113,6 +117,7 @@ function completeTaskUI(task, taskCont) {
     // Completing a task when the "Show Completed" filter is off
     if (task.completionStatus === false && !includeCompleted) {
         task.complete();
+        updateTasks(taskType, taskCollection[taskType]);
         taskCont.classList.add("completed-animation");
         setTimeout(() => { taskCont.remove() }, 600);
         return;
@@ -121,6 +126,7 @@ function completeTaskUI(task, taskCont) {
     // Completing a task when the "Show Completed" filter is on
     else if (task.completionStatus === false && includeCompleted) {
         task.complete();
+        updateTasks(taskType, taskCollection[taskType]);
         return;
     }
 }

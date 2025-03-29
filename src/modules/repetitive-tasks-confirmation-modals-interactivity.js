@@ -1,20 +1,27 @@
 import { informationChangeModal, repetitiveDeletionConfirmation, deadlineChangeModal } from "./repetitive-tasks-confirmation-modals.js";
 import { removeClusterFromTaskCollection, removeFromTaskCollection } from "./task-removal.js";
-import { determineTaskType } from "./task-utility-functions.js";
+import { determineTaskType, taskCollection } from "./task-utility-functions.js";
 import { simulatePageRefresh } from "./simulate-page-refresh.js";
 import { addTasksCreateTask } from "./add-tasks-task-creation.js";
 import { getClusterTasks} from "./repetitive-task-utilities.js";
 import { settingsValues } from "./settings-modal-interactivity.js";
+import { updateDatedGroupedTasks, updateRepetitiveGroupedTasks, updateRepetitiveTasks } from "./update-local-storage.js";
 
-function performLocalChanges(originalTask, taskObj) {
-    originalTask.title = taskObj.name;
-    originalTask.description = taskObj.description;
-    originalTask.priority = taskObj.priority;
+function performLocalChanges(originalTask, taskObj, changes) {
+    if (changes.includes("title")) {
+        originalTask.title = taskObj.name;
+    }
+    if (changes.includes("description")) {
+        originalTask.description = taskObj.description;
+    }
+    if (changes.includes("priority")) {
+        originalTask.priority = taskObj.priority;
+    }
+    
 
-    if (originalTask.group !== undefined) {
+    if (originalTask.group !== undefined && changes.includes("group")) {
         if (Array.isArray(taskObj.group) && taskObj.group[0] === "__unlisted__") {
             originalTask.removeListing();
-            console.log(originalTask.group);
         }
         else {
             originalTask.group = taskObj.group;
@@ -22,11 +29,11 @@ function performLocalChanges(originalTask, taskObj) {
     }
 }
 
-function performClusterChanges(originalTask, taskObj) {
+function performClusterChanges(originalTask, taskObj, changes) {
     const clusterTasks = getClusterTasks(originalTask);
 
     for (let i in clusterTasks) {
-        performLocalChanges(clusterTasks[i], taskObj);
+        performLocalChanges(clusterTasks[i], taskObj, changes);
     }
 }
 
@@ -47,7 +54,14 @@ export function informationChangeModalInteractivity(parentModal, taskObj, change
         }
 
         else if (target.classList.contains("this-task-button") && target.classList.contains("repetitive-changes-button")) {
-            performLocalChanges(originalTask, taskObj);
+            performLocalChanges(originalTask, taskObj, changes);
+
+            if (originalTask.group === undefined) {
+                updateRepetitiveTasks(taskCollection["repetitive"]);
+            }
+            else {
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
+            }
 
             infoChangeModal.children[0].remove();
             parentModal.children[0].classList.add("close-modal-animation");
@@ -55,7 +69,14 @@ export function informationChangeModalInteractivity(parentModal, taskObj, change
         }
 
         else if (target.classList.contains("all-tasks-button") && target.classList.contains("repetitive-changes-button")) {
-            performClusterChanges(originalTask, taskObj);
+            performClusterChanges(originalTask, taskObj, changes);
+
+            if (originalTask.group === undefined) {
+                updateRepetitiveTasks(taskCollection["repetitive"]);
+            }
+            else {
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
+            }
 
             infoChangeModal.children[0].remove();
             parentModal.children[0].classList.add("close-modal-animation");
@@ -81,6 +102,14 @@ export function repetitiveDeletionConfirmationInteractivity(parentModal, taskObj
 
         if (target.classList.contains("this-task-button")) {
             removeFromTaskCollection(taskObj.id, determineTaskType(taskObj));
+
+            if (taskObj.group === undefined) {
+                updateRepetitiveTasks(taskCollection["repetitive"]);
+            }
+            else {
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
+            }
+
             simulatePageRefresh();
             deletionModal.classList.add("close-modal-animation");
             setTimeout(() => { parentModal.remove(); }, 300);
@@ -89,6 +118,14 @@ export function repetitiveDeletionConfirmationInteractivity(parentModal, taskObj
 
         else if (target.classList.contains("all-tasks-button")) {
             removeClusterFromTaskCollection(taskObj.clusterID, determineTaskType(taskObj));
+
+            if (taskObj.group === undefined) {
+                updateRepetitiveTasks(taskCollection["repetitive"]);
+            }
+            else {
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
+            }
+
             simulatePageRefresh();
             deletionModal.classList.add("close-modal-animation");
             setTimeout(() => { parentModal.remove(); }, 300);
@@ -110,10 +147,12 @@ export function deadlineChangeModalInteractivity(parentModal, taskObj, originalT
     if (settingsValues['deadlineConfirmation'] === false) {
         if (taskObj.group === undefined) {
             removeFromTaskCollection(originalTaskID, "repetitive");
+            updateRepetitiveTasks(taskCollection["repetitive"]);
             addTasksCreateTask(taskObj, "dated");
         }
         else {
             removeFromTaskCollection(originalTaskID, "repetitiveGrouped");
+            updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
             addTasksCreateTask(taskObj, "datedGrouped");
         }
 
@@ -140,10 +179,12 @@ export function deadlineChangeModalInteractivity(parentModal, taskObj, originalT
             
             if (taskObj.group === undefined) {
                 removeFromTaskCollection(originalTaskID, "repetitive");
+                updateRepetitiveTasks(taskCollection["repetitive"]);
                 addTasksCreateTask(taskObj, "dated");
             }
             else {
                 removeFromTaskCollection(originalTaskID, "repetitiveGrouped");
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
                 addTasksCreateTask(taskObj, "datedGrouped");
             }
 

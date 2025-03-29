@@ -1,9 +1,10 @@
-import { editGroupsModal, fadeOutButtons, groupChangeLog, locateActiveInput, fadeOutInputs, SubstituteListingValues, idToGroupName } from "./edit-groups-modal.js";
-import { getGroupList, listedGroups, groupsColorLabels, taskGroups, reservedGroups } from "./task-utility-functions.js";
+import { editGroupsModal, fadeOutButtons, groupChangeLog, locateActiveInput, fadeOutInputs, SubstituteListingValues, idToGroupName, groupNameToID } from "./edit-groups-modal.js";
+import { getGroupList, listedGroups, groupsColorLabels, taskGroups, reservedGroups, taskCollection } from "./task-utility-functions.js";
 import { isInputSingleDigitNumber } from "./number-input-validation.js";
 import { whiteSpacesAndDashesOnly } from "./text-input-validation.js";
 import { generateGroupList } from "./create-groups-cont.js";
 import { processGroupChanges } from "./process-task-changes.js";
+import { updateGroupedTasks, updateDatedGroupedTasks, updateRepetitiveGroupedTasks } from "./update-local-storage.js";
 
 // This module includes the interactivity logic of various modals
 // This module isn't centered around a specific category of modals
@@ -165,7 +166,7 @@ export function editGroupsModalInteractivity() {
                     }
                     editsChangeLog.newListings[changeLogIndex] = Number(targetInput.value) - 1;
                     SubstituteListingValues(groupOrderCont, currentListingPosition, 
-                    document.querySelector(".edit-groups-group-order"+"#"+editsChangeLog.currentNames[indexOfNewListing]), (Number(targetInput.value) - 1));
+                    document.querySelector(".edit-groups-group-order"+"#"+(groupNameToID(editsChangeLog.currentNames[indexOfNewListing]))), (Number(targetInput.value) - 1));
                     fadeOutInputs(target);
                     return;
                 }
@@ -198,6 +199,9 @@ export function editGroupsModalInteractivity() {
                     sidebarGroupList.lastChild.remove();
                 }
 
+                updateGroupedTasks(taskCollection["grouped"]);
+                updateDatedGroupedTasks(taskCollection["datedGrouped"]);
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
                 generateGroupList();
 
                 editGroupsModalCont.children[0].classList.add("close-modal-animation");

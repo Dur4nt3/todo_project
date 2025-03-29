@@ -99,7 +99,7 @@ function defaultTabOption() {
     label.appendChild(Info);
 
     const selectDefault = buildSelectElement("default-tab-option",
-        ["today", "Today"], ["upcoming", "Upcoming"], ["past-due", "Past Due"], ["all-tasks", "All Tasks"], ["completed", "Completed"])
+        ["today", "Today"], ["upcoming", "Upcoming"], ["past-due", "Past Due"], ["all", "All Tasks"], ["completed", "Completed"])
 
     settingsOption.appendChild(label);
     settingsOption.appendChild(selectDefault);
@@ -151,7 +151,7 @@ export function settingsModal() {
 
 export function validateSettingsValues(...values) {
     const toggleValues = [true, false];
-    const defaultTabValues = ["today", "upcoming", "past-due", "all-tasks", "completed"];
+    const defaultTabValues = ["today", "upcoming", "past-due", "all", "completed"];
 
     for (let i in values) {
         let value = values[i];

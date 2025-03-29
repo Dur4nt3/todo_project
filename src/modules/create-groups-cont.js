@@ -1,6 +1,7 @@
-import { getGroupCount, generateGroupColorLabels, listedGroups, appendToListed, getGroupList } from "./task-utility-functions.js";
+import { getGroupCount, generateGroupColorLabels, listedGroups, appendToListedIfEmpty, getGroupList, taskGroups, groupsColorLabels } from "./task-utility-functions.js";
 import * as domManipulator from "./dom-manipulator.js";
 import { stringToHex } from "./misc-utilities.js";
+import { updateColorLabels, updateListingPositions } from "./update-local-storage.js";
 
 // This module is used to build the group listing container in the sidebar
 
@@ -38,6 +39,11 @@ function populateGroupListCont() {
                 if (alreadyListed.includes(listedGroups[i])) {
                     continue;
                 }
+
+                // This ensure listing positions will not be reserved for empty groups
+                if (!(Object.hasOwn(taskGroups, listedGroups[i]))) {
+                    continue;
+                }
                 
                 let groupCont = createGroupCont(listedGroups[i]);
                 groupListCont.appendChild(groupCont);
@@ -73,7 +79,7 @@ function populateGroupListCont() {
 
         groupListCont.appendChild(groupCont);
 
-        appendToListed(groupName, index);
+        appendToListedIfEmpty(groupName);
 
         alreadyListed.push(groupName);
         insertionCount++;
@@ -101,6 +107,8 @@ export function generateGroupList() {
     }
     else {
         populateGroupListCont();
+        updateListingPositions(listedGroups);
+        updateColorLabels(groupsColorLabels);
         return;
     }
 

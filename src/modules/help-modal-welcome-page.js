@@ -21,15 +21,18 @@ export function generateWelcomePage() {
     const paragraph1section1 = buildElement("p", "welcome-page-text", "help-paragraph");
     const paragraph2section1 = buildElement("p", "welcome-page-text", "help-paragraph");
     const paragraph3section1 = buildElement("p", "welcome-page-text", "help-paragraph");
+    const paragraph4section1 = buildElement("p", "welcome-page-text", "help-paragraph");
 
     paragraph1section1.textContent = "Task Ticker is a task scheduling application design to help you create and monitor tasks.";
     paragraph2section1.textContent = "Task Ticker offers a variety of task types designed to fit your exact requirements!";
     paragraph3section1.textContent = "This help section includes a variety of resources created to assist you with various questions or issues you might encounter.";
+    paragraph4section1.textContent = '***Note, you can disable this message by selecting the "Settings" options on the sidebar and toggling-off the "Show Guide On Visit" option.***';
 
     section1.appendChild(header1);
     section1.appendChild(paragraph1section1);
     section1.appendChild(paragraph2section1);
     section1.appendChild(paragraph3section1);
+    section1.appendChild(paragraph4section1);
 
     const listCont = buildElement("ul", "help-unordered-list", "help-task-types");
     const listItem1 = buildElement("li", "help-unordered-list-item");

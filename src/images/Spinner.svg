@@ -1,0 +1,6 @@
+<svg width="160px" height="160px" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <circle class="spin" cx="400" cy="400" fill="none"
+    r="200" stroke-width="50" stroke="#9757ea"
+    stroke-dasharray="983 1400"
+    stroke-linecap="round" />
+</svg>

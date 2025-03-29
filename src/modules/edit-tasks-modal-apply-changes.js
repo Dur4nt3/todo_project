@@ -1,41 +1,58 @@
+import { taskCollection } from "./task-utility-functions.js";
 import { prepareForPatternChange, getClusterSize, findOrigin, getClusterTasks } from "./repetitive-task-utilities.js";
 import { generateRepetition } from "./repetition-generator.js";
 import { informationChangeModalInteractivity, deadlineChangeModalInteractivity } from "./repetitive-tasks-confirmation-modals-interactivity.js";
+import { updateBasicTasks, updateDatedGroupedTasks, updateDatedTasks, updateGroupedTasks, updateRepetitiveGroupedTasks, updateRepetitiveTasks } from "./update-local-storage.js";
 
-function applyBasicChanges(originalTask, taskDataObj) {
+function applyBasicChanges(originalTask, taskDataObj, utility = true) {
     originalTask.title = taskDataObj.name;
     originalTask.description = taskDataObj.description;
     originalTask.priority = taskDataObj.priority;
 
+    if (utility === false) {
+        updateBasicTasks(taskCollection["basic"]);
+    }
+
     return true;
 }
 
-function applyGroupedChanges(originalTask, taskDataObj) {
+function applyGroupedChanges(originalTask, taskDataObj, utility = true) {
     applyBasicChanges(originalTask, taskDataObj);
 
     if (Array.isArray(taskDataObj.group) && taskDataObj.group[0] === "__unlisted__") {
         originalTask.removeListing();
-        console.log(originalTask.group);
     }
     else {
         originalTask.group = taskDataObj.group;
     }
 
+    if (utility === false) {
+        updateGroupedTasks(taskCollection["grouped"]);
+    }
+
     return true;
 }
 
-function applyDatedChanges(originalTask, taskDataObj) {
+function applyDatedChanges(originalTask, taskDataObj, utility = true) {
     applyBasicChanges(originalTask, taskDataObj);
 
     originalTask.allDay = taskDataObj.allDay;
     originalTask.deadline = taskDataObj.timedDeadline;
 
+    if (utility === false) {
+        updateDatedTasks(taskCollection["dated"]);
+    }
+
     return true;
 }
 
-function applyDatedGroupedChanges(originalTask, taskDataObj) {
+function applyDatedGroupedChanges(originalTask, taskDataObj, utility = true) {
     applyGroupedChanges(originalTask, taskDataObj);
     applyDatedChanges(originalTask, taskDataObj);
+
+    if (utility === false) {
+        updateDatedGroupedTasks(taskCollection["datedGrouped"]);
+    }
 
     return true;
 }
@@ -74,7 +91,7 @@ function compareRepetitionValue(task1, task2) {
     return false;
 }
 
-function applyRepetitiveChanges(originalTask, taskDataObj) {
+function applyRepetitiveChanges(originalTask, taskDataObj, utility = true) {
     const parentModal = document.querySelector(".modal");
     const changes = getRequestedChanges(originalTask, taskDataObj);
     const origin = findOrigin(originalTask);
@@ -116,6 +133,15 @@ function applyRepetitiveChanges(originalTask, taskDataObj) {
     }
 
     if (wait === false) {
+        if (utility === false) {
+            if (originalTask.group === undefined) {
+                updateRepetitiveTasks(taskCollection["repetitive"]);
+            }
+            else {
+                updateRepetitiveGroupedTasks(taskCollection["repetitiveGrouped"]);
+            }
+        }
+
         return true;
     }
 }
@@ -123,22 +149,22 @@ function applyRepetitiveChanges(originalTask, taskDataObj) {
 export function editTasksApplyChanges(originalTask, taskDataObj, taskType) {
     switch (taskType) {
         case "basic":
-            return applyBasicChanges(originalTask, taskDataObj);
+            return applyBasicChanges(originalTask, taskDataObj, false);
 
         case "grouped":
-            return applyGroupedChanges(originalTask, taskDataObj);
+            return applyGroupedChanges(originalTask, taskDataObj, false);
 
         case "dated":
-            return applyDatedChanges(originalTask, taskDataObj);
+            return applyDatedChanges(originalTask, taskDataObj, false);
 
         case "datedGrouped":
-            return applyDatedGroupedChanges(originalTask, taskDataObj);
+            return applyDatedGroupedChanges(originalTask, taskDataObj, false);
 
         case "repetitive":
-            return applyRepetitiveChanges(originalTask, taskDataObj);
+            return applyRepetitiveChanges(originalTask, taskDataObj, false);
 
         case "repetitiveGrouped":
-            return applyRepetitiveChanges(originalTask, taskDataObj);
+            return applyRepetitiveChanges(originalTask, taskDataObj, false);
         
         // This indicates that a modal error should be raised
         default:
